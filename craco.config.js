@@ -3,14 +3,6 @@ const path = require(`path`);
 const resolvePath = p => path.resolve(__dirname, p)
 
 module.exports = {
-    style: {
-        postcss: {
-            plugins: [
-                require('tailwindcss'),
-                require('autoprefixer'),
-            ],
-        },
-    },
     webpack: {
         alias: {
             '@': resolvePath( 'src/'),

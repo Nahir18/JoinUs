@@ -42,7 +42,51 @@
           "**/*.stories.*"
         ],
         "rules": {
-          "import/no-anonymous-default-export": "off"
+          "import/no-anonymous-default-export": "off",
+          "linebreak-style": 0,
+          "semi": [
+            2,
+            "never"
+          ],
+          "import/no-unresolved": 0,
+          "max-len": [
+            "error",
+            {
+              "code": 140
+            }
+          ],
+          "react/jsx-filename-extension": 0,
+          "no-console": 0,
+          "react/jsx-props-no-spreading": 0,
+          "max-class-per-file": 0,
+          "react/prefer-stateless-function": 0,
+          "no-shadow": 0,
+          "react/jsx-one-expression-per-line": 0,
+          "jsx-a11y/control-has-associated-label": 0,
+          "jsx-a11y/mouse-events-have-key-events": 0,
+          "max-classes-per-file": 0,
+          "comma-dangle": 0,
+          "react/forbid-prop-types": 0,
+          "no-plusplus": 0,
+          "react/require-default-props": 0,
+          "no-nested-ternary": 0,
+          "consistent-return": 0,
+          "no-unused-expressions": 0,
+          "no-restricted-globals": 0,
+          "arrow-parens": 0,
+          "no-confusing-arrow": 0,
+          "camelcase": 0,
+          "no-restricted-syntax": 0,
+          "no-param-reassign": 0,
+          "react/no-array-index-key": 0,
+          "object-curly-newline": 0,
+          "quotes": [
+            "error",
+            "double",
+            {
+              "avoidEscape": true
+            }
+          ]
         }
       }
     ]
@@ -70,6 +114,7 @@
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.12",
     "autoprefixer": "^9.8.8",
+    "eslint-plugin-react": "^7.27.1",
     "history": "^5.1.0",
     "postcss": "^7.0.39",
     "react-router-dom": "^5.3.0",
