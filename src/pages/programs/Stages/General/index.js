@@ -116,10 +116,19 @@ class LevelsGeneral extends Component {
   saveNewLevel() {
     const {location: {pathname}, history: {push}} = this.props
     const {data} = this.state
+    const { level_name, tier, status, create_date, id_employee, duration_day, illustration } = data
     const pathnames = pathname.split("/").filter(x => x)
     const newProgram = pathnames[1] === "New_level"
     const idLevel = newProgram ? "/" : `/${pathnames[3]}/`
-    axios[newProgram ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, {...data, illustration: "111"})
+    const newData = {
+        level_name,
+        tier,
+        status,
+        create_date,
+        id_employee,
+        duration_day
+    }
+    axios[newProgram ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, newData)
       .then(
         (response) => {
           const {data, data: {program_name, id}} = response
