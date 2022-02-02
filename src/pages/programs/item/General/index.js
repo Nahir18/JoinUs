@@ -142,7 +142,10 @@ class General extends Component {
                         isLoaded: true,
                         data: data
                     })
-                    push(`/programs/${program_name}/${id}/general`)
+                    newProgram ?
+                        push("/programs") :
+                        push(`/programs/${program_name}/${id}/general`)
+
                 },
                 (error) => {
                     this.setState({

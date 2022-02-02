@@ -114,9 +114,9 @@ class LevelsGeneral extends Component {
   }
 
   saveNewLevel() {
-    const {location: {pathname}, history: {push}} = this.props
+    const {location: {pathname}} = this.props
     const {data} = this.state
-    const { level_name, tier, status, create_date, id_employee, duration_day, illustration } = data
+    const { level_name, tier, status, create_date, id_employee, duration_day } = data
     const pathnames = pathname.split("/").filter(x => x)
     const newProgram = pathnames[1] === "New_level"
     const idLevel = newProgram ? "/" : `/${pathnames[3]}/`
