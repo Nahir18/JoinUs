@@ -10,6 +10,9 @@ import PureUpdateArrayItems from "../../../../utils/Arrays/PureUpdateArrayItems"
 import {DIRECTION_UP} from "../../../../constants";
 import PureDeleteItems from "../../../../utils/Arrays/PureDeleteItems";
 import NewBlock from "./Components/NewBlock";
+import { levelsBreadcrumbs } from "../../configs";
+import ProgramsHeader from "../../ProgramsHeader"
+import {STAGES_LINKS, NEW_PROGRAM} from "../../Constants";
 import {useParams} from "react-router-dom";
 // http://51.250.15.127:9000/api-active/candidate/api-active/adaptationstage/
 const Blocks = () => {
@@ -65,8 +68,20 @@ const Blocks = () => {
       json: [...json, {type}]
     }))
   }, [])
-
+  const pageHeaderTitle = (stage_name) => {
+    const { location: { pathname } } = this.props
+    const pathnames = pathname.split("/").filter(x => x)
+    const newProgram = pathnames[1] === NEW_PROGRAM
+    return newProgram ? "Новая программа" : stage_name ? `Этап "${stage_name}"` : ""
+  }
   return (
+    // <ProgramsHeader
+    //     {...this.props}
+    //     // pageData={pageHeaderTitle(stage_name)}
+    //     bredCrumbsConfig={levelsBreadcrumbs}
+    //     url="programs"
+    //     links={STAGES_LINKS}
+    // >
     <div className="flex-container">
       <ScrollBar className="p-l-24 p-r-24 p-b-24 p-t-24">
         {
@@ -94,6 +109,7 @@ const Blocks = () => {
       </ScrollBar>
       <button onClick={saveBlocks}>asd</button>
     </div>
+    // </ProgramsHeader>
   );
 };
 
