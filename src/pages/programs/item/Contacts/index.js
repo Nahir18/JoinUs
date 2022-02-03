@@ -3,7 +3,7 @@ import AppList from "../../../../components/AppList";
 import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_CONTACTS} from "../../../../components/APIList";
 import axios from "axios";
 import {settings} from "./TableConfig";
-import { ModalTableHeader, ModalTableBody, UserAvatar } from "./style";
+import { ModalTableHeader, ModalTableBody } from "./style";
 import Modal from "../../../../components/ModalWindow";
 import { programsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
@@ -74,10 +74,20 @@ class Contacts extends Component {
     }
     addContacts = () => {
         const { location: { pathname } } = this.props
-        const { programData, programData: { contact }, selectedContacts } = this.state
+        const { programData: { contact, program_name, create_date, id, status, tier, employee, duration_day, description }, selectedContacts } = this.state
         const pathnames = pathname.split("/").filter(x => x)
         const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
-        const newData = {...programData, contact: contact.concat(selectedContacts.filter(item => !contact.some(a => a === item))) }
+        const newData = {
+            program_name,
+            create_date,
+            id,
+            status,
+            tier,
+            employee,
+            duration_day,
+            description,
+            contact: contact.concat(selectedContacts.filter(item => !contact.some(a => a === item)))
+        }
         axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
             .then(
                 (response) => {
