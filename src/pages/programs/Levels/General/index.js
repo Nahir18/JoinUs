@@ -69,11 +69,22 @@ class StagesGeneral extends Component {
 
     saveStage () {
         const { location: { pathname } } = this.props
-        const { data } = this.state
+        const { data: {id, stage_name, tier, point, status, create_date, id_employee, duration_day, level} } = this.state
         const pathnames = pathname.split("/").filter(x => x)
         const newProgram = pathnames[1] === "new_program"
         const idProgram = newProgram ? "/" : `/${pathnames[3]}/`
-        axios[newProgram ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idProgram}`, data)
+        const newData = {
+            id,
+            stage_name,
+            tier,
+            point,
+            status,
+            create_date,
+            id_employee,
+            duration_day,
+            level
+        }
+        axios[newProgram ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idProgram}`, newData)
             .then(
                 (response) => {
                     const { data } = response
@@ -163,14 +174,14 @@ class StagesGeneral extends Component {
                                             name="cancel"
                                             type="submit"
                                             onClick={() => goBack()}
-                                            className="grey btn width-medium m-r-16"
+                                            className="grey btn width-m m-r-16"
                                         >
                                             Отмена
                                         </button>
                                         <button
                                             name="save"
                                             type="submit"
-                                            className="blue btn width-medium"
+                                            className="blue btn width-m"
                                             onClick={() => this.saveStage()}
                                         >
                                             Сохранить
