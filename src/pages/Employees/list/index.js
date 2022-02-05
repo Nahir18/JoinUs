@@ -4,7 +4,7 @@ import axios from 'axios';
 import AppList from "../../../components/AppList";
 import {settings} from "./TableConfig"
 import {NavLink} from "react-router-dom";
-import {CANDIDATE_LIST, DEFAULT_URL} from "../../../components/APIList";
+import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL, DIRECTORY} from "../../../components/APIList";
 import debounce from "@Utils/debounce"
 import memoizeOne from "memoize-one";
 import Pagination from "@Components/Pagination"
@@ -19,7 +19,8 @@ class Employees extends Component {
       search: "",
       countList: "",
       page: 1,
-      limit: 11
+      limit: 11,
+      programList: []
     }
   }
 // todo сделать фильтрацию по статусам на фронте
@@ -65,6 +66,16 @@ class Employees extends Component {
         this.setState({error})
       }
     )
+    axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
+    .then((response) => {
+        this.setState({
+          programList: response.data
+        })
+      },
+      (error) => {
+        this.setState({error})
+      }
+    )
   }
 
   updateData = (value) => {
@@ -89,9 +100,9 @@ class Employees extends Component {
     }
   })
 
-  getNewData = memoizeOne((data) => {
+  getNewData = memoizeOne((data, programList) => {
     return data.map((item) => {
-      const { last_name, first_name, post, adaptation_status, program_details, program, illustration, id } = item
+      const { last_name, first_name, post, adaptation_status, program_details, program, illustration } = item
       return {
         EMPLOYEES: {
           name: `${last_name} ${first_name}`,
@@ -106,7 +117,7 @@ class Employees extends Component {
           adaptation_status,
           program_details,
           program,
-          id
+          program_list: programList
         },
         ...item
       }
@@ -116,8 +127,8 @@ class Employees extends Component {
 
 
   render() {
-    const { state: {data, countList, page, limit} } = this
-    const newData = this.getNewData(data)
+    const { state: {data, countList, page, limit, programList} } = this
+    const newData = this.getNewData(data, programList)
     return (
       <div className="flex-container">
         <div className="flex justify-between p-b-25">
