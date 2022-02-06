@@ -1,21 +1,9 @@
 import React from "react";
 import Actions from "./Actions";
 import {ActiveIcon} from "../../../Constants";
+import StatusIndicator from "../../../../components/StatusIndicator";
 
-const ActiveIndicator = ({ data } ) => data ? (
-    <div className="flex justify-between items-center">
-        <div
-            dangerouslySetInnerHTML={{__html: ActiveIcon}}
-        />
-        <div
-            className="ml-2"
-        >
-            {`${data > 0 ? "Активен" : "Неактивен"}`}
-        </div>
-    </div>
-) : ""
-
-export const settings = (editStage, deleteButton) => {
+export const settings = (editStage, deleteButton, actionButtonTierUp, actionButtonTierDown) => {
     return [
         {
             id: 1,
@@ -41,7 +29,7 @@ export const settings = (editStage, deleteButton) => {
             id: 4,
             key: "status",
             name: "Статус",
-            component: ActiveIndicator,
+            component: StatusIndicator,
             nestedLevel: 1,
             size: "15%"
         },
@@ -54,6 +42,8 @@ export const settings = (editStage, deleteButton) => {
             component: (props) => (
                 <Actions
                     deleteButton={deleteButton}
+                    tierUp={actionButtonTierUp}
+                    tierDown={actionButtonTierDown}
                     {...props}
                     editButton={editStage}
                 />)

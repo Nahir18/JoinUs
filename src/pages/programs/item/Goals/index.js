@@ -99,7 +99,7 @@ class Goals extends Component {
         const { modalData } = this.state
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${pathnames[2]}/`, {...modalData, goal_name})
+        axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${modalData.id}/`, {...modalData, goal_name})
             .then(
                 (response) => {
                     this.setState({
@@ -116,6 +116,7 @@ class Goals extends Component {
             )
          this.loadPageData()
          this.setState({
+             modalData: {},
              editModal: false
          })
     }

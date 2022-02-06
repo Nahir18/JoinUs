@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import AppList from "../../../../components/AppList";
-import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_LEVELS} from "../../../../components/APIList"
+import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_LEVELS, ADAPTATION_GOALS, ADAPTATION_STAGE} from "../../../../components/APIList"
 import { NavLink } from "react-router-dom";
 import { settings } from "./tableConfig";
 import {ModalTableBody, ModalTableHeader} from "../Documents/style";
@@ -28,7 +28,7 @@ class Levels extends Component {
         }
     }
 
-    componentDidMount() {
+    loadPageData = () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
         const newProgram = pathnames[1] === "new_program"
@@ -37,18 +37,22 @@ class Levels extends Component {
             .then(
                 (response) => {
                     this.setState({
-                                    isLoaded: true,
-                                    items: newProgram ? [] : response.data.levels_detail,
-                                    programData: newProgram ? {} : response.data
+                        isLoaded: true,
+                        items: newProgram ? [] : response.data.levels_detail,
+                        programData: newProgram ? {} : response.data
                     })
                 },
                 (error) => {
                     this.setState({
-                                    isLoaded: true,
-                                    error
+                        isLoaded: true,
+                        error
                     })
                 }
             )
+    }
+
+    componentDidMount() {
+        this.loadPageData()
         axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}`)
             .then(
                 (response) => {
@@ -142,7 +146,36 @@ class Levels extends Component {
                 })
         }
     }
-
+    actionButtonTierUp = ({id, tier, create_date, duration_day, stage_name, level, id_employee, status}) => {
+        const newData = {
+            id,
+            create_date,
+            duration_day,
+            stage_name,
+            level,
+            id_employee,
+            status,
+            tier: tier + 1
+        }
+        axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, newData)
+        this.loadPageData()
+    }
+    actionButtonTierDown = ({id, tier, create_date, duration_day, stage_name, level, id_employee, status}) => {
+        if (tier > 1) {
+            const newData = {
+                id,
+                create_date,
+                duration_day,
+                stage_name,
+                level,
+                id_employee,
+                status,
+                tier: tier - 1
+            }
+            axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, newData)
+            this.loadPageData()
+        }
+    }
     pageHeaderTitle = (program_name) => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
@@ -151,7 +184,15 @@ class Levels extends Component {
     }
 render() {
     const { items, editModal, selectedLevels, levels, programData: { program_name } } = this.state
-        const { editStage, checkLevels, saveNewLevel, deleteItem, pageHeaderTitle } = this
+        const {
+            editStage,
+            checkLevels,
+            saveNewLevel,
+            deleteItem,
+            pageHeaderTitle,
+            actionButtonTierUp,
+            actionButtonTierDown
+    } = this
         return (
           <div className="flex-container">
               <ProgramsHeader
@@ -227,7 +268,7 @@ render() {
                       </button>
                   </div>
                   <AppList
-                    settings={settings(editStage, deleteItem)}
+                    settings={settings(editStage, deleteItem, actionButtonTierUp, actionButtonTierDown)}
                     nestedData={true}
                     data={items}
                     nestedKey="stages"
