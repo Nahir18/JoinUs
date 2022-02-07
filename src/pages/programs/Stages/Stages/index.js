@@ -101,9 +101,11 @@ class levelStages extends Component {
             modalData: { ...modalData, [id]: value}
         })
     }
-    saveEditStage = ({id, stage_name, tier, point, status, create_date, id_employee, duration_day}) => {
-        const newData = { id, stage_name, tier, point, status, create_date, id_employee, duration_day }
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, newData)
+    saveEditStage = async ({id, stage_name, tier, point, status, create_date, id_employee, duration_day}) => {
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`,{
+            id, stage_name, tier, point, status, create_date, id_employee, duration_day
+        }
+        )
             .then((response) => {
                 this.setState({
                     isLoaded: true
@@ -133,29 +135,60 @@ class levelStages extends Component {
             selectedStage: []
         })
     }
-    saveAddStages = () => {
+    saveAddStages = async () => {
         const {
             location: { pathname }
         } = this.props
-        const { levelData: {id, level_name, tier, status, create_date, id_employee}, selectedStage, stages } = this.state
+        const { selectedStage, stages } = this.state
         const pathnames = pathname.split("/").filter(x => x)
-        const selectedData = stages.filter(({id}) => selectedStage.some(i => i === id))
-        const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[3]}/` : ""
-        const newData = {
-            id, level_name, tier, status, create_date, id_employee,
-            stages: stages.concat(selectedData.filter(item => !stages.some(a => a === item)))
-        }
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, newData)
-            .then((response) => {
-                const { data: { stages } } = response
-                this.setState({
-                    isLoaded: true,
-                    items: stages
-                })
+        const idLevel = pathnames[3]
+        const { loadPageData } = this
+        for (let i = 0; i < selectedStage.length; i++) {
+            const { stage_name, create_date, duration_day } = stages.find(({id}) => id === selectedStage[i])
+           await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${selectedStage[i]}/`, {
+                stage_name,
+                create_date,
+                duration_day,
+                level: Number(idLevel)
             })
+        }
         this.setState({
-            addStageModal: false
+            addStageModal: false,
+            selectedStage: []
         })
+        loadPageData()
+
+    }
+     actionTierUp = async ({ id, stage_name, create_date, duration_day, tier }) => {
+         await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, {
+            stage_name,
+            create_date,
+            duration_day,
+            tier: tier ? tier + 1 : 1,
+        })
+        this.loadPageData()
+    }
+    actionTierDown = async ({ id, stage_name, create_date, duration_day, tier }) => {
+        if (tier > 0) {
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, {
+                stage_name,
+                create_date,
+                duration_day,
+                tier: tier > 0 ? tier - 1 : 0,
+            })
+            this.loadPageData()
+        }
+    }
+    handleDeleteItem = async ({id, stage_name, create_date, duration_day, tier}) => {
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`,{
+            id,
+            stage_name,
+            create_date,
+            duration_day,
+            tier,
+            level: null
+        })
+        this.loadPageData()
     }
     pageHeaderTitle = (level_name) => {
         const { location: { pathname } } = this.props
@@ -181,13 +214,15 @@ class levelStages extends Component {
             saveAddStages,
             tierUp,
             tierDown,
-            toggleModal,
             handleEdit,
             handleInputChange,
             saveEditStage,
             openDocumentSelection,
             checkStage,
-            pageHeaderTitle
+            pageHeaderTitle,
+            actionTierUp,
+            actionTierDown,
+            handleDeleteItem
         } = this
 
         return (
@@ -348,7 +383,7 @@ class levelStages extends Component {
                     </button>
                 </div>
                 <AppList
-                    settings={settings(editModal, toggleModal, handleEdit)}
+                    settings={settings(handleEdit, actionTierUp, actionTierDown, handleDeleteItem)}
                     data={items}
                 />
             </ProgramsHeader>

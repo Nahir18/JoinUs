@@ -5,7 +5,7 @@ import ScrollBar from "@Components/ScrollBar"
 import {
   componentTypeList
 } from './constants'
-import {ADAPTATION_BLOCK, ADAPTATION_GOALS, DEFAULT_URL} from "../../../../components/APIList";
+import {ADAPTATION_BLOCK, ADAPTATION_GOALS, ADAPTATION_STAGE, DEFAULT_URL} from "../../../../components/APIList";
 import PureUpdateArrayItems from "../../../../utils/Arrays/PureUpdateArrayItems";
 import {DIRECTION_UP} from "../../../../constants";
 import PureDeleteItems from "../../../../utils/Arrays/PureDeleteItems";

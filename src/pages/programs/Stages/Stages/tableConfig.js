@@ -1,20 +1,9 @@
-import {ActiveIcon, ArrowUP, EditIcon, Trash} from "../../../Constants";
+import {ArrowUP, EditIcon, Trash} from "../../../Constants";
 import React from "react";
+import StatusIndicator from "../../../../components/StatusIndicator";
 
-const ActiveIndicator = ({ data } ) => data ? (
-    <div className="flex justify-between items-center">
-        <div
-            dangerouslySetInnerHTML={{__html: ActiveIcon}}
-        />
-        <div
-            className="ml-2"
-        >
-            {`${data > 0 ? "Активен" : "Неактивен"}`}
-        </div>
-    </div>
-) : ""
-
-const Actions = ({handleEdit, data}) => {
+const Actions = ({handleEdit, data, data: {tier}, tierUp, tierDown, handleDelete}) => {
+    const iconColor = tier <= 1 ? "0.3" : ""
     return (
         <div>
             <div className="icon-container transition-icon cursor items-center j-c-center flex">
@@ -25,15 +14,19 @@ const Actions = ({handleEdit, data}) => {
                 />
                 <div className="flex a-i-center j-c-center ml-7">
                     <div
+                        onClick={() => tierUp(data)}
                         className="arrow-icon"
                         dangerouslySetInnerHTML={{__html: ArrowUP}}
                     />
                     <div
+                        onClick={() => tierDown(data)}
                         className="arrow-icon arrow-down"
+                        style={{"opacity": iconColor}}
                         dangerouslySetInnerHTML={{__html: ArrowUP}}
                     />
                 </div>
                 <div
+                    onClick={() => handleDelete(data)}
                     className="trash-icon ml-7"
                     dangerouslySetInnerHTML={{__html: Trash}}
                 />
@@ -42,7 +35,7 @@ const Actions = ({handleEdit, data}) => {
     )
 }
 
-export const settings = (editModal, closeModal, handleEdit) => [
+export const settings = (handleEdit, tierUp, tierDown, handleDeleteItem) => [
     {
         id: 1,
         key: "number",
@@ -57,7 +50,7 @@ export const settings = (editModal, closeModal, handleEdit) => [
     },
     {
         id: 3,
-        key: "days",
+        key: "duration_day",
         name: "Дней этапа",
         size: "10%"
     },
@@ -71,8 +64,8 @@ export const settings = (editModal, closeModal, handleEdit) => [
         id: 4,
         key: "status",
         name: "Статус",
-        size: "10%",
-        component: ActiveIndicator
+        size: "20%",
+        component: StatusIndicator
     },
     {
         id: 5,
@@ -82,8 +75,9 @@ export const settings = (editModal, closeModal, handleEdit) => [
         component: ({rowIndex, data}) => (
             <Actions
                 data={data}
-                editModal={editModal}
-                closeModal={closeModal}
+                tierUp={tierUp}
+                tierDown={tierDown}
+                handleDelete={handleDeleteItem}
                 handleEdit={handleEdit}
                 rowIndex={rowIndex}
             />

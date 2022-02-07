@@ -42,18 +42,10 @@ const Programs = (props) => {
                             <Route path="/programs/new_program/level/New_level" component={LevelsGeneral}/>
                         </>
                     ) : pathnames[4] ==="stage" ? (
-                        // <PageHeader
-                        //     {...props}
-                        //     bredCrumbsConfig={levelsBreadcrumbs}
-                        //     pageData={programName}
-                        //     url="programs"
-                        //     links={STAGES_LINKS}
-                        // >
                         <>
                             <Route path="/programs/:programName/:programID/:stageID/stage/general" component={StagesGeneral} />
                             <Route path="/programs/:programName/:programID/:stageID/stage/blocks" component={Blocks} />
                             <Route path="/programs/:programName/:programID/:stageID/stage/levels" component={LevelsList} />
-                         {/*</PageHeader>*/}
                         </>
                     ) : (
                         <>

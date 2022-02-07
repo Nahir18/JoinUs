@@ -284,43 +284,45 @@ class Documents extends Component {
                         closeModal={this.closeModal}
                         handleSave={() => this.saveEditDocument(this.closeModal, modalData)}
                     >
-                        <div>
-                            <div className="pt-8">
-                                <span
-                                    className="font-normal color-light-blue-2"
+                        <ScrollBar>
+                            <div>
+                                <div className="pt-8">
+                                    <span
+                                        className="font-normal color-light-blue-2"
+                                    >
+                                        Наименование документа
+                                    </span>
+                                    <Input
+                                        value={document_name}
+                                        key="document_name"
+                                        id="document_name"
+                                        onInput={() => this.handleInputChange(document.getElementById('document_name').value, "document_name")}
+                                        className="mt-2 font-normal"
+                                    />
+                                </div>
+                                <div className="pt-4">
+                            <span
+                                className="font-normal color-light-blue-2"
+                            >
+                                Номер п.п.
+                            </span>
+                                    <div className="relative">
+                                        <ArrowInput
+                                            value={tier}
+                                            arrowUp={this.tierUp}
+                                            arrowDown={this.tierDown}
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    className="pt-8"
                                 >
-                                    Наименование документа
-                                </span>
-                                <Input
-                                    value={document_name}
-                                    key="document_name"
-                                    id="document_name"
-                                    onInput={() => this.handleInputChange(document.getElementById('document_name').value, "document_name")}
-                                    className="mt-2 font-normal"
-                                />
-                            </div>
-                            <div className="pt-4">
-                        <span
-                            className="font-normal color-light-blue-2"
-                        >
-                            Номер п.п.
-                        </span>
-                                <div className="relative">
-                                    <ArrowInput
-                                        value={tier}
-                                        arrowUp={this.tierUp}
-                                        arrowDown={this.tierDown}
+                                    <PhotoFiles
+                                        value={[document_link]}
                                     />
                                 </div>
                             </div>
-                            <div
-                                className="pt-8"
-                            >
-                                <PhotoFiles
-                                    value={[document_link]}
-                                />
-                            </div>
-                        </div>
+                        </ScrollBar>
                     </Modal>
                     <Modal
                         isOpen={documentSelection}
