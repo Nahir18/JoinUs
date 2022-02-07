@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useRef, useEffect } from "react"
 import Input from "@Components/Fields/Input"
 import Select from "../../../../components/Fields/Select";
-import {FilterContainer} from "./style"
+import {FilterContainer, StyleDate} from "./style"
 import DatePicker from "../../../../components/Fields/DatePicker";
 import ChoiceOfStatusOption from "../../../../components/Fields/Select/ChoiceOfStatusOption";
 
@@ -81,22 +81,20 @@ const FilterForEmployees = ({handleInput}) => {
         </div>
         <div className="p-r-8 flex-auto">
           <div className="fs-12 color-light-blue-2 p-b-5">От</div>
-          <DatePicker
+          <StyleDate
             onInput={onInputDateFrom}
             id="release_date"
             placeholder="От"
             value={dateFrom}
-            style={{width: "160px"}}
           />
         </div>
         <div className="flex-auto">
           <div className="fs-12 color-light-blue-2 p-b-5">До</div>
-          <DatePicker
+          <StyleDate
             onInput={onInputDateTo}
             id="create_date"
             placeholder="До"
             value={dateTo}
-            style={{width: "160px"}}
           />
         </div>
       </div>

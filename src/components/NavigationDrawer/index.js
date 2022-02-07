@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import {
   LeftMenuContainer, LeftMenuLogo, LeftMenuItem, ToggleToolbar, ListTile, ImgBanner, OpenMenuItem
 } from "./styles"
@@ -6,11 +6,16 @@ import {tabNavigationMenu} from "./constants"
 import { NavLink } from "react-router-dom"
 
 
-const NavigationDrawer = () => {
+const NavigationDrawer = ({widthPage}) => {
   const [leftWidth, setLeftWidth] = useState(84)
   const [toggleArrow, setToggleArrow] = useState()
   const [iconArrowStyle, setIconArrowStyle] = useState()
   const [getHidden, setGetHidden] = useState(localStorage.getItem("APP_NAVBAR"))
+  const [widthOpenContainer, setWidthOpenContainer] = useState(256)
+  const [widthCloseContainer, setWidthCloseContainer] = useState(84)
+
+
+
   useEffect(() => {
     if (getHidden === "close") {
       setLeftWidth(84)
@@ -22,10 +27,20 @@ const NavigationDrawer = () => {
       setIconArrowStyle("default-open")
     }
   }, [getHidden])
+
   useEffect(() => {
-    setLeftWidth(getHidden === "close" ? 84 : 256)
+    setLeftWidth(getHidden === "close" ? widthCloseContainer : widthOpenContainer)
   }, [getHidden])
-  const hideToolbar = leftWidth === 84
+
+  // todo изменение ширины
+  // useEffect(() => {
+  //   if (widthPage === 1280) {
+  //     setWidthOpenContainer(200)
+  //     setWidthCloseContainer(70)
+  //   }
+  // }, [widthPage])
+
+  const hideToolbar = leftWidth === widthCloseContainer
   const toggleToolbar = () => {
     localStorage.setItem("APP_NAVBAR", getHidden === "close" ? "" : "close")
     setToggleArrow(getHidden === "close" ? "" : "close")

@@ -12,13 +12,21 @@ import "@Styles/style-btn.scss"
 import "@Styles/typography.scss"
 import "@Styles/markupHelpers.scss"
 import "@Styles/colors.css"
+import {useCallback, useState} from "react";
 
 
 function App() {
+  const [widthPage, setWidthPage] = useState()
+
+  const measuredRef = useCallback(node => {
+    if (node !== null) {
+      setWidthPage(node.clientWidth)
+    }
+  }, [widthPage, setWidthPage]);
   return (
       <BrowserRouter>
-        <div className="flex-row flex h-full w-full">
-          <NavigationDrawer/>
+        <div className="flex-row flex h-full w-full" ref={measuredRef}>
+          <NavigationDrawer  widthPage={widthPage}/>
           <div className="flex-container relative w-full overflow-hidden">
             <Header/>
             <NavContent />
