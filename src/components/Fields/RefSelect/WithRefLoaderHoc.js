@@ -97,7 +97,7 @@ const WithRefLoaderHoc = (Component) => {
       if (isAllDynamicParamsProvided && (!props.returnOption && value)) {
         loadRef()
       }
-    }, [])
+    }, [value])
 
     return (
       <Component

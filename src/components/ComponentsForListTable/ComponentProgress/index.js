@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, useMemo} from 'react';
 import {Oval, Container} from "./style"
 import PropTypes from "prop-types"
 
@@ -15,17 +15,19 @@ const getStages = (data = []) => {
   })
   return sum
 }
-// post это название программы
 const Progress = ({data}) => {
   const [result, setResult] = useState(0)
-  const { post, adaptation_status, program_details: [detail, program, program_list] } = data
-  // console.log(program, program_list)
+  const { adaptation_status, program_details: [detail], programList, program } = data
 
   const getProgress = useCallback(() => {
     if (adaptation_status && adaptation_status.length > 0) {
       setResult(adaptation_status.length / getStages(detail.levels_detail))
     }
   }, [adaptation_status, detail])
+
+  const getProgramName = useMemo(() => {
+    return programList.find(({id}) => id === program[0]).program_name
+  }, [programList, program])
 
   useEffect(() => {
     getProgress()
@@ -35,7 +37,7 @@ const Progress = ({data}) => {
       <div
         className="fs-12 color-light-blue-2 p-b-6"
       >
-        {post}
+        {getProgramName}
       </div>
       <div className="flex">
         <Container>
