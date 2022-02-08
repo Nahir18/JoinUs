@@ -40,8 +40,15 @@ export const settings = [
   },
   {
     id: 5,
-    key: "comment",
+    key: "stagesComment",
     name: "Комментарий",
+    component: ({data = {}}) => {
+      return (
+        <div>
+          {data.comment}
+        </div>
+      )
+    },
     nestedLevel: 1,
     size: "1fr"
   },

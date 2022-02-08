@@ -15,6 +15,7 @@ class AdaptationProgress extends Component {
       data: [],
       adaptation_status: [],
       program_details: [],
+      comment: []
     }
   }
 
@@ -33,6 +34,7 @@ class AdaptationProgress extends Component {
           }).flat(),
           adaptation_status: response.data.adaptation_status,
           program_details: response.data.program_details,
+          comment: response.data.comment
         })
       },
       (error) => {
@@ -55,7 +57,7 @@ class AdaptationProgress extends Component {
     return sum
   })
 
-  getNewData = memoizeOne((data = [], adaptation_status, program_details) => {
+  getNewData = memoizeOne((data = [], adaptation_status, program_details, comment) => {
     return data.reduce((acc, item = {}) => {
       const { stages } = item
       acc.push(
@@ -66,7 +68,8 @@ class AdaptationProgress extends Component {
             STATUS: {
               adaptation_status,
               program_details
-            }
+            },
+            stagesComment: comment.find(({id_stage}) => id_stage === i.id)
           }))
         }
       )
@@ -75,8 +78,8 @@ class AdaptationProgress extends Component {
   })
 
   render() {
-    const { data, adaptation_status, program_details  } = this.state
-    const newData = this.getNewData(data, adaptation_status, program_details)
+    const { data, adaptation_status, program_details, comment  } = this.state
+    const newData = this.getNewData(data, adaptation_status, program_details, comment)
     const point = this.getPoint(data)
 
     return (

@@ -15,7 +15,7 @@ class PageHeader extends Component {
                 <div className="flex mb-6 mt-4">
                     <div
                         className="text-2xl font-bold"
-                        style={{"min-height": "28px"}}
+                        style={{"minHeight": "28px"}}
                     >
                         { pageData }
                     </div>

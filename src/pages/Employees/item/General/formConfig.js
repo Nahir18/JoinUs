@@ -3,6 +3,7 @@ import DatePicker from "@Components/Fields/DatePicker"
 import PriceInput from "@Components/Fields/PriceInput";
 import RefSelect from "@Components/Fields/RefSelect/index"
 import {ADAPTATION_PROGRAM, DEFAULT_URL, DIRECTORY} from "../../../../components/APIList";
+import unpackArray from "./unpackArray";
 import axios from "axios";
 
 export const fieldMap = [
@@ -79,10 +80,11 @@ export const fieldMap = [
   {
     label: "Программа адаптации",
     id: "program",
-    component: RefSelect,
+    component: unpackArray(RefSelect),
     placeholder: "Выберите программу адаптации",
     valueKey: "id",
     labelKey: "program_name",
+    returnOption: false,
     async refLoader() {
       const {data } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
       return data
