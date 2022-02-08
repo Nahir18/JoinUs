@@ -4,12 +4,10 @@ import axios from 'axios';
 import AppList from "../../../components/AppList";
 import {settings} from "./TableConfig"
 import {NavLink} from "react-router-dom";
-import {CANDIDATE_LIST, DEFAULT_URL, CANDIDATE_FILTER, CANDIDATE_SEARCH} from "../../../components/APIList";
+import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL, DIRECTORY} from "../../../components/APIList";
 import debounce from "@Utils/debounce"
 import memoizeOne from "memoize-one";
-import List from "./list"
-
-// todo добавить пагинацию
+import Pagination from "@Components/Pagination"
 
 class Employees extends Component {
   constructor(props) {
@@ -18,21 +16,36 @@ class Employees extends Component {
       value: false,
       data: [],
       error: false,
-      search: ""
+      search: "",
+      countList: "",
+      page: 1,
+      limit: 11,
+      programList: []
     }
   }
 // todo сделать фильтрацию по статусам на фронте
-  onInputDate = (debounce((value, id) => {
+  filterList = (debounce((value, id) => {
     const { data } = this
-    const newParams = id === "name" ? {search: value} : {[id]: value}
     if (id === "status") {
       // search
-    } else {
-      axios.get(`${DEFAULT_URL}/candidate/${id === "name" ? "" : "filter/"}`, {
-        params: newParams
+    }
+    if (id === "name") {
+      axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
+        params: {search: value}
       })
       .then((response) => {
-          this.setState({ data: id === "name" ? response.data.results : response.data})
+          this.setState({ data: response.data.results})
+        },
+        (error) => {
+          this.setState({error})
+        }
+      )
+    } else {
+      axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/filter/`, {
+        params: {[id]: value}
+      })
+      .then((response) => {
+          this.setState({ data: response.data})
         },
         (error) => {
           this.setState({error})
@@ -42,9 +55,22 @@ class Employees extends Component {
   }, 250))
 
   componentDidMount() {
-    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}`)
+    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
     .then((response) => {
-        this.setState({data: response.data.results})
+        this.setState({
+          data: response.data.results,
+          countList: response.data.count
+        })
+      },
+      (error) => {
+        this.setState({error})
+      }
+    )
+    axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
+    .then((response) => {
+        this.setState({
+          programList: response.data
+        })
       },
       (error) => {
         this.setState({error})
@@ -52,28 +78,57 @@ class Employees extends Component {
     )
   }
 
-  getNewData = memoizeOne((data) => {
+  updateData = (value) => {
+    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
+      params: {page_size: value}
+    })
+    .then((response) => {
+        this.setState({ data: response.data.results})
+      },
+      (error) => {
+        this.setState({error})
+      }
+    )
+    this.setState({ page: value })
+  }
+
+  getPaginationState = memoizeOne((page, count, limit, data) => {
+    return {
+      currentPage: page,
+      totalPages:  Math.ceil(count / limit),
+      cupReached: data.length !== limit
+    }
+  })
+
+  getNewData = memoizeOne((data, programList) => {
     return data.map((item) => {
-      const { last_name, first_name, post, adaptation_status, program_details } = item
+      const { last_name, first_name, post, adaptation_status, program_details, program, illustration } = item
       return {
         EMPLOYEES: {
           name: `${last_name} ${first_name}`,
-          role: `${post}`
+          role: `${post}`,
+          img: illustration
         },
         STATUS: {
-          adaptation_status: adaptation_status,
-          program_details: program_details
+          adaptation_status,
+          program_details
         },
-        // NEW_STATUS: "dd",
+        PROGRESS: {
+          adaptation_status,
+          program_details,
+          program,
+          program_list: programList
+        },
         ...item
       }
     }
     )
   })
 
+
   render() {
-    const { state: {data} } = this
-    const newData = this.getNewData(data)
+    const { state: {data, countList, page, limit, programList} } = this
+    const newData = this.getNewData(data, programList)
     return (
       <div className="flex-container">
         <div className="flex justify-between p-b-25">
@@ -86,12 +141,16 @@ class Employees extends Component {
           </NavLink>
         </div>
         <FilterForEmployees
-          handleInput={this.onInputDate}
+          handleInput={this.filterList}
         />
         <AppList
           settings={settings}
           data={newData}
           nestedKey="data"
+        />
+        <Pagination
+          paginationState={this.getPaginationState(page, countList, limit, data)}
+          emitPage={this.updateData}
         />
       </div>
     );

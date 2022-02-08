@@ -1,6 +1,14 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from "prop-types"
 
+const getStages = (data = []) => {
+  let sum = 0
+  data.forEach(({stages}) => {
+    sum = sum + stages.length
+  })
+  return sum
+}
+
 const Status = ({data}) => {
   const [icon, setIcon] = useState("")
   const [title, setTitle] = useState("")
@@ -8,7 +16,7 @@ const Status = ({data}) => {
   const getData = useCallback(() => {
     if (Object.keys(data).length > 0) {
       const { adaptation_status, program_details: [detail]} = data
-      const status = detail.levels_detail.length === adaptation_status.length
+      const status = getStages(detail.levels_detail) === adaptation_status.length
         ? "end"
         : adaptation_status.length === 0
           ? "wait"
