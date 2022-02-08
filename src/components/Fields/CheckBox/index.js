@@ -82,7 +82,7 @@ const BsCheckBox = ({
       <BoxContainer checked={checked}>
         <CheckBox checked={checked}>
           {checked && (
-            <img src="./assets/icons/checkbox.jpg" alt=""/>
+                <img src="./assets/icons/checkbox.jpg" alt=""/>
           )}
         </CheckBox>
       </BoxContainer>

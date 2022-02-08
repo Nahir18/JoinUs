@@ -204,6 +204,14 @@ class General extends Component {
             const newProgram = pathnames[1] === NEW_PROGRAM
             return newProgram ? "Новая программа" : program_name
         }
+        const navButtonConfig = () => {
+            const pathnames = pathname.split("/").filter(x => x)
+            const newProgram = pathnames[1] === "new_program"
+            return newProgram ? [{
+                name: "Общие",
+                link: "general"
+            }] : NAV_BUTTON_LINKS
+        }
         return (
             <ProgramsHeader
                 className="h-full"
@@ -211,7 +219,7 @@ class General extends Component {
                 bredCrumbsConfig={programsBreadcrumbs}
                 pageData={pageHeaderTitle()}
                 url="programs"
-                links={NAV_BUTTON_LINKS}
+                links={navButtonConfig()}
             >
                 <ModalSidebar
                     title="Выбор заказчика"
@@ -343,7 +351,7 @@ class General extends Component {
                                             </FormContainer>
                                         </div>
                                         <div
-                                        className="flex justify-end pb-20 pr-8"
+                                        className="flex justify-end pb-20 pr-8 pt-8"
                                         >
                                             <button
                                                 name="cancel"

@@ -5,7 +5,8 @@ import {ActionsForm} from "./style";
 
 class Actions extends Component {
     render() {
-        const { editButton, data, nestedLevel, deleteButton, tierUp, tierDown } = this.props
+        const { editButton, data, data: { tier }, nestedLevel, deleteButton, tierUp, tierDown } = this.props
+        const iconColor = tier <= 1 ? "0.3" : ""
         return (
             <ActionsForm className="icon-container transition-icon cursor a-i-center flex">
                 <div
@@ -25,6 +26,7 @@ class Actions extends Component {
                          <div
                              onClick={() => tierDown(data)}
                              className="arrow-icon arrow-down"
+                             style={{"opacity": iconColor}}
                              dangerouslySetInnerHTML={{__html: ArrowUP}}
                          />
                  </div>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const ModalTableHeader = styled.div`
   display: grid;
-  grid-template-columns: 10% 45% 45%;
+  grid-template-columns: 10% 40% 40% 10%;
   margin-top: 3rem;
   font-size: 14px;
   font-weight: 600;

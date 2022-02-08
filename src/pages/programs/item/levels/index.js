@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import AppList from "../../../../components/AppList";
-import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_LEVELS, ADAPTATION_GOALS, ADAPTATION_STAGE} from "../../../../components/APIList"
+import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_LEVELS, ADAPTATION_STAGE} from "../../../../components/APIList"
 import { NavLink } from "react-router-dom";
 import { settings } from "./tableConfig";
-import {ModalTableBody, ModalTableHeader} from "../Documents/style";
-import {DocumentIcon} from "../../../Constants";
-import ChekBox from "@Components/Fields/CheckBox"
 import Modal from "../../../../components/ModalWindow";
 import { programsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
+import { levelSelectionModalConfig } from "./levelSelectionModalConfig";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
-import ScrollBar from "@Components/ScrollBar"
 
 class Levels extends Component {
     constructor(props) {
@@ -75,11 +72,12 @@ class Levels extends Component {
         push(`${id}/${nestedLevel ? "stage" : "level"}/general`)
     }
     checkLevels = (value, id) => {
+        console.log(value)
         this.setState({
             [id]: value
         })
     }
-    saveNewLevel = () => {
+    saveNewLevel = async () => {
         const { selectedLevels, programData: { levels, program_name, create_date, id, status, tier, employee, duration_day, description } } = this.state
         const {
             location: { pathname }
@@ -102,7 +100,7 @@ class Levels extends Component {
                     selectedLevels: []
                 })
         if (selectedLevels.length) {
-            axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idLevel}`, newData)
+           await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idLevel}`, newData)
                 .then(
                     (response) => {
                         const { data, data: { levels_detail } } = response
@@ -117,14 +115,15 @@ class Levels extends Component {
             })
         }
     }
-    deleteItem = ({ id: deleteItemID }, nestedLevel) => {
+    deleteItem = async (value, nestedLevel) => {
+        const { id: deleteItemID } = value
+        const { programData: { levels, program_name, create_date, id, status, tier, employee, duration_day, description } } = this.state
+        const {
+            location: { pathname }
+        } = this.props
+        const pathnames = pathname.split("/").filter(x => x)
+        const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
         if (!nestedLevel) {
-            const { programData: { levels, program_name, create_date, id, status, tier, employee, duration_day, description } } = this.state
-            const {
-                location: { pathname }
-            } = this.props
-            const pathnames = pathname.split("/").filter(x => x)
-            const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
             const newData = {
                 levels: levels.filter(item => item !== deleteItemID),
                 program_name,
@@ -136,7 +135,7 @@ class Levels extends Component {
                 duration_day,
                 description
             }
-            axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idLevel}`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idLevel}`, newData)
                 .then((response) => {
                     const { data, data: { levels_detail } } = response
                     this.setState({
@@ -144,9 +143,24 @@ class Levels extends Component {
                         items: levels_detail
                     })
                 })
+            this.loadPageData()
+        } else {
+            const { create_date, duration_day, id: deleteStageID, id_employee, stage_name, status, tier } = value
+            const newData = {
+                create_date,
+                duration_day,
+                id: deleteStageID,
+                id_employee,
+                level: null,
+                stage_name,
+                status,
+                tier
+            }
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${deleteStageID}/`, newData)
+            this.loadPageData()
         }
     }
-    actionButtonTierUp = ({id, tier, create_date, duration_day, stage_name, level, id_employee, status}) => {
+    actionButtonTierUp = async ({id, tier, create_date, duration_day, stage_name, level, id_employee, status}) => {
         const newData = {
             id,
             create_date,
@@ -157,10 +171,10 @@ class Levels extends Component {
             status,
             tier: tier + 1
         }
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, newData)
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, newData)
         this.loadPageData()
     }
-    actionButtonTierDown = ({id, tier, create_date, duration_day, stage_name, level, id_employee, status}) => {
+    actionButtonTierDown = async ({id, tier, create_date, duration_day, stage_name, level, id_employee, status}) => {
         if (tier > 1) {
             const newData = {
                 id,
@@ -172,7 +186,7 @@ class Levels extends Component {
                 status,
                 tier: tier - 1
             }
-            axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`, newData)
             this.loadPageData()
         }
     }
@@ -207,51 +221,12 @@ render() {
                       title="Выбор уровня"
                       closeModal={this.toggleModal}
                       handleSave={saveNewLevel}
+                      style={{"minWidth": "500px"}}
                   >
-                      <ModalTableHeader>
-                          <div>№</div>
-                          <div>
-                              Наименование уровня
-                          </div>
-                          <div>
-                              Комментарии
-                          </div>
-                      </ModalTableHeader>
-                      <ScrollBar>
-                          {
-                              levels.map(({level_name, description, id}, index) =>  (
-                                  <ModalTableBody
-                                      key={`${id}${index}`}
-                                  >
-
-                                      <div className="flex items-center">
-                                          {index + 1}
-                                      </div>
-                                      <div className="flex items-center">
-                                          <div
-                                              className="pr-2"
-                                              dangerouslySetInnerHTML={{__html: DocumentIcon}}
-                                          />
-                                          {level_name}
-                                      </div>
-                                      <div className="flex items-center justify-between">
-                                          <div>
-                                              {description}
-                                          </div>
-                                          <ChekBox
-                                              className="p-r-14"
-                                              id="selectedLevels"
-                                              value={selectedLevels}
-                                              checkBoxValue={id}
-                                              onInput={checkLevels}
-                                          />
-                                      </div>
-
-                                  </ModalTableBody>
-                                  )
-                              )
-                          }
-                      </ScrollBar>
+                      <AppList
+                          settings={levelSelectionModalConfig(selectedLevels, checkLevels)}
+                          data={levels}
+                      />
                   </Modal>
                   <div className="pt-6 mb-4 ml-4 flex">
                       <NavLink

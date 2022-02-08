@@ -15,6 +15,7 @@ import { programsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
+import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
 
 class Documents extends Component {
 
@@ -89,9 +90,9 @@ class Documents extends Component {
             [id]: value
         })
     }
-    saveEditDocument = (closeModal, data) => {
+    saveEditDocument = async (closeModal, data) => {
         const { id } = data
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, data)
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, data)
             .then(
                 (response) => {
                     const { data: { documents_detail } } = response
@@ -118,7 +119,7 @@ class Documents extends Component {
             documentSelection: false
         })
     }
-    saveNewDocuments = (closeModal) => {
+    saveNewDocuments = async (closeModal) => {
         const {
             location: { pathname }
         } = this.props
@@ -137,7 +138,7 @@ class Documents extends Component {
             documents: documents.concat(selectedDocuments.filter(item => !documents.some(a => a === item)))
         }
         if (selectedDocuments.length) {
-            axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
                 .then(
                     (response) => {
                         const {data: {documents_detail}, data} = response
@@ -192,7 +193,7 @@ class Documents extends Component {
         })
     }
     closeModal = () => this.setState({editModal: false})
-    deleteItem = (deleteItemId) => {
+    deleteItem = async (deleteItemId) => {
         const {
             location: { pathname }
         } = this.props
@@ -209,7 +210,7 @@ class Documents extends Component {
             documents: documents.filter(item => item !== deleteItemId)}
         const pathnames = pathname.split("/").filter(x => x)
         const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
             .then(
                 (response) => {
                     const { data: { documents_detail }, data } = response
@@ -228,17 +229,17 @@ class Documents extends Component {
                 }
             )
     }
-    actionButtonTierUp = (data) => {
+    actionButtonTierUp = async (data) => {
         const { id, tier } = data
         const newData = { ...data, tier: tier + 1 }
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, newData)
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, newData)
         this.loadPageData()
     }
-    actionButtonTierDown = (data) => {
+    actionButtonTierDown = async (data) => {
         const { id, tier } = data
         if (tier > 1) {
             const newData = { ...data, tier: tier - 1 }
-            axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, newData)
             this.loadPageData()
         }
     }
@@ -380,52 +381,18 @@ class Documents extends Component {
                         handleSave={() => this.saveNewDocuments(() => {this.setState({
                             addNewDocument: !addNewDocument
                         })})}
+                        style={{"miWidth": "560px"}}
                     >
-                        <ModalTableHeader>
-                            <div>№</div>
-                            <div>
-                                Наименование документа
-                            </div>
-                            <div>
-                                Наименование программы
-                            </div>
-                        </ModalTableHeader>
-                        <ScrollBar>
-                           {
-                               documents.map(({document_name, id}, index) => {
-                                   return (
-                                       <ModalTableBody>
-                                           <div className="flex items-center">
-                                               {index + 1}
-                                           </div>
-                                           <div className="flex items-center">
-                                               <div
-                                                   className="pr-2"
-                                                   dangerouslySetInnerHTML={{__html: DocumentIcon}}
-                                               />
-                                               {document_name}
-                                           </div>
-                                           <div className="flex items-center justify-between">
-                                               <div>
-                                                   {document_name}
-                                               </div>
-                                               <ChekBox
-                                                   id="selectedDocuments"
-                                                   value={selectedDocuments}
-                                                   checkBoxValue={id}
-                                                   onInput={this.checkNewDocument}
-                                               />
-                                           </div>
-                                       </ModalTableBody>
-                                   )
-                               })
-                           }
-                        </ScrollBar>
+                        <AppList
+                            settings={selectDocumentModalConfig(selectedDocuments, this.checkNewDocument)}
+                            data={documents}
+                        />
                     </Modal>
                     <div className="pt-8 pb-6 pl-4 flex">
                         <button
                             className="blue btn width-m pt-1.5"
-                            onClick={this.openDocumentSelection}
+                            onClick={() => ({})}
+                            // onClick={this.openDocumentSelection}
                         >
                             + Добавить документ
                         </button>

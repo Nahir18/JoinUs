@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Input from "@Components/Fields/Input"
+import { ToggleArrowContainer } from "./style";
 import {SmallArrow} from "../../pages/Constants";
 
 class ModalSelectInput extends Component {
@@ -9,7 +10,7 @@ class ModalSelectInput extends Component {
         const { toggleModal, id, key, value } = props
         return (
             <div
-                onClick={() => toggleModal}
+                onClick={() => (console.log("ijhdiqwhnijebnjh"))}
             >
                 <Input
                     disabled
@@ -18,7 +19,7 @@ class ModalSelectInput extends Component {
                     key={key}
                     {...props}
                 >
-                    <div
+                    <ToggleArrowContainer
                         onClick={toggleModal}
                         className="flex items-center pr-3 cursor"
                         dangerouslySetInnerHTML={{__html: SmallArrow}}

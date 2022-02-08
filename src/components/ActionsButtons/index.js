@@ -20,7 +20,7 @@ const ActionsButtons = ({handleEdit, data, dataKey, arrowUp, arrowDown, deleteIt
                     />
                     <div
                         onClick={() => arrowDown(data)}
-                        style={{"fill": "var(--color-light-blue-2)", "opacity": iconColor}}
+                        style={{"opacity": iconColor}}
                         className="arrow-icon arrow-down"
                         dangerouslySetInnerHTML={{__html: ArrowUP}}
                     />
