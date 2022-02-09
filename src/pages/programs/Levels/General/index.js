@@ -6,7 +6,7 @@ import { WithValidationHocRenderPropAdapter } from "../../../../Validator";
 import { fieldMap, rules} from "./formConfig";
 import { FormContainer } from "../../item/General/style"
 import axios from "axios";
-import { ADAPTATION_STAGE, DEFAULT_URL } from "../../../../components/APIList";
+import { ADAPTATION_STAGE, ADAPTATION_BLOCK, DEFAULT_URL } from "../../../../components/APIList";
 import { levelsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
 import {STAGES_LINKS, NEW_PROGRAM, NEW_STAGE} from "../../Constants";
@@ -67,13 +67,13 @@ class StagesGeneral extends Component {
         event.preventDefault();
     }
 
-    saveStage () {
+    async saveStage () {
         const { location: { pathname } } = this.props
         const { data: {id, stage_name, tier, point, status, create_date, id_employee, duration_day, level} } = this.state
         const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[6] === NEW_STAGE
-        const idProgram = newProgram ? "/" : `/${pathnames[3]}/`
-        const newData = newProgram ? {
+        const newStage = pathnames[6] === NEW_STAGE
+        const idProgram = newStage ? "/" : `/${pathnames[3]}/`
+        const newData = newStage ? {
             stage_name,
             tier,
             create_date,
@@ -92,7 +92,7 @@ class StagesGeneral extends Component {
             duration_day,
             level
         }
-        axios[newProgram ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idProgram}`, newData)
+        await axios[newStage ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idProgram}`, newData)
             .then(
                 (response) => {
                     const { data } = response
@@ -100,6 +100,12 @@ class StagesGeneral extends Component {
                         isLoaded: true,
                         data: data
                     })
+                    if (newStage) {
+                        axios.post(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/`, {
+                            adaptationStage: data.id,
+                            json: []
+                        })
+                    }
                 },
                 (error) => {
                     this.setState({

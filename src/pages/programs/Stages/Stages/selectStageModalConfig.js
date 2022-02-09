@@ -22,7 +22,7 @@ export const selectStageModalConfig = (selectedStage, checkStage) => {
         },
         {
             id: 4,
-            key: "stage_name",
+            key: "program_name",
             name: "Наименование программы",
             size: "25%"
         },

@@ -22,8 +22,17 @@ const Blocks = () => {
 
   useEffect(() => {
     (async () => {
-      const {data} = await axios.get(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/${stageID}`)
-      setData(data)
+      await axios.get(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/${stageID}`)
+          .then(({data, data: { json }}) => {
+            if (!json) {
+              axios.post(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/`, {adaptationStage: Number(stageID), json: []})
+                  .then(({data}) => setData(data))
+            } else setData(data)
+          }, (error) => {
+            axios.post(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/`, {adaptationStage: Number(stageID), json: []})
+                .then(({data}) => setData(data))
+          }
+          )
     })()
   }, [stageID])
 
