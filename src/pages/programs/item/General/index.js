@@ -7,16 +7,16 @@ import {NAV_BUTTON_LINKS} from "../../Constants";
 import { fieldMap, rules} from "./formConfig";
 import Form from "@Components/Forms/index"
 import {CREATE_DATE_FORMAT} from "@constants"
-import { FormContainer } from "./style"
 import memoizeOne from "memoize-one";
 import axios from "axios";
 import {ADAPTATION_CUSTOMER, ADAPTATION_PROGRAM, ADAPTATION_EMPLOYEE, DEFAULT_URL} from "../../../../components/APIList";
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import Avatar from "../../../../components/Avatar";
 import { programsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
 import {NEW_PROGRAM} from "../../Constants";
-
+import PageHeader from "@Components/PageHeader";
+import ScrollBar from "@Components/ScrollBar"
+import {FormContainer, TabContainer} from "@Components/StylesComponent/StylesForm"
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
     .reduce((acc, c) => {
@@ -203,11 +203,13 @@ class General extends Component {
         const employeeValue = isLoaded ? employee && employees.find((a) => a.id === employee) : {}
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleModal, customerValue, toggleCreatorModal, employeeValue))
         const pageHeaderTitle = () => {
+            // todo дубль кода
             const pathnames = pathname.split("/").filter(x => x)
             const newProgram = pathnames[1] === NEW_PROGRAM
             return newProgram ? "Новая программа" : program_name
         }
         const navButtonConfig = () => {
+            // todo дубль кода
             const pathnames = pathname.split("/").filter(x => x)
             const newProgram = pathnames[1] === "new_program"
             return newProgram ? [{
@@ -216,8 +218,8 @@ class General extends Component {
             }] : NAV_BUTTON_LINKS
         }
         return (
-            <ProgramsHeader
-                className="h-full"
+            <PageHeader
+                className="flex-container hidden"
                 {...this.props}
                 bredCrumbsConfig={programsBreadcrumbs}
                 pageData={pageHeaderTitle()}
@@ -330,56 +332,49 @@ class General extends Component {
                     {(formProps) => {
                         const { formValid, onSubmit, onInput } = formProps
                           return (
-                            <div className="h-full flex flex-col">
-                                <Avatar
-                                    className="mt-6 ml-6 mb-6"
-                                />
-                                <div
-                                    className="h-full flex flex-col justify-between"
-                                >
-                                    <div
-                                        className="mx-8"
-                                    >
-                                            <FormContainer>
-                                                <Form
-                                                    {...formProps}
-                                                    fields={firstForm}
-                                                    value={data}
-                                                    onInput={onInput}
-                                                />
-                                                <Form
-                                                    {...formProps}
-                                                    fields={SecondForm}
-                                                    value={data}
-                                                    onInput={onInput}
-                                                />
-                                            </FormContainer>
-                                        </div>
-                                        <div
-                                        className="flex justify-end pb-20 pr-8 pt-8"
-                                        >
+                            <>
+                                <Avatar className="mt-6 ml-6 mb-6"/>
+                                <ScrollBar>
+                                    <TabContainer>
+                                        <FormContainer>
+                                            <Form
+                                              {...formProps}
+                                              fields={firstForm}
+                                              value={data}
+                                              onInput={onInput}
+                                            />
+                                            <Form
+                                              {...formProps}
+                                              fields={SecondForm}
+                                              value={data}
+                                              onInput={onInput}
+                                            />
+                                        </FormContainer>
+                                        <div className="flex justify-end p-b-24">
                                             <button
-                                                name="cancel"
-                                                type="submit"
-                                                onClick={() => goBack()}
-                                                className="grey btn width-m m-r-16"
+                                              name="cancel"
+                                              type="submit"
+                                              onClick={() => goBack()}
+                                              className="grey btn width-m m-r-16"
                                             >
                                                 Отмена
                                             </button>
                                             <button
-                                                 name="save"
-                                                 type="submit"
-                                                 className="blue btn width-m"
-                                                 onClick={() => this.saveNewProgram()}
+                                              name="save"
+                                              type="submit"
+                                              className="blue btn width-m"
+                                              onClick={() => this.saveNewProgram()}
                                             >
                                                 Сохранить
                                             </button>
-                                    </div>
-                                </div>
-                            </div>
+                                        </div>
+                                    </TabContainer>
+                                </ScrollBar>
+
+                            </>
                           )}}
                 </WithValidationHocRenderPropAdapter>
-            </ProgramsHeader>
+            </PageHeader>
         );
     }
 }

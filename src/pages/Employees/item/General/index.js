@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {fieldMap, rules} from "./formConfig";
 import Form from "@Components/Forms/index"
-import {FormContainer, TabContainer} from "../style";
+import {FormContainer, TabContainer} from "@Components/StylesComponent/StylesForm"
 import ScrollBar from "@Components/ScrollBar"
 import {WithValidationHocRenderPropAdapter} from "../../../../Validator";
 import memoizeOne from "memoize-one";
@@ -61,7 +61,6 @@ class General extends Component {
     const pathnames = pathname.split("/").filter(x => x)
     const newEmploy = pathnames[1] === "new_employ"
     const idEmploy = newEmploy ? "" : `${pathnames[1]}/`
-    // данные получаем по запросу и их сетоть в данные
     try {
       const result = await axios[newEmploy ? "post" : "put"](`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`,
         newEmploy
@@ -79,17 +78,18 @@ class General extends Component {
       :
         {
           ...payload,
-          program: [payload.program],
+          program: payload.program,
           release_date: payload.release_date,
           create_date: payload.create_date,
-          salary: Number(payload.salary)
+          salary: Number(payload.salary),
+          illustration: payload.illustration ? payload.illustration : "string",
         }
       )
       this.setState({data: result.data})
       if (newEmploy) {
         push("/employees")
       } else {
-        // push(`/employees/${program_name}/${id}/general`)
+        push(`/employees/${payload.id}/${payload.last_name} ${payload.first_name}/general`)
       }
     } catch (err) {
       throw new Error(

@@ -7,8 +7,12 @@ export const FormContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 24px;
   --indent-bottom-for-form: 16px;
+  margin-bottom: 24px;
 `
 
 export const TabContainer = styled.div`
   padding: 24px 24px 0 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `

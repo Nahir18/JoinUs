@@ -2,22 +2,21 @@ import React, { useCallback, useState, useRef, useEffect } from "react"
 import Input from "@Components/Fields/Input"
 import Select from "../../../../components/Fields/Select";
 import {FilterContainer, StyleDate} from "./style"
-import DatePicker from "../../../../components/Fields/DatePicker";
 import ChoiceOfStatusOption from "../../../../components/Fields/Select/ChoiceOfStatusOption";
 
 const arrayStatus = [
   {
-    ID: "statusEnd",
+    ID: "3",
     SYS_NAME: "Завершена",
     icon: "/assets/icons/iconStatus/iconStatusEnd.svg"
   },
   {
-    ID: "statusWait",
+    ID: "1",
     SYS_NAME: "Ожидание",
     icon: "/assets/icons/iconStatus/iconStatusWait.svg"
   },
   {
-    ID: "statusWork",
+    ID: "2",
     SYS_NAME: "В процессе",
     icon: "/assets/icons/iconStatus/iconStatusWorking.svg"
   }

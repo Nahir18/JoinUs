@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import BreadCrumbs from "../../../../src/components/Breadcrumbs"
 import NavContentBtn from "../../../components/NavContentButton";
 
+// todo дубль PageHeader
+
 class PageHeader extends Component {
     render() {
         const { pageData, section, children, links, bredCrumbsConfig } = this.props
