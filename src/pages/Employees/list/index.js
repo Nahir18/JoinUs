@@ -20,6 +20,18 @@ const Employees = ({}) => {
   const filterList = (debounce(useCallback((value, id) => {
     if (id === "status") {
       // search
+      console.log(value)
+
+      // axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
+      //   params: {status: value}
+      // })
+      // .then((response) => {
+      //     setData(response.data.results)
+      //   },
+      //   (error) => {
+      //     setError({error})
+      //   }
+      // )
     }
     if (id === "name") {
       axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
