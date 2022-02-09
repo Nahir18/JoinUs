@@ -9,9 +9,7 @@ class ModalSelectInput extends Component {
         const { props } = this
         const { toggleModal, id, key, value } = props
         return (
-            <div
-                onClick={() => (console.log("ijhdiqwhnijebnjh"))}
-            >
+            <>
                 <Input
                     disabled
                     value={value}
@@ -25,13 +23,13 @@ class ModalSelectInput extends Component {
                         dangerouslySetInnerHTML={{__html: SmallArrow}}
                     />
                 </Input>
-            </div>
+            </>
         );
     }
 }
 
 ModalSelectInput.propTypes = {
-    toggleModal: PropTypes.bool,
+    toggleModal: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object, PropTypes.array]),

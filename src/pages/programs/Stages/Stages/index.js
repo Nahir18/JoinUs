@@ -2,16 +2,15 @@ import React, {Component} from 'react';
 import AppList from "../../../../components/AppList";
 import axios from "axios";
 import Input from "@Components/Fields/Input"
-import ChekBox from "@Components/Fields/CheckBox"
-import {DEFAULT_URL, ADAPTATION_STAGE, ADAPTATION_LEVELS} from "../../../../components/APIList";
+import {DEFAULT_URL, ADAPTATION_STAGE, ADAPTATION_LEVELS, ADAPTATION_PROGRAM} from "../../../../components/APIList";
 import Modal from "../../../../components/ModalWindow";
-import {ModalTableBody, ModalTableHeader} from "./style";
+import {ModalTableHeader} from "./style";
 import {settings} from "./tableConfig";
 import ArrowInput from "../../../../components/ArrowsInput";
 import { levelsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
 import {LEVELS_LINKS, NEW_PROGRAM} from "../../Constants";
-import ScrollBar from "@Components/ScrollBar"
+import { selectStageModalConfig } from "./selectStageModalConfig";
 
 class levelStages extends Component {
 
@@ -21,21 +20,38 @@ class levelStages extends Component {
             error: false,
             editModal: false,
             isLoaded: false,
-            addStageModal: false,
+            addStageModal: true,
             levelData: {},
             selectedStage: [],
             modalData: {},
             stages: [],
+            levels: [],
+            programs: [],
             items: []
         }
     }
 
-    loadStages = () => {
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}`)
-            .then((response) => {
-                const { data } = response
+    loadStages = async () => {
+        await axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}`)
+            .then(({data}) => {
                 this.setState({
                     stages: data
+                })
+            })
+    }
+    loadLevels = async () => {
+        await axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}`)
+            .then(({data}) => {
+                this.setState({
+                    levels: data
+                })
+            })
+    }
+    loadPrograms = async () => {
+        await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
+            .then(({data}) => {
+                this.setState({
+                    programs: data
                 })
             })
     }
@@ -69,6 +85,8 @@ class levelStages extends Component {
     componentDidMount() {
         this.loadPageData()
         this.loadStages()
+        this.loadLevels()
+        this.loadPrograms()
     }
     tierUp = () => {
         const {  modalData, modalData: { tier } } = this.state
@@ -196,6 +214,18 @@ class levelStages extends Component {
         const newProgram = pathnames[1] === NEW_PROGRAM
         return newProgram ? "Новая программа" : level_name ? `Уровень "${level_name}"` : ""
     }
+    appListData = () => {
+        const { programs, stages, levels } = this.state
+        // console.log("levels:", levels)
+        // console.log("programs:", programs)
+        // console.log("stages:", stages)
+        return stages.map((item) => {
+            const { level } = item
+            const levelData = levels ? levels.find(({id}) => id === level) : {}
+            console.log(1323, levelData)
+           return  {...item, level_name: levelData.level_name ? levelData.level_name : "" }
+        })
+    }
     render() {
         const {
             items,
@@ -222,7 +252,8 @@ class levelStages extends Component {
             pageHeaderTitle,
             actionTierUp,
             actionTierDown,
-            handleDeleteItem
+            handleDeleteItem,
+            appListData
         } = this
 
         return (
@@ -295,31 +326,6 @@ class levelStages extends Component {
                             Наименование программы
                         </div>
                     </ModalTableHeader>
-                    {/*{*/}
-                    {/*    items && items.map(({description, stage_name}, index) => {*/}
-                    {/*        return (*/}
-                    {/*            <ModalTableBody>*/}
-                    {/*                <div className="flex items-center">*/}
-                    {/*                    {index + 1}*/}
-                    {/*                </div>*/}
-                    {/*                <div className="flex items-center">*/}
-                    {/*                    {stage_name}*/}
-                    {/*                </div>*/}
-                    {/*                <div className="flex items-center justify-between">*/}
-                    {/*                    <div>*/}
-                    {/*                        {description}*/}
-                    {/*                    </div>*/}
-                    {/*                    <ChekBox*/}
-                    {/*                        id="selectedStage"*/}
-                    {/*                        value={selectedStage}*/}
-                    {/*                        checkBoxValue={stage_name}*/}
-                    {/*                        onInput={checkStage}*/}
-                    {/*                    />*/}
-                    {/*                </div>*/}
-                    {/*            </ModalTableBody>*/}
-                    {/*        )*/}
-                    {/*    })*/}
-                    {/*}*/}
                 </Modal>
                 <Modal
                     isOpen={addStageModal}
@@ -327,46 +333,10 @@ class levelStages extends Component {
                     closeModal={() => {closeAddStageModal()}}
                     handleSave={() => saveAddStages(selectedStage)}
                 >
-                    <ModalTableHeader>
-                        <div>№</div>
-                        <div>
-                            Наименование этапа
-                        </div>
-                        <div>
-                            Наименование уровня
-                        </div>
-                        <div>
-                            Наименование программы
-                        </div>
-                    </ModalTableHeader>
-                    <ScrollBar>
-                        {
-                            stages.map(({description, stage_name, id}, index) => {
-                                return (
-                                    <ModalTableBody>
-                                        <div className="flex items-center">
-                                            {index + 1}
-                                        </div>
-                                        <div className="flex items-center">
-                                            {stage_name}
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                {description}
-                                            </div>
-                                            <ChekBox
-                                                id="selectedStage"
-                                                className="p-r-14"
-                                                value={selectedStage}
-                                                checkBoxValue={id}
-                                                onInput={checkStage}
-                                            />
-                                        </div>
-                                    </ModalTableBody>
-                                )
-                            })
-                        }
-                    </ScrollBar>
+                    <AppList
+                        data={appListData()}
+                        settings={selectStageModalConfig(selectedStage, checkStage)}
+                    />
                 </Modal>
                 <div className="pt-8 pb-6 pl-4 flex">
                     <button

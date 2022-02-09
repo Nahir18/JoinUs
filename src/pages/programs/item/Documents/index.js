@@ -344,7 +344,9 @@ class Documents extends Component {
                            {
                                items && items.map(({document_name, id}, index) => {
                                    return (
-                                       <ModalTableBody>
+                                       <ModalTableBody
+                                           key={index}
+                                       >
                                            <div className="flex items-center">
                                                {index + 1}
                                            </div>
@@ -381,7 +383,7 @@ class Documents extends Component {
                         handleSave={() => this.saveNewDocuments(() => {this.setState({
                             addNewDocument: !addNewDocument
                         })})}
-                        style={{"miWidth": "560px"}}
+                        style={{"minWidth": "560px"}}
                     >
                         <AppList
                             settings={selectDocumentModalConfig(selectedDocuments, this.checkNewDocument)}

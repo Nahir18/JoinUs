@@ -6,8 +6,11 @@ const CardContact = ({data}) => {
   return (
     <div>
       {
-        phone && phone.map( item => (
-          <div className="flex j-c-start mb-1">
+        phone && phone.map( (item, index) => (
+          <div
+              key={index}
+              className="flex j-c-start mb-1"
+          >
             { item }
           </div>
         ))
