@@ -136,6 +136,7 @@ class Contacts extends Component {
         return (
             <>
                 <Modal
+                  title="Добавить контакт"
                     isOpen={contactsModal}
                     closeModal={toggleAddContactModal}
                     handleSave={addContacts}
