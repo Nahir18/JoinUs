@@ -9,7 +9,7 @@ import axios from "axios";
 import { ADAPTATION_STAGE, DEFAULT_URL } from "../../../../components/APIList";
 import { levelsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
-import {STAGES_LINKS, NEW_PROGRAM} from "../../Constants";
+import {STAGES_LINKS, NEW_PROGRAM, NEW_STAGE} from "../../Constants";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
     .reduce((acc, c) => {
@@ -37,8 +37,8 @@ class StagesGeneral extends Component {
     componentDidMount() {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        const idStage = pathnames[1] !== "new_program" ? `/${pathnames[3]}` : ""
-        if (pathnames[1] !== "new_program") {
+        const idStage = pathnames[6] !== NEW_STAGE ? `/${pathnames[3]}` : ""
+        if (pathnames[6] !== NEW_STAGE) {
             axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}${idStage}`)
                 .then(
                     (response) => {
@@ -71,9 +71,17 @@ class StagesGeneral extends Component {
         const { location: { pathname } } = this.props
         const { data: {id, stage_name, tier, point, status, create_date, id_employee, duration_day, level} } = this.state
         const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[1] === "new_program"
+        const newProgram = pathnames[6] === NEW_STAGE
         const idProgram = newProgram ? "/" : `/${pathnames[3]}/`
-        const newData = {
+        const newData = newProgram ? {
+            stage_name,
+            tier,
+            create_date,
+            duration_day,
+            status: 0,
+            point: 0,
+            id_employee: 0
+        } : {
             id,
             stage_name,
             tier,
@@ -112,7 +120,7 @@ class StagesGeneral extends Component {
     tierUp = () => {
         const { data: { tier }, data } = this.state
         this.setState({
-            data: { ...data, tier: tier + 1}
+            data: { ...data, tier: tier ? tier + 1 : 1}
         })
     }
     tierDown = () => {
@@ -124,14 +132,23 @@ class StagesGeneral extends Component {
     pageHeaderTitle = (stage_name) => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[1] === NEW_PROGRAM
-        return newProgram ? "Новая программа" : stage_name ? `Этап "${stage_name}"` : ""
+        const newStage = pathnames[6] === NEW_STAGE
+        return newStage ? "Новый этап" : stage_name ? `Этап "${stage_name}"` : ""
+    }
+    pageHeaderLinks = () => {
+        const { location: { pathname } } = this.props
+        const pathnames = pathname.split("/").filter(x => x)
+        const newStage = pathnames[6] === NEW_STAGE
+        return newStage ? [{
+            name: "Общие",
+            link: NEW_STAGE
+        }] : STAGES_LINKS
     }
 
     render() {
         const { history: { goBack } } = this.props
         const { data, data: { stage_name } } = this.state
-        const { tierUp, tierDown, pageHeaderTitle } = this
+        const { tierUp, tierDown, pageHeaderTitle, pageHeaderLinks } = this
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(tierUp, tierDown))
         return (
             <ProgramsHeader
@@ -140,7 +157,7 @@ class StagesGeneral extends Component {
                 pageData={pageHeaderTitle(stage_name)}
                 bredCrumbsConfig={levelsBreadcrumbs}
                 url="programs"
-                links={STAGES_LINKS}
+                links={pageHeaderLinks()}
             >
                 <div className="p-l-24 p-r-24 p-t-24 flex flex-col h-full">
                     <WithValidationHocRenderPropAdapter

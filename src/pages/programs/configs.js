@@ -115,6 +115,23 @@ export const levelsBreadcrumbs = [
         ]
     },
     {
+        page: "newStage",
+        config:[
+            {
+                name: "Програмы",
+                link: "programs"
+            },
+            {
+                name: (pathname) =>`${pathname[1] === "new_program" ? "Новая програма" : pathname[1]}`,
+                link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
+            },
+            {
+                name: "Общие",
+                link: "/"
+            }
+        ]
+    },
+    {
         page: "programs",
         config:[
             {
