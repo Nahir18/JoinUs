@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {fieldMap, rules} from "./formConfig";
 import Form from "@Components/Forms/index"
-import {FormContainer, TabContainer} from "../style";
+import {FormContainer, TabContainer} from "@Components/StylesComponent/StylesForm"
 import ScrollBar from "@Components/ScrollBar"
 import {WithValidationHocRenderPropAdapter} from "../../../../Validator";
 import memoizeOne from "memoize-one";
