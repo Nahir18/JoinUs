@@ -30,8 +30,9 @@ const Programs = (props) => {
                   : pathnames[3] === "level" || pathnames[4] ==="level"
                   ? (
                         <>
-                            <Route path="/programs/:programName/:programID/:levelID/level/general" component={LevelsGeneral} />
-                            <Route path="/programs/:programName/:programID/:levelID/level/levelStages" component={levelStages}/>
+                            <Route exact path="/programs/:programName/:programID/:levelID/level/general" component={LevelsGeneral} />
+                            <Route exact path="/programs/:programName/:programID/:levelID/level/levelStages/newStage" component={StagesGeneral}/>
+                            <Route exact path="/programs/:programName/:programID/:levelID/level/levelStages" component={levelStages}/>
                             <Route path="/programs/:programName/:programID/:levelID/level/programs" component={LevelsProgramsList}/>
                             <Route path="/programs/:programName/:programID/level/general" component={LevelsGeneral} />
                             <Route path="/programs/:programName/:programID/level/levelStages" component={levelStages}/>
@@ -44,7 +45,6 @@ const Programs = (props) => {
                     ) : pathnames[4] ==="stage" ? (
                         <>
                             <Route path="/programs/:programName/:programID/:stageID/stage/general" component={StagesGeneral} />
-                            <Route path="/programs/:programName/:programID/:stageID/stage/newStage" component={StagesGeneral} />
                             <Route path="/programs/:programName/:programID/:stageID/stage/blocks" component={Blocks} />
                             <Route path="/programs/:programName/:programID/:stageID/stage/levels" component={LevelsList} />
                         </>

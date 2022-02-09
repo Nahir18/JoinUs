@@ -81,3 +81,4 @@ export const NAV_BUTTON_LINKS = [
 ]
 
 export const NEW_PROGRAM = "new_program"
+export const NEW_STAGE = "newStage"
