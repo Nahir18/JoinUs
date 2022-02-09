@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {RadioOn, RadioOff} from "../../pages/Constants";
 
-const RadioButton = ({title, id, inputValue, selected}) => {
+const RadioButton = ({title, id, inputValue, selected, noTitle}) => {
     const active = selected(title)
     return (
         <div className="flex items-center justify-between">
-                {title}
+                { noTitle ? "" : title}
             {
                 active ? (
                 <div
@@ -27,7 +27,7 @@ const RadioButton = ({title, id, inputValue, selected}) => {
 };
 
 RadioButton.propTypes = {
-
+    noTitle: PropTypes.bool,
 };
 
 export default RadioButton;

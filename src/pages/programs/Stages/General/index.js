@@ -11,8 +11,10 @@ import axios from "axios";
 import { ADAPTATION_EMPLOYEE, ADAPTATION_LEVELS, ADAPTATION_PROGRAM, DEFAULT_URL } from "../../../../components/APIList";
 import Avatar from "../../../../components/Avatar";
 import { levelsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import {LEVELS_LINKS} from "../../Constants";
+import AppList from "../../../../components/AppList";
+import { employeesModalConfig } from "../../item/General/employeesModalConfig";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
   .reduce((acc, c) => {
@@ -174,10 +176,10 @@ class LevelsGeneral extends Component {
   }
 
     selectCreator = (value) => {
-        const { employees } = this.state
+        const { employees, modalState } = this.state
         const employee = employees.find((a) => a.id === value)
         this.setState({
-            modalState: employee.id
+            modalState: modalState === value ? null : employee.id
         })
     }
     selectedCreator = (value) => {
@@ -201,7 +203,7 @@ class LevelsGeneral extends Component {
     }
     const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleCreatorModal, id_employee, tierUp, tierDown, employees))
     return (
-      <ProgramsHeader
+      <PageHeader
           className="h-full"
           {...this.props}
           pageData={pageHeaderTitle(level_name)}
@@ -218,45 +220,10 @@ class LevelsGeneral extends Component {
             creatorModal: !creatorModal
           })}
         >
-          <div
-            className="mx-9"
-          >
-            <div
-              className="grid mt-11 border-list pb-4 color-light-blue-2 fs-14 font-bold"
-              style={{"grid-template-columns": "10% 90%"}}
-            >
-              <div>
-                №
-              </div>
-              <div>
-                Наименование
-              </div>
-            </div>
-            {
-                employees.map(({first_name, last_name, id}, index) => {
-                    const creatorName = `${first_name} ${last_name}`
-                return (
-                  <div
-                    key={index}
-                    className="grid py-4 font-semibold fs-14 border-list"
-                    style={{"grid-template-columns": "10% 90%"}}
-                  >
-                    <div
-                      className="flex items-center"
-                    >
-                      {index + 1}
-                    </div>
-                    <RadioButton
-                      inputValue={() => this.selectCreator(id)}
-                      selected={() => this.selectedCreator(id)}
-                      title={creatorName}
-                      id={id}
-                    />
-                  </div>
-                )
-              })
-            }
-          </div>
+            <AppList
+                settings={employeesModalConfig(this.selectCreator, this.selectedCreator)}
+                data={employees}
+            />
         </ModalSidebar>
         <WithValidationHocRenderPropAdapter
           onInput={this.inputDataOfProgram}
@@ -313,7 +280,7 @@ class LevelsGeneral extends Component {
             )
           }}
         </WithValidationHocRenderPropAdapter>
-      </ProgramsHeader>
+      </PageHeader>
     );
   }
 }

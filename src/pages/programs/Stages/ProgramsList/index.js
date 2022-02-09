@@ -5,7 +5,7 @@ import {NavLink} from "react-router-dom";
 import { settings } from "./Settings";
 import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_LEVELS} from "../../../../components/APIList";
 import { levelsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import {LEVELS_LINKS, NEW_PROGRAM} from "../../Constants";
 
 class ProgramsList extends Component {
@@ -62,7 +62,7 @@ class ProgramsList extends Component {
     render() {
         const { items, levelData: { level_name } } = this.state
         return (
-            <ProgramsHeader
+            <PageHeader
                 className="flex-container"
                 {...this.props}
                 pageData={this.pageHeaderTitle(level_name)}
@@ -80,7 +80,7 @@ class ProgramsList extends Component {
                     settings={settings}
                     data={items}
                 />
-            </ProgramsHeader>
+            </PageHeader>
         );
     }
 }

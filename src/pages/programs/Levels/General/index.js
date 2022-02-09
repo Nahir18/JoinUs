@@ -8,7 +8,7 @@ import { FormContainer } from "../../item/General/style"
 import axios from "axios";
 import { ADAPTATION_STAGE, ADAPTATION_BLOCK, DEFAULT_URL } from "../../../../components/APIList";
 import { levelsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import {STAGES_LINKS, NEW_PROGRAM, NEW_STAGE} from "../../Constants";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
@@ -157,7 +157,7 @@ class StagesGeneral extends Component {
         const { tierUp, tierDown, pageHeaderTitle, pageHeaderLinks } = this
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(tierUp, tierDown))
         return (
-            <ProgramsHeader
+            <PageHeader
                 className="p-l-24 p-r-24 p-t-24 flex flex-col h-full"
                 {...this.props}
                 pageData={pageHeaderTitle(stage_name)}
@@ -214,7 +214,7 @@ class StagesGeneral extends Component {
                             )}}
                     </WithValidationHocRenderPropAdapter>
                 </div>
-            </ProgramsHeader>
+            </PageHeader>
         );
     }
 }

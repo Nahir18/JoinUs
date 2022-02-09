@@ -5,7 +5,7 @@ import axios from "axios";
 import {settings} from "./TableConfig";
 import Modal from "../../../../components/ModalWindow";
 import { programsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import { modalTableConfig } from "./modalTableConfig";
 
@@ -146,7 +146,7 @@ class Contacts extends Component {
                         data={contacts}
                     />
                 </Modal>
-                <ProgramsHeader
+                <PageHeader
                     {...this.props}
                     bredCrumbsConfig={programsBreadcrumbs}
                     pageData={pageHeaderTitle()}
@@ -169,7 +169,7 @@ class Contacts extends Component {
                              data={newData}
                          />
                      </div>
-                </ProgramsHeader>
+                </PageHeader>
             </>
         );
     }

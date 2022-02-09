@@ -5,20 +5,21 @@ import ScrollBar from "@Components/ScrollBar"
 import {
   componentTypeList
 } from './constants'
-import {ADAPTATION_BLOCK, ADAPTATION_GOALS, ADAPTATION_STAGE, DEFAULT_URL} from "../../../../components/APIList";
+import {ADAPTATION_BLOCK, ADAPTATION_STAGE, DEFAULT_URL} from "../../../../components/APIList";
 import PureUpdateArrayItems from "../../../../utils/Arrays/PureUpdateArrayItems";
 import {DIRECTION_UP} from "../../../../constants";
 import PureDeleteItems from "../../../../utils/Arrays/PureDeleteItems";
 import NewBlock from "./Components/NewBlock";
 import { levelsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
-import {STAGES_LINKS, NEW_PROGRAM} from "../../Constants";
+import PageHeader from "../../../../components/PageHeader";
+import {STAGES_LINKS} from "../../Constants";
 import {useParams} from "react-router-dom";
 // http://51.250.15.127:9000/api-active/candidate/api-active/adaptationstage/
-const Blocks = () => {
+const Blocks = (props) => {
   const {stageID} = useParams()
 
   const [data, setData] = useState({json: []})
+  const [stageData, setStageData] = useState({})
 
   useEffect(() => {
     (async () => {
@@ -33,6 +34,10 @@ const Blocks = () => {
                 .then(({data}) => setData(data))
           }
           )
+      await axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${stageID}/`)
+          .then(({data}) => {
+            setStageData(data)
+          })
     })()
   }, [stageID])
 
@@ -77,48 +82,45 @@ const Blocks = () => {
       json: [...json, {type}]
     }))
   }, [])
-  const pageHeaderTitle = (stage_name) => {
-    const { location: { pathname } } = this.props
-    const pathnames = pathname.split("/").filter(x => x)
-    const newProgram = pathnames[1] === NEW_PROGRAM
-    return newProgram ? "Новая программа" : stage_name ? `Этап "${stage_name}"` : ""
+  const pageHeaderTitle = ({stage_name}) => {
+    return `Этап "${stage_name}"`
   }
   return (
-    // <ProgramsHeader
-    //     {...this.props}
-    //     // pageData={pageHeaderTitle(stage_name)}
-    //     bredCrumbsConfig={levelsBreadcrumbs}
-    //     url="programs"
-    //     links={STAGES_LINKS}
-    // >
-    <div className="flex-container">
-      <ScrollBar className="p-l-24 p-r-24 p-b-24 p-t-24">
-        {
-          data.json.map((value, index) => {
-            const Component = componentTypeList[value.type]
-            return (
-              <Component
-                key={index}
-                value={value}
-                position={index + 1}
-                onInput={handleInput}
-                className={index === 0 ? "" : "mt-10"}
-                onMove={handleMoveItem}
-                onDelete={handleDelete}
-                environmentState={data.json}
-              />
-            )
-          })
-        }
-        <NewBlock
-          className={data.json.length > 0 ? "mt-10" : ""}
-          position={data.json.length + 1}
-          onInput={handleCreate}
-        />
-      </ScrollBar>
-      <button onClick={saveBlocks}>asd</button>
-    </div>
-    // </ProgramsHeader>
+    <PageHeader
+        {...props}
+        pageData={pageHeaderTitle(stageData)}
+        bredCrumbsConfig={levelsBreadcrumbs}
+        url="programs"
+        links={STAGES_LINKS}
+    >
+      <div className="flex-container">
+        <ScrollBar className="p-l-24 p-r-24 p-b-24 p-t-24">
+          {
+            data.json.map((value, index) => {
+              const Component = componentTypeList[value.type]
+              return (
+                <Component
+                  key={index}
+                  value={value}
+                  position={index + 1}
+                  onInput={handleInput}
+                  className={index === 0 ? "" : "mt-10"}
+                  onMove={handleMoveItem}
+                  onDelete={handleDelete}
+                  environmentState={data.json}
+                />
+              )
+            })
+          }
+          <NewBlock
+            className={data.json.length > 0 ? "mt-10" : ""}
+            position={data.json.length + 1}
+            onInput={handleCreate}
+          />
+        </ScrollBar>
+        <button onClick={saveBlocks}>asd</button>
+      </div>
+    </PageHeader>
   );
 };
 

@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import BreadCrumbs from "../Breadcrumbs"
 import NavContentBtn from "../NavContentButton";
+import styled from "styled-components";
+
+const PageTitle = styled.div`
+    min-height: 28px;
+`
 
 class PageHeader extends Component {
     render() {
@@ -13,9 +18,9 @@ class PageHeader extends Component {
                 {...this.props}
               />
                 <div className="flex mb-6 mt-4">
-                    <div className="text-2xl font-bold">
-                        { pageData }
-                    </div>
+                    <PageTitle className="text-2xl font-bold">
+                        { pageData ? pageData : " " }
+                    </PageTitle>
                 </div>
                 <div
                     className="bg-white flex-container hidden m-b-24"

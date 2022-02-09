@@ -11,7 +11,7 @@ import { settings } from "./FormConfig";
 import ArrowInput from "../../../../components/ArrowsInput";
 import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
 import { programsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { addGoalsModalConfig } from "./addGoalsModalConfig";
@@ -280,7 +280,7 @@ class Goals extends Component {
 
 
         return (
-            <ProgramsHeader
+            <PageHeader
                 className="h-full"
                 {...this.props}
                 pageData={pageHeaderTitle(program_name)}
@@ -419,7 +419,7 @@ class Goals extends Component {
                     settings={settings(editModal, toggleModal, handleEdit, actionButtonTierUp, actionButtonTierDown, actionsDeleteItem)}
                     data={items}
                 />
-            </ProgramsHeader>
+            </PageHeader>
         );
     }
 }

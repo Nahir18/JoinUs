@@ -8,7 +8,7 @@ import {ModalTableHeader} from "./style";
 import {settings} from "./tableConfig";
 import ArrowInput from "../../../../components/ArrowsInput";
 import { levelsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import {LEVELS_LINKS, NEW_PROGRAM} from "../../Constants";
 import { selectStageModalConfig } from "./selectStageModalConfig";
 import {NavLink} from "react-router-dom";
@@ -257,7 +257,7 @@ class levelStages extends Component {
         } = this
 
         return (
-            <ProgramsHeader
+            <PageHeader
                 className="h-full"
                 {...this.props}
                 pageData={pageHeaderTitle(level_name)}
@@ -356,7 +356,7 @@ class levelStages extends Component {
                     settings={settings(handleEdit, actionTierUp, actionTierDown, handleDeleteItem)}
                     data={items}
                 />
-            </ProgramsHeader>
+            </PageHeader>
         );
     }
 }

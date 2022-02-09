@@ -12,7 +12,7 @@ import ArrowInput from "../../../../components/ArrowsInput";
 import { settings } from "./tableConfig";
 import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
 import { programsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
@@ -271,7 +271,7 @@ class Documents extends Component {
             pageHeaderTitle
         } = this
         return (
-                <ProgramsHeader
+                <PageHeader
                     className="h-full"
                     {...this.props}
                     pageData={pageHeaderTitle(program_name)}
@@ -409,7 +409,7 @@ class Documents extends Component {
                         settings={settings(editModal, this.closeModal, handleEdit, this.deleteItem, actionButtonTierUp, actionButtonTierDown)}
                         data={items}
                     />
-                </ProgramsHeader>
+                </PageHeader>
         );
     }
 }

@@ -17,6 +17,9 @@ import {NEW_PROGRAM} from "../../Constants";
 import PageHeader from "@Components/PageHeader";
 import ScrollBar from "@Components/ScrollBar"
 import {FormContainer, TabContainer} from "@Components/StylesComponent/StylesForm"
+import { customerModalConfig } from "./customerModalConfig";
+import { employeesModalConfig } from "./employeesModalConfig";
+import AppList from "../../../../components/AppList";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
     .reduce((acc, c) => {
@@ -195,24 +198,23 @@ class General extends Component {
             modalState: creatorModal ? [] : employee
         })
     }
+    isNewProgram = () => {
+        const { location: { pathname } } = this.props
+        const pathnames = pathname.split("/").filter(x => x)
+        return pathnames[1] === NEW_PROGRAM
+    }
     render() {
-        const { history: { goBack }, location: { pathname } } = this.props
+        const { history: { goBack } } = this.props
         const { clientModal, creatorModal, modalState, data, customers, employees, isLoaded, data: { customer = [], employee, program_name } } = this.state
-        const { toggleModal, toggleCreatorModal } = this
+        const { toggleModal, toggleCreatorModal, isNewProgram } = this
         const customerValue = isLoaded ? customers.find((a) => a.id === customer[0]) : {}
         const employeeValue = isLoaded ? employee && employees.find((a) => a.id === employee) : {}
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleModal, customerValue, toggleCreatorModal, employeeValue))
         const pageHeaderTitle = () => {
-            // todo дубль кода
-            const pathnames = pathname.split("/").filter(x => x)
-            const newProgram = pathnames[1] === NEW_PROGRAM
-            return newProgram ? "Новая программа" : program_name
+            return isNewProgram() ? "Новая программа" : program_name
         }
         const navButtonConfig = () => {
-            // todo дубль кода
-            const pathnames = pathname.split("/").filter(x => x)
-            const newProgram = pathnames[1] === "new_program"
-            return newProgram ? [{
+            return isNewProgram() ? [{
                 name: "Общие",
                 link: "general"
             }] : NAV_BUTTON_LINKS
@@ -235,44 +237,10 @@ class General extends Component {
                         clientModal: !clientModal
                     })}
                 >
-                    <div
-                        className="mx-9"
-                    >
-                        <div
-                            className="grid mt-11 border-list pb-4 color-light-blue-2 fs-14 font-bold"
-                            style={{"grid-template-columns": "10% 90%"}}
-                        >
-                            <div>
-                                №
-                            </div>
-                            <div>
-                                Наименование
-                            </div>
-                        </div>
-                     {
-                         customers.map(({customer_name, id}, index) => {
-                             return (
-                                 <div
-                                     key={index}
-                                     className="grid py-4 font-semibold fs-14 border-list"
-                                     style={{"grid-template-columns": "10% 90%"}}
-                                 >
-                                     <div
-                                         className="flex items-center"
-                                     >
-                                         {index + 1}
-                                     </div>
-                                     <RadioButton
-                                         inputValue={this.selectClient}
-                                         selected={(value) => this.selectedRadioButton(value)}
-                                         title={customer_name}
-                                         id={id}
-                                     />
-                                 </div>
-                             )
-                         })
-                     }
-                    </div>
+                    <AppList
+                        settings={customerModalConfig(this.selectClient, this.selectedRadioButton)}
+                        data={customers}
+                    />
                 </ModalSidebar>
                 <ModalSidebar
                     title="Выбор создателя"
@@ -283,45 +251,10 @@ class General extends Component {
                         creatorModal: !creatorModal
                     })}
                 >
-                    <div
-                        className="mx-9"
-                    >
-                        <div
-                            className="grid mt-11 border-list pb-4 color-light-blue-2 fs-14 font-bold"
-                            style={{"grid-template-columns": "10% 90%"}}
-                        >
-                            <div>
-                                №
-                            </div>
-                            <div>
-                                Наименование
-                            </div>
-                        </div>
-                     {
-                         employees.map(({first_name, last_name, id}, index) => {
-                             const creatorName = `${first_name} ${last_name}`
-                             return (
-                                 <div
-                                     key={index}
-                                     className="grid py-4 font-semibold fs-14 border-list"
-                                     style={{"grid-template-columns": "10% 90%"}}
-                                 >
-                                     <div
-                                         className="flex items-center"
-                                     >
-                                         {index + 1}
-                                     </div>
-                                     <RadioButton
-                                         inputValue={() => this.selectCreator(id)}
-                                         selected={() => this.selectedCreator(id)}
-                                         title={creatorName}
-                                         id={id}
-                                     />
-                                 </div>
-                             )
-                         })
-                     }
-                    </div>
+                    <AppList
+                        settings={employeesModalConfig( this.selectCreator, this.selectedCreator)}
+                        data={employees}
+                    />
                 </ModalSidebar>
                 <WithValidationHocRenderPropAdapter
                     onInput={this.inputDataOfProgram}

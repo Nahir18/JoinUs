@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { settings } from "./tableConfig";
 import Modal from "../../../../components/ModalWindow";
 import { programsBreadcrumbs } from "../../configs";
-import ProgramsHeader from "../../ProgramsHeader"
+import PageHeader from "../../../../components/PageHeader";
 import { levelSelectionModalConfig } from "./levelSelectionModalConfig";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 
@@ -208,7 +208,7 @@ render() {
     } = this
         return (
           <div className="flex-container">
-              <ProgramsHeader
+              <PageHeader
                   {...this.props}
                   bredCrumbsConfig={programsBreadcrumbs}
                   pageData={pageHeaderTitle(program_name)}
@@ -247,7 +247,7 @@ render() {
                     data={items}
                     nestedKey="stages"
                   />
-              </ProgramsHeader>
+              </PageHeader>
           </div>
         );
     }
