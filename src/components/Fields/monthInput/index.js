@@ -5,7 +5,7 @@ import Input from "@Components/Fields/Input"
 const MonthInput = (props) => (
     <div className="flex justify-space-between h-full">
         <Input {...props} />
-        <StyleIcon>МЕС.</StyleIcon>
+        <StyleIcon>мес.</StyleIcon>
     </div>
 )
 

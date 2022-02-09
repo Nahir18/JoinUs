@@ -78,7 +78,6 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
             return (
                 <ModalSelectInput
                 id="6"
-                key="id_employee"
                 value={creatorName}
                 onInput={onInput}
                 placeholder="Выберите создателя"

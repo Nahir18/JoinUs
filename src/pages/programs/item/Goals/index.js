@@ -14,6 +14,7 @@ import { programsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
+import { addGoalsModalConfig } from "./addGoalsModalConfig";
 
 class Goals extends Component {
 
@@ -95,11 +96,9 @@ class Goals extends Component {
              documentSelection: !documentSelection
          })
      }
-     saveEditGoal = ({goal_name}) => {
+     saveEditGoal = async ({goal_name}) => {
         const { modalData } = this.state
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${modalData.id}/`, {...modalData, goal_name})
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${modalData.id}/`, {...modalData, goal_name})
             .then(
                 (response) => {
                     this.setState({
@@ -120,7 +119,7 @@ class Goals extends Component {
              editModal: false
          })
     }
-    saveNewGoals = () => {
+    saveNewGoals = async () => {
         const {
             location: { pathname }
         } = this.props
@@ -140,7 +139,7 @@ class Goals extends Component {
             goals: goals.concat(selectedGoals.filter(item => !goals.some(a => a === item)))
         }
         if (selectedGoals.length) {
-            axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idGoal}`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idGoal}`, newData)
                 .then(
                     (response) => {
                         const {data: {goals_detail}, data} = response
@@ -189,17 +188,17 @@ class Goals extends Component {
             modalData: { ...modalData, tier: tier > 1 ? tier - 1 : tier}
         })
     }
-    actionButtonTierUp = (data) => {
+    actionButtonTierUp = async (data) => {
         const { id, tier } = data
         const newData = { ...data, tier: tier + 1 }
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, newData)
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, newData)
         this.loadPageData()
     }
-    actionButtonTierDown = (data) => {
+    actionButtonTierDown = async (data) => {
         const { id, tier } = data
         if (tier > 1) {
             const newData = { ...data, tier: tier - 1 }
-            axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, newData)
             this.loadPageData()
         }
     }
@@ -209,7 +208,7 @@ class Goals extends Component {
         const newProgram = pathnames[1] === NEW_PROGRAM
         return newProgram ? "Новая программа" : program_name
     }
-    actionsDeleteItem = ({id: deleteItemID}) => {
+    actionsDeleteItem = async ({id: deleteItemID}) => {
         const { location: { pathname } } = this.props
         const { programData: { documents, program_name, goals, create_date, id, status, tier, employee, duration_day, description } } = this.state
         const pathnames = pathname.split("/").filter(x => x)
@@ -226,7 +225,7 @@ class Goals extends Component {
             description,
             goals: goals.filter(item => item !== deleteItemID)
         }
-        axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idGoal}`, newData)
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idGoal}`, newData)
             .then(
                 (response) => {
                     const {data: {goals_detail}, data} = response
@@ -396,48 +395,10 @@ class Goals extends Component {
                     })}
                     handleSave={saveNewGoals}
                 >
-                    <ModalTableHeader>
-                        <div>№</div>
-                        <div>
-                            Наименование цели
-                        </div>
-                        <div>
-                            Наименование программы
-                        </div>
-                    </ModalTableHeader>
-                    <ScrollBar>
-                        {
-                            goals.map(({goal_name, description, id}, index) => {
-                                return (
-                                    <ModalTableBody
-                                        key={`${id}${index}`}
-                                    >
-                                        <div className="flex items-center">
-                                            {index + 1}
-                                        </div>
-                                        <div className="flex items-center">
-                                            <div
-                                                className="pr-2"
-                                                dangerouslySetInnerHTML={{__html: DocumentIcon}}
-                                            />
-                                            {goal_name}
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                {description}
-                                            </div>
-                                            <ChekBox
-                                                id="selectedGoals"
-                                                value={selectedGoals}
-                                                checkBoxValue={id}
-                                                onInput={checkDocument}
-                                            />
-                                        </div>
-                                    </ModalTableBody>
-                                )
-                            })
-                        }
-                    </ScrollBar>
+                    <AppList
+                        settings={addGoalsModalConfig(selectedGoals, checkDocument)}
+                        data={goals}
+                    />
                 </Modal>
                 <div className="pt-8 pb-6 pl-4 flex">
                     <button

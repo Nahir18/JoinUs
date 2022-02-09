@@ -36,16 +36,38 @@ class LevelsGeneral extends Component {
       creatorModal: false,
       programs: [],
       employees: [],
+      pageTitle: "",
       data: {},
       modalState: {}
     }
     this.handleInputChange = this.handleInputChange.bind(this)
   }
 
+  loadPageData = () => {
+      const {location: {pathname}} = this.props
+      const pathnames = pathname.split("/").filter(x => x)
+      const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[3]}` : ""
+      if (pathnames[1] !== "new_program" && pathnames[3] !== "level") {
+          axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`)
+              .then(
+                  ({data, data: { level_name }}) => {
+                      this.setState({
+                          isLoaded: true,
+                          data: data,
+                          pageTitle: level_name
+                      })
+                  },
+                  (error) => {
+                      this.setState({
+                          isLoaded: true,
+                          error
+                      })
+                  }
+              )
+      }
+  }
+
   componentDidMount() {
-    const {location: {pathname}} = this.props
-    const pathnames = pathname.split("/").filter(x => x)
-    const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[3]}` : ""
     axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
       .then(
         (response) => {
@@ -76,23 +98,7 @@ class LevelsGeneral extends Component {
           })
         }
       )
-    if (pathnames[1] !== "new_program" && pathnames[3] !== "level") {
-      axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`)
-        .then(
-          (response) => {
-            this.setState({
-              isLoaded: true,
-              data: response.data
-            })
-          },
-          (error) => {
-            this.setState({
-              isLoaded: true,
-              error
-            })
-          }
-        )
-    }
+    this.loadPageData()
   }
 
   handleInputChange(value, id) {
@@ -128,7 +134,6 @@ class LevelsGeneral extends Component {
         id_employee,
         duration_day
     }
-    console.log(`${pathnames[0]}/${pathnames[1]}/${pathnames[2]}/${pathnames[3]}/${pathnames[4]}`)
     axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, newData)
       .then(
         (response) => {
@@ -182,9 +187,10 @@ class LevelsGeneral extends Component {
     }
     pageHeaderTitle = (level_name) => {
         const { location: { pathname } } = this.props
+        const { pageTitle } = this.state
         const pathnames = pathname.split("/").filter(x => x)
         const newLevel = pathnames[3] === "level"
-        return newLevel ? "Новый уровень" : level_name ? `Уровень "${level_name}"` : ""
+        return newLevel ? "Новый уровень" : level_name ? `Уровень "${pageTitle}"` : ""
     }
   render() {
     const {history: {goBack}} = this.props
@@ -231,6 +237,7 @@ class LevelsGeneral extends Component {
                     const creatorName = `${first_name} ${last_name}`
                 return (
                   <div
+                    key={index}
                     className="grid py-4 font-semibold fs-14 border-list"
                     style={{"grid-template-columns": "10% 90%"}}
                   >
@@ -283,7 +290,7 @@ class LevelsGeneral extends Component {
                   </FormContainer>
                 </div>
                 <div
-                  className="flex justify-end pb-20 pr-8"
+                  className="flex justify-end pb-20 pr-8 pt-8"
                 >
                   <div
                     onClick={() => goBack()}

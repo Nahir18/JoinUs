@@ -31,18 +31,14 @@ export const fieldMap = (toggleModal, customer, toggleCreatorModal, creator) => 
     {
         label: "Заказчик",
         id: "customer",
-        component: ({onInput}) =>
-        {
-                return (
+        component: ({onInput}) => (
                  <ModalSelectInput
                      id="4"
-                     key="customer"
                      value={customer ? customer.customer_name : ""}
                      onInput={onInput}
                      placeholder="Выберите заказчика"
                      toggleModal={toggleModal}
-                 />)
-        },
+                 />),
         formColumn: 1,
     },
     {
@@ -60,7 +56,6 @@ export const fieldMap = (toggleModal, customer, toggleCreatorModal, creator) => 
             return (
             <ModalSelectInput
                 id="6"
-                key="creator"
                 value={creatorName}
                 onInput={onInput}
                 placeholder="Выберите создателя"
