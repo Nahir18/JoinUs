@@ -11,6 +11,7 @@ import { levelsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
 import {LEVELS_LINKS, NEW_PROGRAM} from "../../Constants";
 import { selectStageModalConfig } from "./selectStageModalConfig";
+import {NavLink} from "react-router-dom";
 
 class levelStages extends Component {
 
@@ -216,14 +217,15 @@ class levelStages extends Component {
     }
     appListData = () => {
         const { programs, stages, levels } = this.state
-        // console.log("levels:", levels)
-        // console.log("programs:", programs)
-        // console.log("stages:", stages)
+        console.log("levels:", levels)
+        console.log("programs:", programs)
+        console.log("stages:", stages)
         return stages.map((item) => {
             const { level } = item
-            const levelData = levels ? levels.find(({id}) => id === level) : {}
+            const levelData = levels ? levels.find(({id}) => id === level) : []
             console.log(1323, levelData)
-           return  {...item, level_name: levelData.level_name ? levelData.level_name : "" }
+           // return  {...item, level_name: levelData.level_name ? levelData.level_name : "" }
+           return  item
         })
     }
     render() {
@@ -238,6 +240,8 @@ class levelStages extends Component {
             stages,
             levelData: { level_name }
         } = this.state
+
+        const { location: { pathname } } = this.props
 
         const {
             closeAddStageModal,
@@ -339,12 +343,12 @@ class levelStages extends Component {
                     />
                 </Modal>
                 <div className="pt-8 pb-6 pl-4 flex">
-                    <button
+                    <NavLink
                         className="blue btn width-m pt-1.5"
-                        onClick={() => ({})}
+                        to={`${pathname}/newStage`}
                     >
                         + Добавить этап
-                    </button>
+                    </NavLink>
                     <button
                         className="blue btn width-m pt-1.5 ml-4"
                         onClick={() => this.setState({addStageModal: true})}

@@ -44,6 +44,7 @@ const Programs = (props) => {
                     ) : pathnames[4] ==="stage" ? (
                         <>
                             <Route path="/programs/:programName/:programID/:stageID/stage/general" component={StagesGeneral} />
+                            <Route path="/programs/:programName/:programID/:stageID/stage/newStage" component={StagesGeneral} />
                             <Route path="/programs/:programName/:programID/:stageID/stage/blocks" component={Blocks} />
                             <Route path="/programs/:programName/:programID/:stageID/stage/levels" component={LevelsList} />
                         </>
