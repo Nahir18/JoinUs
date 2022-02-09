@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Input from "@Components/Fields/Input"
+import { ToggleArrowContainer } from "./style";
 import {SmallArrow} from "../../pages/Constants";
 
 class ModalSelectInput extends Component {
@@ -8,9 +9,7 @@ class ModalSelectInput extends Component {
         const { props } = this
         const { toggleModal, id, key, value } = props
         return (
-            <div
-                onClick={() => toggleModal}
-            >
+            <>
                 <Input
                     disabled
                     value={value}
@@ -18,19 +17,19 @@ class ModalSelectInput extends Component {
                     key={key}
                     {...props}
                 >
-                    <div
+                    <ToggleArrowContainer
                         onClick={toggleModal}
                         className="flex items-center pr-3 cursor"
                         dangerouslySetInnerHTML={{__html: SmallArrow}}
                     />
                 </Input>
-            </div>
+            </>
         );
     }
 }
 
 ModalSelectInput.propTypes = {
-    toggleModal: PropTypes.bool,
+    toggleModal: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object, PropTypes.array]),

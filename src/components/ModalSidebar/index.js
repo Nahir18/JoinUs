@@ -48,9 +48,9 @@ class ModalSidebar extends Component {
 }
 
 ModalSidebar.propTypes = {
-    closeModal: PropTypes.func,
+    closeModal: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     title: PropTypes.string,
-    children: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     handleSave: PropTypes.func,
     isOpen: PropTypes.bool,
 };

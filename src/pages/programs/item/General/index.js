@@ -189,8 +189,11 @@ class General extends Component {
         })
     }
     toggleCreatorModal = () => {
-        const { creatorModal } = this.state
-        this.setState({creatorModal: !creatorModal})
+        const { creatorModal, data: { employee } } = this.state
+        this.setState({
+            creatorModal: !creatorModal,
+            modalState: creatorModal ? [] : employee
+        })
     }
     render() {
         const { history: { goBack }, location: { pathname } } = this.props
@@ -204,6 +207,14 @@ class General extends Component {
             const newProgram = pathnames[1] === NEW_PROGRAM
             return newProgram ? "Новая программа" : program_name
         }
+        const navButtonConfig = () => {
+            const pathnames = pathname.split("/").filter(x => x)
+            const newProgram = pathnames[1] === "new_program"
+            return newProgram ? [{
+                name: "Общие",
+                link: "general"
+            }] : NAV_BUTTON_LINKS
+        }
         return (
             <ProgramsHeader
                 className="h-full"
@@ -211,7 +222,7 @@ class General extends Component {
                 bredCrumbsConfig={programsBreadcrumbs}
                 pageData={pageHeaderTitle()}
                 url="programs"
-                links={NAV_BUTTON_LINKS}
+                links={navButtonConfig()}
             >
                 <ModalSidebar
                     title="Выбор заказчика"
@@ -240,6 +251,7 @@ class General extends Component {
                          customers.map(({customer_name, id}, index) => {
                              return (
                                  <div
+                                     key={index}
                                      className="grid py-4 font-semibold fs-14 border-list"
                                      style={{"grid-template-columns": "10% 90%"}}
                                  >
@@ -288,6 +300,7 @@ class General extends Component {
                              const creatorName = `${first_name} ${last_name}`
                              return (
                                  <div
+                                     key={index}
                                      className="grid py-4 font-semibold fs-14 border-list"
                                      style={{"grid-template-columns": "10% 90%"}}
                                  >
@@ -343,7 +356,7 @@ class General extends Component {
                                             </FormContainer>
                                         </div>
                                         <div
-                                        className="flex justify-end pb-20 pr-8"
+                                        className="flex justify-end pb-20 pr-8 pt-8"
                                         >
                                             <button
                                                 name="cancel"

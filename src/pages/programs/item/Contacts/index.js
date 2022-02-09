@@ -3,12 +3,11 @@ import AppList from "../../../../components/AppList";
 import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_CONTACTS} from "../../../../components/APIList";
 import axios from "axios";
 import {settings} from "./TableConfig";
-import { ModalTableHeader, ModalTableBody } from "./style";
 import Modal from "../../../../components/ModalWindow";
 import { programsBreadcrumbs } from "../../configs";
 import ProgramsHeader from "../../ProgramsHeader"
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
-import ChekBox from "@Components/Fields/CheckBox";
+import { modalTableConfig } from "./modalTableConfig";
 
 class Contacts extends Component {
     constructor(props) {
@@ -140,38 +139,12 @@ class Contacts extends Component {
                     isOpen={contactsModal}
                     closeModal={toggleAddContactModal}
                     handleSave={addContacts}
+
                 >
-                    <ModalTableHeader>
-                        <div>№</div>
-                        <div>
-                            Сотрудник
-                        </div>
-                        <div>
-                            Роль
-                        </div>
-                    </ModalTableHeader>
-                    {
-                        contacts && contacts.map(({illustration_link, last_name, first_name, middle_name, role, id}, index) => {
-                            return (
-                                <ModalTableBody>
-                                    <span className="flex items-center">
-                                        {index + 1}
-                                    </span>
-                                    <span>
-                                        {`${first_name} ${last_name}`}
-                                    </span>
-                                    <sapn>
-                                        {role}
-                                    </sapn>
-                                    <ChekBox
-                                        id="selectedContacts"
-                                        value={selectedContacts}
-                                        checkBoxValue={id}
-                                        onInput={checkContact}
-                                    />
-                                </ModalTableBody>
-                        )})
-                    }
+                    <AppList
+                        settings={modalTableConfig(selectedContacts, checkContact)}
+                        data={contacts}
+                    />
                 </Modal>
                 <ProgramsHeader
                     {...this.props}

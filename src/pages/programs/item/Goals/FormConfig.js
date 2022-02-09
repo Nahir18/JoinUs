@@ -34,7 +34,7 @@ const DocumentActions = ({handleEdit, data, actionButtonTierUp, actionButtonTier
                     />
                     <div
                         onClick={() => actionButtonTierDown(data)}
-                        style={{"fill": "var(--color-light-blue-2)", "opacity": iconColor}}
+                        style={{"opacity": iconColor}}
                         className="arrow-icon arrow-down"
                         dangerouslySetInnerHTML={{__html: ArrowUP}}
                     />
