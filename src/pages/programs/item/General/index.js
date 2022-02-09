@@ -331,49 +331,39 @@ class General extends Component {
                         const { formValid, onSubmit, onInput } = formProps
                           return (
                             <div className="h-full flex flex-col">
-                                <Avatar
-                                    className="mt-6 ml-6 mb-6"
-                                />
-                                <div
-                                    className="h-full flex flex-col justify-between"
-                                >
-                                    <div
-                                        className="mx-8"
-                                    >
-                                            <FormContainer>
-                                                <Form
-                                                    {...formProps}
-                                                    fields={firstForm}
-                                                    value={data}
-                                                    onInput={onInput}
-                                                />
-                                                <Form
-                                                    {...formProps}
-                                                    fields={SecondForm}
-                                                    value={data}
-                                                    onInput={onInput}
-                                                />
-                                            </FormContainer>
-                                        </div>
-                                        <div
-                                        className="flex justify-end pb-20 pr-8 pt-8"
+                                <Avatar className="mt-6 ml-6 mb-6"/>
+                                <div className="h-full flex flex-col justify-between p-t-24 p-r-24 p-l-24">
+                                    <FormContainer className="m-b-24">
+                                        <Form
+                                          {...formProps}
+                                          fields={firstForm}
+                                          value={data}
+                                          onInput={onInput}
+                                        />
+                                        <Form
+                                          {...formProps}
+                                          fields={SecondForm}
+                                          value={data}
+                                          onInput={onInput}
+                                        />
+                                    </FormContainer>
+                                    <div className="flex justify-end p-b-24">
+                                        <button
+                                            name="cancel"
+                                            type="submit"
+                                            onClick={() => goBack()}
+                                            className="grey btn width-m m-r-16"
                                         >
-                                            <button
-                                                name="cancel"
-                                                type="submit"
-                                                onClick={() => goBack()}
-                                                className="grey btn width-m m-r-16"
-                                            >
-                                                Отмена
-                                            </button>
-                                            <button
-                                                 name="save"
-                                                 type="submit"
-                                                 className="blue btn width-m"
-                                                 onClick={() => this.saveNewProgram()}
-                                            >
-                                                Сохранить
-                                            </button>
+                                            Отмена
+                                        </button>
+                                        <button
+                                             name="save"
+                                             type="submit"
+                                             className="blue btn width-m"
+                                             onClick={() => this.saveNewProgram()}
+                                        >
+                                            Сохранить
+                                        </button>
                                     </div>
                                 </div>
                             </div>
