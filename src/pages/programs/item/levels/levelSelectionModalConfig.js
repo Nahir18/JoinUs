@@ -21,7 +21,6 @@ export const levelSelectionModalConfig = (selectedLevels, checkLevels) => {
             allData: true,
             component: ({ data: { id } }) => (
                 <ChekBox
-                    className="m-r-16"
                     id="selectedLevels"
                     value={selectedLevels}
                     checkBoxValue={id}

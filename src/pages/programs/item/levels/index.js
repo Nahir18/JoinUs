@@ -21,7 +21,7 @@ class Levels extends Component {
             isLoaded: false,
             programData: {},
             levels: [],
-            items: []
+            items: [],
         }
     }
 
@@ -72,9 +72,8 @@ class Levels extends Component {
         push(`${id}/${nestedLevel ? "stage" : "level"}/general`)
     }
     checkLevels = (value, id) => {
-        console.log(value)
         this.setState({
-            [id]: value
+            selectedLevels: value
         })
     }
     saveNewLevel = async () => {
