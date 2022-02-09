@@ -71,7 +71,7 @@ class ProgramsList extends Component {
                 links={LEVELS_LINKS}
             >
                     <NavLink
-                        className="blue btn width-m flex items-center my-3 ml-4"
+                        className="blue btn width-m flex items-center my-3 ml-4 mt-8"
                         to="/programs/new_program/general"
                     >
                         + Добавить программу

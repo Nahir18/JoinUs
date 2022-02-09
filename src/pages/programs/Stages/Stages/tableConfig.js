@@ -46,7 +46,7 @@ export const settings = (handleEdit, tierUp, tierDown, handleDeleteItem) => [
         id: 2,
         key: "stage_name",
         name: "Этап",
-        size: "30%"
+        size: "25%"
     },
     {
         id: 3,

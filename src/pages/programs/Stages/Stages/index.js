@@ -21,7 +21,7 @@ class levelStages extends Component {
             error: false,
             editModal: false,
             isLoaded: false,
-            addStageModal: true,
+            addStageModal: false,
             levelData: {},
             selectedStage: [],
             modalData: {},
@@ -217,16 +217,11 @@ class levelStages extends Component {
     }
     appListData = () => {
         const { programs, stages, levels } = this.state
-        // console.log("levels:", levels)
-        console.log("programs:", programs)
-        // console.log("stages:", stages)
         return stages.map((item) => {
             const { level } = item
             const levelData = levels ? levels.find(({id}) => id === level) : []
             const programData = programs ? programs.find(({levels}) => levels.find(a => a === level)) : []
-            console.log(1323, programData ? programData : "")
            return  levelData ? {...item, level_name: levelData.level_name ? levelData.level_name : "", program_name: programData ? programData.program_name : "" } : item
-           // return  item
         })
     }
     render() {
