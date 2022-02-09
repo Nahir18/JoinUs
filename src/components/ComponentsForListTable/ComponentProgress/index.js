@@ -26,7 +26,9 @@ const Progress = ({data}) => {
   }, [adaptation_status, detail])
 
   const getProgramName = useMemo(() => {
-    return programList.find(({id}) => id === program[0]).program_name
+    if (programList && programList.length > 0) {
+     return programList.find(({id}) => id === program[0]).program_name
+    }
   }, [programList, program])
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const Progress = ({data}) => {
   return (
     <div>
       <div
-        className="fs-12 color-light-blue-2 p-b-6"
+        className="fs-12 color-light-blue-2 p-b-6 font-normal"
       >
         {getProgramName}
       </div>
