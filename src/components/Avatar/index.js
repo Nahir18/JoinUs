@@ -14,23 +14,29 @@ const Avatar = ({className, ...props}) => {
       className={`relative flex flex-row items-center justify-center ${className}`}
     >
       <FileInputController {...props} containerRef={refContainer}>
-        {({value: [avatar], onEdit}) =>
+        {({value, onEdit}) => (
           <>
-          {avatar
-            ? <div className="flex flex-col w-full h-full overflow-hidden rounded-full">
-                <img src={avatar.src} alt=""/>
-            </div>
-            : <BaseAvatarContainer
-              dangerouslySetInnerHTML={{__html: BaseAvatar}}
-              className="overflow-hidden"
+            {value && value.length > 0
+              ?
+              (value.map(({file}) => (
+                  <div className="flex flex-col w-full h-full overflow-hidden rounded-full">
+                    <img src={file} alt=""/>
+                  </div>
+                ))
+              )
+              : <BaseAvatarContainer
+                dangerouslySetInnerHTML={{__html: BaseAvatar}}
+                className="overflow-hidden"
+              />
+            }
+            <EditButton
+              onClick={onEdit}
+              className="edit-icon flex items-center justify-center"
+              dangerouslySetInnerHTML={{__html: EditIcon}}
             />
-          }
-          <EditButton
-            onClick={onEdit}
-            className="edit-icon flex items-center justify-center"
-            dangerouslySetInnerHTML={{__html: EditIcon}}
-          />
-        </>
+          </>
+        )
+
         }
       </FileInputController>
     </AvatarContainer>
