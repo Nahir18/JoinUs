@@ -27,6 +27,7 @@ const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnl
 
 const General = (props) => {
   const [data, setData] = useState({})
+  const [valueImg, setValueImg] = useState([])
 
   const { location: { pathname }, history: { push, goBack } } = props
   const pathnames = pathname.split("/").filter(x => x)
@@ -48,7 +49,6 @@ const General = (props) => {
   }, [idEmploy])
 
   const inputDataOfEmployee = (value) => {
-    console.log(value)
     setData({ ...data, ...value } )
   }
 
@@ -91,10 +91,7 @@ const General = (props) => {
   }
 
   const handleInput = useCallback((fieldValue, index) => {
-    setData(({json, ...prevData}) => ({
-      ...prevData,
-      json: PureUpdateArrayItems(json, index - 1, fieldValue)
-    }))
+    setValueImg(fieldValue)
   }, [])
 
   const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap)
@@ -110,7 +107,7 @@ const General = (props) => {
           const { formValid, onSubmit, onInput } = formProps
           return (
             <>
-              <Avatar className="mt-6 ml-6" onInput={handleInput}/>
+              <Avatar value={valueImg} className="mt-6 ml-6" onInput={handleInput}/>
               <ScrollBar>
                 <TabContainer className="flex-container">
                   <FormContainer className="m-b-24">
