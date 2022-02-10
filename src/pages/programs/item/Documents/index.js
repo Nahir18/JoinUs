@@ -243,6 +243,9 @@ class Documents extends Component {
             this.loadPageData()
         }
     }
+    addPhoto = () => {
+        console.log("oeifjwofw")
+    }
     pageHeaderTitle = (program_name) => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
@@ -268,7 +271,8 @@ class Documents extends Component {
         const {
             actionButtonTierUp,
             actionButtonTierDown,
-            pageHeaderTitle
+            pageHeaderTitle,
+            addPhoto
         } = this
         return (
                 <PageHeader
@@ -319,7 +323,11 @@ class Documents extends Component {
                                     className="pt-8"
                                 >
                                     <PhotoFiles
-                                        value={[document_link]}
+                                        value={[{
+                                            file: document_link,
+                                            remark: "208fa5deaf6572a184166690f1357f8b.jpg"
+                                        }]}
+                                        onInput={addPhoto}
                                     />
                                 </div>
                             </div>
