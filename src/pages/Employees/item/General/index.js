@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {fieldMap, rules} from "./formConfig";
 import Form from "@Components/Forms/index"
@@ -9,6 +9,7 @@ import memoizeOne from "memoize-one";
 import axios from "axios";
 import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import Avatar from "../../../../components/Avatar";
+import PureUpdateArrayItems from "../../../../utils/Arrays/PureUpdateArrayItems";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
 .reduce((acc, c) => {
@@ -24,68 +25,59 @@ const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnl
   return acc
 }, [[], []]))
 
-class General extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: {}
-    }
-  }
-  componentDidMount() {
-    const { location: { pathname } } = this.props
-    const pathnames = pathname.split("/").filter(x => x)
-    const idEmploy = pathnames[1] !== "new_employ" ? `${pathnames[1]}` : ""
-    if (pathnames[1] !== "new_employ") {
+const General = (props) => {
+  const [data, setData] = useState({})
+
+  const { location: { pathname }, history: { push, goBack } } = props
+  const pathnames = pathname.split("/").filter(x => x)
+  const newEmploy = pathnames[1] === "new_employ"
+  const idEmploy = newEmploy ? "" : `${pathnames[1]}`
+
+  useEffect(() => {
+    if (!newEmploy) {
       axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
       .then(
         (response) => {
-          this.setState({
-            isLoaded: true,
-            data: response.data
-          })
+          setData(response.data)
         },
         (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          })
+         console.log(error)
         }
       )
     }
+  }, [idEmploy])
+
+  const inputDataOfEmployee = (value) => {
+    console.log(value)
+    setData({ ...data, ...value } )
   }
-  inputDataOfEmployee = (value) => {
-    this.setState(({ data }) => ({ data: { ...data, ...value } }))
-  }
-  saveDataOfEmployee = async (payload) => {
-    const { location: { pathname }, history: { push } } = this.props
-    const pathnames = pathname.split("/").filter(x => x)
-    const newEmploy = pathnames[1] === "new_employ"
-    const idEmploy = newEmploy ? "" : `${pathnames[1]}/`
+
+  const saveDataOfEmployee = async (payload) => {
     try {
       const result = await axios[newEmploy ? "post" : "put"](`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`,
         newEmploy
           ?
           {
-          ...payload,
-          program: [payload.program],
-          release_date: payload.release_date,
-          create_date: payload.create_date,
-          id_customer: 1,
-          id_employee: 1,
-          status: 1,
-          salary: Number(payload.salary)
-        }
-      :
-        {
-          ...payload,
-          program: payload.program,
-          release_date: payload.release_date,
-          create_date: payload.create_date,
-          salary: Number(payload.salary),
-          illustration: payload.illustration ? payload.illustration : "string",
-        }
+            ...payload,
+            program: [payload.program],
+            release_date: payload.release_date,
+            create_date: payload.create_date,
+            id_customer: 1,
+            id_employee: 1,
+            status: 1,
+            salary: Number(payload.salary)
+          }
+          :
+          {
+            ...payload,
+            program: payload.program,
+            release_date: payload.release_date,
+            create_date: payload.create_date,
+            salary: Number(payload.salary),
+            illustration: payload.illustration ? payload.illustration : "string",
+          }
       )
-      this.setState({data: result.data})
+      setData(result.data)
       if (newEmploy) {
         push("/employees")
       } else {
@@ -98,65 +90,69 @@ class General extends Component {
     }
   }
 
-  render() {
-    const { state: { data }, props: { history: { goBack } },  }= this
-    const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap)
-    return (
-      <div className="flex-container hidden">
-        <WithValidationHocRenderPropAdapter
-          onInput={this.inputDataOfEmployee}
-          onSubmit={this.saveDataOfEmployee}
-          value={data}
-          rules={rules}
-        >
-          {(formProps) => {
-            const { formValid, onSubmit, onInput } = formProps
-            return (
-              <>
-                <Avatar className="mt-6 ml-6"/>
-                <ScrollBar>
-                  <TabContainer className="flex-container">
-                    <FormContainer className="m-b-24">
-                      <Form
-                        {...formProps}
-                        fields={firstForm}
-                        value={data}
-                        onInput={onInput}
-                      />
-                      <Form
-                        {...formProps}
-                        fields={SecondForm}
-                        value={data}
-                        onInput={onInput}
-                      />
-                    </FormContainer>
-                    <div className="flex justify-end mt-auto p-b-24">
-                      <button
-                        name="cancel"
-                        type="submit"
-                        onClick={() => goBack()}
-                        className="grey btn width-m m-r-16"
-                      >
-                        Отмена
-                      </button>
-                      <button
-                        name="save"
-                        type="submit"
-                        className="blue btn width-m"
-                        onClick={onSubmit}
-                      >
-                        Сохранить
-                      </button>
-                    </div>
-                  </TabContainer>
-                </ScrollBar>
-              </>
-            )
-          }}
-        </WithValidationHocRenderPropAdapter>
-      </div>
-    );
-  }
+  const handleInput = useCallback((fieldValue, index) => {
+    setData(({json, ...prevData}) => ({
+      ...prevData,
+      json: PureUpdateArrayItems(json, index - 1, fieldValue)
+    }))
+  }, [])
+
+  const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap)
+  return (
+    <div className="flex-container hidden">
+      <WithValidationHocRenderPropAdapter
+        onInput={inputDataOfEmployee}
+        onSubmit={saveDataOfEmployee}
+        value={data}
+        rules={rules}
+      >
+        {(formProps) => {
+          const { formValid, onSubmit, onInput } = formProps
+          return (
+            <>
+              <Avatar className="mt-6 ml-6" onInput={handleInput}/>
+              <ScrollBar>
+                <TabContainer className="flex-container">
+                  <FormContainer className="m-b-24">
+                    <Form
+                      {...formProps}
+                      fields={firstForm}
+                      value={data}
+                      onInput={onInput}
+                    />
+                    <Form
+                      {...formProps}
+                      fields={SecondForm}
+                      value={data}
+                      onInput={onInput}
+                    />
+                  </FormContainer>
+                  <div className="flex justify-end mt-auto p-b-24">
+                    <button
+                      name="cancel"
+                      type="submit"
+                      onClick={() => goBack()}
+                      className="grey btn width-m m-r-16"
+                    >
+                      Отмена
+                    </button>
+                    <button
+                      name="save"
+                      type="submit"
+                      className="blue btn width-m"
+                      onClick={onSubmit}
+                    >
+                      Сохранить
+                    </button>
+                  </div>
+                </TabContainer>
+              </ScrollBar>
+            </>
+          )
+        }}
+      </WithValidationHocRenderPropAdapter>
+    </div>
+  )
 }
 
 General.propTypes = {};
