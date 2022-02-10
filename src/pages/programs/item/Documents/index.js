@@ -110,7 +110,8 @@ class Documents extends Component {
             )
         this.loadPageData()
         this.setState({
-            editModal: false
+            editModal: false,
+            modalData: []
         })
     }
     saveSelectedDocuments = () => {
@@ -192,7 +193,7 @@ class Documents extends Component {
             modalData: { ...modalData, tier: tier > 1 ? tier - 1 : tier}
         })
     }
-    closeModal = () => this.setState({editModal: false})
+    closeModal = () => this.setState({editModal: false, modalData: []})
     deleteItem = async (deleteItemId) => {
         const {
             location: { pathname }
@@ -243,8 +244,12 @@ class Documents extends Component {
             this.loadPageData()
         }
     }
-    addPhoto = () => {
-        console.log("oeifjwofw")
+    addPhoto = (value) => {
+        console.log(value)
+        const { modalData } = this.state
+        this.setState({
+            modalData: {...modalData, document_link: value[0].file}
+        })
     }
     pageHeaderTitle = (program_name) => {
         const { location: { pathname } } = this.props
@@ -325,7 +330,8 @@ class Documents extends Component {
                                     <PhotoFiles
                                         value={[{
                                             file: document_link,
-                                            remark: "208fa5deaf6572a184166690f1357f8b.jpg"
+                                            // file: "/files/208fa5deaf6572a184166690f1357f8b_fwJFERM.jpg",
+                                            // remark: "208fa5deaf6572a184166690f1357f8b.jpg"
                                         }]}
                                         onInput={addPhoto}
                                     />
