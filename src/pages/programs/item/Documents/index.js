@@ -245,7 +245,6 @@ class Documents extends Component {
         }
     }
     addPhoto = (value) => {
-        console.log(value)
         const { modalData } = this.state
         this.setState({
             modalData: {...modalData, document_link: value[0].file}
@@ -330,8 +329,6 @@ class Documents extends Component {
                                     <PhotoFiles
                                         value={[{
                                             file: document_link,
-                                            // file: "/files/208fa5deaf6572a184166690f1357f8b_fwJFERM.jpg",
-                                            // remark: "208fa5deaf6572a184166690f1357f8b.jpg"
                                         }]}
                                         onInput={addPhoto}
                                     />
@@ -404,7 +401,7 @@ class Documents extends Component {
                             data={documents}
                         />
                     </Modal>
-                    <div className="pt-8 pb-6 pl-4 flex">
+                    <div className="pt-6 pb-6 pl-4 flex">
                         <button
                             className="blue btn width-m pt-1.5"
                             onClick={() => ({})}

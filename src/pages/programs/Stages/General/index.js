@@ -194,9 +194,13 @@ class LevelsGeneral extends Component {
         const newLevel = pathnames[3] === "level"
         return newLevel ? "Новый уровень" : level_name ? `Уровень "${pageTitle}"` : ""
     }
+    addAvatar = (value) => {
+        const { data } = this.state
+        this.setState({data: {...data, illustration: value[0].file}})
+    }
   render() {
     const {history: {goBack}} = this.props
-    const {creatorModal, modalState, employees, data, data: {id_employee, level_name}} = this.state
+    const {creatorModal, modalState, employees, data, data: {id_employee, level_name, illustration}} = this.state
     const {tierUp, tierDown, pageHeaderTitle} = this
     const toggleCreatorModal = () => {
       this.setState({creatorModal: !creatorModal})
@@ -240,6 +244,10 @@ class LevelsGeneral extends Component {
                 >
                     <Avatar
                         className="mt-6 ml-6 mb-6"
+                        value={illustration ? [{
+                            file: illustration
+                        }] : []}
+                        onInput={this.addAvatar}
                     />
                   <FormContainer>
                     <Form

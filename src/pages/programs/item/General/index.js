@@ -49,10 +49,19 @@ class General extends Component {
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
-    componentDidMount() {
+    isNewProgram = () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}` : ""
+        return pathnames[1] === NEW_PROGRAM
+    }
+
+    programID = () => {
+        const { location: { pathname } } = this.props
+        const pathnames = pathname.split("/").filter(x => x)
+        return !this.isNewProgram() ? `/${pathnames[2]}` : ""
+    }
+
+    componentDidMount() {
         axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
             .then(
                 (response) => {
@@ -84,8 +93,8 @@ class General extends Component {
                     })
                 }
             )
-        if (pathnames[1] !== "new_program") {
-            axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`)
+        if (!this.isNewProgram()) {
+            axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programID()}`)
                 .then(
                     (response) => {
                         this.setState({
@@ -129,24 +138,25 @@ class General extends Component {
     }
 
     saveNewProgram () {
-        const { location: { pathname }, history: { push } } = this.props
-        const { data, data: { program_name, description, duration_day, tier, status, create_date, employee, contact, customer } } = this.state
-        const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[1] === "new_program"
-        const idProgram = newProgram ? "/" : `/${pathnames[2]}/`
-        axios[newProgram ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newProgram ?
-            {...data, status: 1, create_date: EditDateForSave(data.create_date, CREATE_DATE_FORMAT)} :
+        const { history: { push } } = this.props
+        const { data, data: { program_name, description, duration_day, tier, status, create_date, employee, contact, customer, illustration } } = this.state
+        const newData = {
+            create_date: EditDateForSave(create_date, CREATE_DATE_FORMAT),
+            program_name,
+            duration_day,
+            description,
+            tier: tier || 1,
+            status,
+            employee,
+            contact,
+            customer
+        }
+        axios[this.isNewProgram() ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programID()}/`, this.isNewProgram() ?
             {
-                create_date: EditDateForSave(create_date, CREATE_DATE_FORMAT),
-                program_name,
-                duration_day,
-                description,
-                tier: tier || 1,
-                status,
-                employee,
-                contact,
-                customer
-            }
+                ...data,
+                status: 1,
+                create_date: EditDateForSave(data.create_date, CREATE_DATE_FORMAT)
+            } : illustration ? {...newData, illustration} : newData
         )
             .then(
                 (response) => {
@@ -155,7 +165,7 @@ class General extends Component {
                         isLoaded: true,
                         data: data
                     })
-                    newProgram ?
+                    this.isNewProgram() ?
                         push("/programs") :
                         push(`/programs/${program_name}/${id}/general`)
 
@@ -198,14 +208,13 @@ class General extends Component {
             modalState: creatorModal ? [] : employee
         })
     }
-    isNewProgram = () => {
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        return pathnames[1] === NEW_PROGRAM
+    addAvatar = (value) => {
+        const { data } = this.state
+        this.setState({data: {...data, illustration: value[0].file}})
     }
     render() {
         const { history: { goBack } } = this.props
-        const { clientModal, creatorModal, modalState, data, customers, employees, isLoaded, data: { customer = [], employee, program_name } } = this.state
+        const { clientModal, creatorModal, modalState, data, customers, employees, isLoaded, data: { customer = [], employee, program_name, illustration } } = this.state
         const { toggleModal, toggleCreatorModal, isNewProgram } = this
         const customerValue = isLoaded ? customers.find((a) => a.id === customer[0]) : {}
         const employeeValue = isLoaded ? employee && employees.find((a) => a.id === employee) : {}
@@ -266,7 +275,13 @@ class General extends Component {
                         const { formValid, onSubmit, onInput } = formProps
                           return (
                             <>
-                                <Avatar className="mt-6 ml-6 mb-6"/>
+                                <Avatar
+                                    className="mt-6 ml-6 mb-6"
+                                    value={illustration ? [{
+                                        file: illustration
+                                    }] : []}
+                                    onInput={this.addAvatar}
+                                />
                                 <ScrollBar>
                                     <TabContainer>
                                         <FormContainer>
