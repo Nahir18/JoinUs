@@ -8,6 +8,7 @@ export const FormContainer = styled.div`
   grid-column-gap: 24px;
   --indent-bottom-for-form: 16px;
   margin-bottom: 24px;
+  height: 100%;
 `
 
 export const TabContainer = styled.div`

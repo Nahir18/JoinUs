@@ -2,7 +2,7 @@ import React, {useRef, useEffect, useState, useCallback, useMemo} from 'react';
 import dayjs from "dayjs"
 import axios from "axios";
 import PropTypes from 'prop-types';
-import {UPLOADS, DEFAULT_URL} from "../../APIList";
+import {UPLOADS, DEFAULT_URL, DEFAULT_URL_FOR_FILE} from "../../APIList";
 
 import uniqueId from "lodash/uniqueId";
 import Pipe from '../../../utils/FunctionsCall/pipe'
@@ -183,7 +183,7 @@ const FileInputController = ({
       }
     })
     // return tempVal.map((v) => ({...v, file: `http://localhost/${v.file}`}))
-    return tempVal.map((v) => ({...v, file: `${DEFAULT_URL}/${v.file}`}))
+    return tempVal.map((v) => ({...v, file: `${DEFAULT_URL_FOR_FILE}${v.file}`}))
   }, [tempFiles, value])
 
   const onDelete = useCallback((index) => {

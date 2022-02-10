@@ -21,15 +21,15 @@ class ModalSidebar extends Component {
                             />
                         </div>
                         <div
-                            className="font-bold text-2xl flex justify-center"
+                            className="font-bold fs-24 flex justify-center m-b-32"
                         >
                             {title}
                         </div>
                         {children}
                     </div>
-                    <div className="mb-12 mt-14 flex justify-around">
+                    <div className="m-b-32 m-t-40 flex justify-center">
                         <button
-                            className="grey btn width-m"
+                            className="grey btn width-m m-r-16"
                             onClick={closeModal}
                         >
                             Отмена

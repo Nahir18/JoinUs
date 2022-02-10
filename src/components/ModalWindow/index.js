@@ -15,11 +15,11 @@ class ModalWindow extends Component {
             onClick={closeModal}
           />
           <div className="px-10 flex-container overflow-hidden">
-            <div className="font-bold text-2xl flex justify-center">
+            <div className="font-bold fs-24 flex justify-center m-b-32">
               {title}
             </div>
             {children}
-            <div className="mb-12 mt-14 flex justify-center">
+            <div className="m-b-32 m-t-40 flex justify-center">
               <button
                 className="grey btn width-m mr-4"
                 onClick={closeModal}
