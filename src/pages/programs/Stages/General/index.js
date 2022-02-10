@@ -3,9 +3,10 @@ import memoizeOne from "memoize-one";
 import Form from "@Components/Forms/index"
 import PropTypes from "prop-types"
 import ModalSidebar from "../../../../components/ModalSidebar";
+import RadioButton from "../../../../components/RadioButton";
 import {WithValidationHocRenderPropAdapter} from "../../../../Validator";
 import {fieldMap, rules} from "./formConfig";
-import {FormContainer, TabContainer} from "../../item/General/style"
+import {FormContainer} from "../../item/General/style"
 import axios from "axios";
 import { ADAPTATION_EMPLOYEE, ADAPTATION_LEVELS, ADAPTATION_PROGRAM, DEFAULT_URL } from "../../../../components/APIList";
 import Avatar from "../../../../components/Avatar";
@@ -14,7 +15,6 @@ import PageHeader from "../../../../components/PageHeader";
 import {LEVELS_LINKS} from "../../Constants";
 import AppList from "../../../../components/AppList";
 import { employeesModalConfig } from "../../item/General/employeesModalConfig";
-import ScrollBar from "@Components/ScrollBar"
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
   .reduce((acc, c) => {
@@ -234,45 +234,49 @@ class LevelsGeneral extends Component {
           {(formProps) => {
             const {formValid, onSubmit, onInput} = formProps
             return (
-              <>
-                <Avatar className="mt-6 ml-6 mb-6"/>
-                <ScrollBar>
-                  <TabContainer>
-                    <FormContainer>
-                      <Form
-                        {...formProps}
-                        fields={firstForm}
-                        value={data}
-                        onInput={onInput}
-                      />
-                      <Form
-                        {...formProps}
-                        fields={SecondForm}
-                        value={data}
-                        onInput={onInput}
-                      />
-                    </FormContainer>
-                    <div className="flex justify-end p-b-24">
-                      <div
-                        onClick={() => goBack()}
-                        name="cancel"
-                        type="submit"
-                        className="grey btn width-m m-r-16"
-                      >
-                        Отмена
-                      </div>
-                      <button
-                        onClick={() => this.saveNewLevel()}
-                        name="save"
-                        type="submit"
-                        className="blue btn width-m"
-                      >
-                        Сохранить
-                      </button>
-                    </div>
-                  </TabContainer>
-                </ScrollBar>
-              </>
+              <div className="h-full flex flex-col justify-between">
+                <div
+                  className="mx-8"
+                >
+                    <Avatar
+                        className="mt-6 ml-6 mb-6"
+                    />
+                  <FormContainer>
+                    <Form
+                      {...formProps}
+                      fields={firstForm}
+                      value={data}
+                      onInput={onInput}
+                    />
+                    <Form
+                      {...formProps}
+                      fields={SecondForm}
+                      value={data}
+                      onInput={onInput}
+                    />
+                  </FormContainer>
+                </div>
+                <div
+                  className="flex justify-end pb-20 pr-8 pt-8"
+                >
+                  <div
+                    onClick={() => goBack()}
+                    name="cancel"
+                    type="submit"
+                    className="grey btn width-m m-r-16"
+                  >
+                    Отмена
+                  </div>
+                  <button
+                    onClick={() => this.saveNewLevel()}
+                    name="save"
+                    type="submit"
+                    className="blue btn width-m"
+                  >
+                    Сохранить
+                  </button>
+                </div>
+              </div>
             )
           }}
         </WithValidationHocRenderPropAdapter>
