@@ -79,13 +79,13 @@ export const settings = (editModal, closeModal, handleEdit) => [
         key: "description",
         allData: true,
         name: "Действия",
-        component: ({rowIndex, data}) => (
+        component: ({rowindex, data}) => (
             <Actions
                 data={data}
                 editModal={editModal}
                 closeModal={closeModal}
                 handleEdit={handleEdit}
-                rowIndex={rowIndex}
+                rowindex={rowindex}
             />
         ),
         size: "30%"

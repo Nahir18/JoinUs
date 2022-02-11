@@ -73,7 +73,7 @@ const Blocks = (props) => {
   }, [])
 
   const handleDelete = useCallback((fieldValue, index) => {
-    setData(({json, ...prevData}) => ({...prevData, json: PureDeleteItems(json, index - 1)}))
+    setData(({json, ...prevData}) => ({...prevData, json: PureDeleteItems(json, index)}))
   }, [])
 
   const handleCreate = useCallback((type) => {
@@ -106,7 +106,7 @@ const Blocks = (props) => {
                   onInput={handleInput}
                   className={index === 0 ? "" : "mt-10"}
                   onMove={handleMoveItem}
-                  onDelete={handleDelete}
+                  onDelete={() => handleDelete(value, index)}
                   environmentState={data.json}
                   // onEdit={handleEdit}
                 />

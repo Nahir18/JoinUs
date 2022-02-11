@@ -12,14 +12,14 @@ export const selectDocumentModalConfig = (selectedDocuments, checkNewDocument) =
             id: 2,
             key: "document_name",
             name: "Наименование документа",
-            size: "45%"
+            size: "80%"
         },
-        {
-            id: 3,
-            key: "document_name",
-            name: "Наименование программы",
-            size: "35%"
-        },
+        // {
+        //     id: 3,
+        //     key: "document_name",
+        //     name: "Наименование программы",
+        //     size: "35%"
+        // },
         {
             id: 4,
             key: "",
