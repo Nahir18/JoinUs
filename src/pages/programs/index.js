@@ -13,7 +13,6 @@ import StagesGeneral from "./Levels/General"
 import LevelsProgramsList from "./Stages/ProgramsList"
 import Blocks from "./Levels/Blocks"
 import LevelsList from "./Levels/LevelsList"
-import {NEW_PROGRAM} from "./Constants";
 
 const Programs = (props) => {
     const { location: { pathname } } = props

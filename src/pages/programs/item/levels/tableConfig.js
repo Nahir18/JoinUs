@@ -15,14 +15,14 @@ export const settings = (editStage, deleteButton, actionButtonTierUp, actionButt
             id: 2,
             key: "duration_day",
             name: "Дней этапа",
-            nestedLevel: 1,
+            nestedlevel: 1,
             size: "15%"
         },
         {
             id: 3,
             key: "point",
             name: "Баллов",
-            nestedLevel: 1,
+            nestedlevel: 1,
             size: "15%"
         },
         {
@@ -30,13 +30,13 @@ export const settings = (editStage, deleteButton, actionButtonTierUp, actionButt
             key: "status",
             name: "Статус",
             component: StatusIndicator,
-            nestedLevel: 1,
+            nestedlevel: 1,
             size: "15%"
         },
         {
             id: 5,
             name: "Действия",
-            // nestedLevel: 1,
+            // nestedlevel: 1,
             allData: true,
             size: "25%",
             component: (props) => (

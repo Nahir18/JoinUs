@@ -66,10 +66,10 @@ class Levels extends Component {
             editModal: !editModal
         })
     }
-    editStage = (data, nestedLevel) => {
+    editStage = (data, nestedlevel) => {
         const { id } = data
         const { history: { push } } = this.props
-        push(`${id}/${nestedLevel ? "stage" : "level"}/general`)
+        push(`${id}/${nestedlevel ? "stage" : "level"}/general`)
     }
     checkLevels = (value, id) => {
         this.setState({
@@ -114,7 +114,7 @@ class Levels extends Component {
             })
         }
     }
-    deleteItem = async (value, nestedLevel) => {
+    deleteItem = async (value, nestedlevel) => {
         const { id: deleteItemID } = value
         const { programData: { levels, program_name, create_date, id, status, tier, employee, duration_day, description } } = this.state
         const {
@@ -122,7 +122,7 @@ class Levels extends Component {
         } = this.props
         const pathnames = pathname.split("/").filter(x => x)
         const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
-        if (!nestedLevel) {
+        if (!nestedlevel) {
             const newData = {
                 levels: levels.filter(item => item !== deleteItemID),
                 program_name,
