@@ -52,7 +52,6 @@ const FileInputController = ({
         FData.append("file", fileData);
         FData.append("remark", fileData.remark);
         return axios.post(`${DEFAULT_URL}/${UPLOADS}/`, FData, {
-        // return axios.post(`http://localhost/api-active/${UPLOADS}/`, FData, {
           onUploadProgress: progressUpload(files),
         })
       }))).map(v => v.data)
@@ -100,7 +99,6 @@ const FileInputController = ({
         return acc
       },
       {allowed: [], rejected: []})
-
 
     if (rejected.length > 0) {
       setRejectedFiles(rejected.reduce((acc, {message}, i) => `${i + 1}: ${acc}. ${message}\n`))
@@ -182,7 +180,6 @@ const FileInputController = ({
         tempVal.push(item)
       }
     })
-    // return tempVal.map((v) => ({...v, file: `http://localhost/${v.file}`}))
     return tempVal.map((v) => ({...v, file: `${DEFAULT_URL_FOR_FILE}${v.file}`}))
   }, [tempFiles, value])
 
@@ -202,7 +199,6 @@ const FileInputController = ({
     return uploadFiles([tempFiles.findIndex(v=> v.id === deletedValue.id)])
   },[mergedValue, tempFiles, uploadFiles])
 
-
   return (
     <>
       {children({
@@ -211,7 +207,7 @@ const FileInputController = ({
         onEdit: focusInput,
         onDelete,
         onDeleteTempFile,
-        onReUpload
+        onReUpload,
       })}
       <input
         className="hidden"

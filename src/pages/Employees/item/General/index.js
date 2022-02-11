@@ -32,7 +32,7 @@ const General = (props) => {
   const { location: { pathname }, history: { push, goBack } } = props
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
-  const idEmploy = newEmploy ? "" : `${pathnames[1]}`
+  const idEmploy = newEmploy ? "" : `${pathnames[1]}/`
 
   useEffect(() => {
     if (!newEmploy) {
@@ -51,7 +51,9 @@ const General = (props) => {
   const inputDataOfEmployee = (value) => {
     setData({ ...data, ...value } )
   }
-
+// todo переделать сохранение файла и выгрузку его
+  // todo чистить payload от null, пустых массивов и объектов
+  // чтобы если illustration не был изменен не отправлять его
   const saveDataOfEmployee = async (payload) => {
     try {
       const result = await axios[newEmploy ? "post" : "put"](`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`,
@@ -74,7 +76,6 @@ const General = (props) => {
             release_date: payload.release_date,
             create_date: payload.create_date,
             salary: Number(payload.salary),
-            illustration: payload.illustration ? payload.illustration : "string",
           }
       )
       setData(result.data)
@@ -91,7 +92,10 @@ const General = (props) => {
   }
 
   const handleInput = useCallback((fieldValue, index) => {
-    setValueImg(fieldValue)
+    setData(({...prevData}) => ({
+      ...prevData,
+      illustration: fieldValue[0].file
+    }))
   }, [])
 
   const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap)
@@ -107,7 +111,13 @@ const General = (props) => {
           const { formValid, onSubmit, onInput } = formProps
           return (
             <>
-              <Avatar value={valueImg} className="mt-6 ml-6" onInput={handleInput}/>
+              <Avatar
+                value={data.illustration ? [{
+                  file: data.illustration
+                }] : []}
+                className="mt-6 ml-6"
+                onInput={handleInput}
+              />
               <ScrollBar>
                 <TabContainer className="flex-container">
                   <FormContainer className="m-b-24">

@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types"
 import styled from "styled-components"
-
-const ImgStyle = {
-  width: "24px",
-  height: "24px",
-  minWidth: "24px",
-  minHeight: "24px"
-}
+import MinAvatar from "../../MinAvatar";
 
 const Wrapper = styled.div`
   .addHover {
@@ -27,11 +21,7 @@ const CardForUser = ({data, addHover}) => {
   return (
     <Wrapper className="flex" addHover={addHover}>
       <div className="items-center flex">
-        <img
-          style={ImgStyle}
-          src={img ? img : "../assets/img/associated_photo.png"}
-          alt=""
-        />
+        <MinAvatar value={img}/>
       </div>
       <div className="p-l-12">
         <div
