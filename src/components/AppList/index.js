@@ -20,14 +20,16 @@ class AppList extends Component {
                 const rowData = data[i]
                 result.push(
                   <>
-                    <div className={`${nestedData && "bg-color-light-blue"}`}>
+                    <div
+                        className={`${nestedData && "bg-color-light-blue"}`}
+                        key={i}
+                    >
                       <Row
                         className=""
-                        key={i}
                         settings={settings}
                         data={rowData}
-                        nestedLevel={0}
-                        rowIndex={i}
+                        nestedlevel={0}
+                        rowindex={i}
                         nestedData={nestedData}
                         gridStyle={gridStyle}
                         rowClass="font-bold my-4 mx-4 flex justify-start"
@@ -40,8 +42,8 @@ class AppList extends Component {
                             settings={settings}
                             key={`${i}-${index}`}
                             data={a}
-                            nestedLevel={1}
-                            rowIndex={index}
+                            nestedlevel={1}
+                            rowindex={index}
                             parentIndex={i}
                             gridStyle={gridStyle}
                             rowClass="my-4 flex justify-start font-semibold"

@@ -72,14 +72,14 @@ export const settings = (handleEdit, tierUp, tierDown, handleDeleteItem) => [
         key: "description",
         allData: true,
         name: "Действия",
-        component: ({rowIndex, data}) => (
+        component: ({rowindex, data}) => (
             <Actions
                 data={data}
                 tierUp={tierUp}
                 tierDown={tierDown}
                 handleDelete={handleDeleteItem}
                 handleEdit={handleEdit}
-                rowIndex={rowIndex}
+                rowindex={rowindex}
             />
         ),
         size: "30%"

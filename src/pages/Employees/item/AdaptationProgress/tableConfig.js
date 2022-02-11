@@ -12,21 +12,21 @@ export const settings = [
     id: 2,
     key: "duration_day",
     name: "Дней этапа",
-    nestedLevel: 1,
+    nestedlevel: 1,
     size: "150px"
   },
   {
     id: 3,
     key: "point",
     name: "Баллов",
-    nestedLevel: 1,
+    nestedlevel: 1,
     size: "150px"
   },
   {
     id: 4,
     key: "create_date",
     name: "Дата прохождения",
-    nestedLevel: 1,
+    nestedlevel: 1,
     size: "1fr",
     component: DisplayDate
   },
@@ -34,7 +34,7 @@ export const settings = [
     id: 5,
     key: "STATUS",
     name: "Статус",
-    nestedLevel: 1,
+    nestedlevel: 1,
     size: "1fr",
     component: Status,
   },
@@ -49,7 +49,7 @@ export const settings = [
         </div>
       )
     },
-    nestedLevel: 1,
+    nestedlevel: 1,
     size: "1fr"
   },
 ]

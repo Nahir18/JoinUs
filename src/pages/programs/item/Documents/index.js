@@ -244,11 +244,13 @@ class Documents extends Component {
             this.loadPageData()
         }
     }
-    addPhoto = (value) => {
+    addDocumentFile = (value) => {
         const { modalData } = this.state
+        console.log(value)
+        value.length ?
         this.setState({
             modalData: {...modalData, document_link: value[0].file}
-        })
+        }) : this.setState({modalData: {...modalData, document_link: 0}})
     }
     pageHeaderTitle = (program_name) => {
         const { location: { pathname } } = this.props
@@ -276,7 +278,7 @@ class Documents extends Component {
             actionButtonTierUp,
             actionButtonTierDown,
             pageHeaderTitle,
-            addPhoto
+            addDocumentFile
         } = this
         return (
                 <PageHeader
@@ -330,7 +332,7 @@ class Documents extends Component {
                                         value={[{
                                             file: document_link,
                                         }]}
-                                        onInput={addPhoto}
+                                        onInput={addDocumentFile}
                                     />
                                 </div>
                             </div>
