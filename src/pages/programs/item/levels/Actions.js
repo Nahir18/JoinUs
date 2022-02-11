@@ -5,18 +5,18 @@ import {ActionsForm} from "./style";
 
 class Actions extends Component {
     render() {
-        const { editButton, data, data: { tier }, nestedLevel, deleteButton, tierUp, tierDown } = this.props
+        const { editButton, data, data: { tier }, nestedlevel, deleteButton, tierUp, tierDown } = this.props
         const iconColor = tier <= 1 ? "0.3" : ""
         return (
             <ActionsForm className="icon-container transition-icon cursor a-i-center flex">
                 <div
-                    onClick={() => editButton(data, nestedLevel)}
+                    onClick={() => editButton(data, nestedlevel)}
                     className="edit-icon"
                     dangerouslySetInnerHTML={{__html: EditIcon}}
                 />
                 <div
                     className="flex a-i-center j-c-center ml-7"
-                    style={!nestedLevel ? {"display": "none"} : {}}
+                    style={!nestedlevel ? {"display": "none"} : {}}
                 >
                          <div
                              className="arrow-icon"
@@ -31,7 +31,7 @@ class Actions extends Component {
                          />
                  </div>
                 <div
-                    onClick={() => deleteButton(data, nestedLevel)}
+                    onClick={() => deleteButton(data, nestedlevel)}
                     className="trash-icon ml-7"
                     dangerouslySetInnerHTML={{__html: Trash}}
                 />

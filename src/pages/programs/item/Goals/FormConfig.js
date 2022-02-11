@@ -68,7 +68,7 @@ export const settings = (editModal, closeModal, handleEdit, actionButtonTierUp, 
         key: "description",
         allData: true,
         name: "Действия",
-        component: ({rowIndex, data}) => (
+        component: ({rowindex, data}) => (
             <DocumentActions
                 data={data}
                 actionButtonTierUp={actionButtonTierUp}
@@ -77,7 +77,7 @@ export const settings = (editModal, closeModal, handleEdit, actionButtonTierUp, 
                 editModal={editModal}
                 closeModal={closeModal}
                 handleEdit={handleEdit}
-                rowIndex={rowIndex}
+                rowindex={rowindex}
             />
         ),
         size: "30%"
