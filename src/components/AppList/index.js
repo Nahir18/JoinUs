@@ -19,7 +19,9 @@ class AppList extends Component {
             for (let i = 0; i < data.length; i++) {
                 const rowData = data[i]
                 result.push(
-                  <>
+                  <div
+                      key={`table-${i}`}
+                  >
                     <div
                         className={`${nestedData && "bg-color-light-blue"}`}
                         key={i}
@@ -50,7 +52,7 @@ class AppList extends Component {
                           />
                         )})
                     }
-                  </>
+                  </div>
                 )
             }
             return result

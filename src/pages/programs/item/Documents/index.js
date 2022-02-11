@@ -16,6 +16,7 @@ import PageHeader from "../../../../components/PageHeader";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
+import DocumentPhoto from "../../../../components/DocumentPhoto"
 
 class Documents extends Component {
 
@@ -328,7 +329,7 @@ class Documents extends Component {
                                 <div
                                     className="pt-8"
                                 >
-                                    <PhotoFiles
+                                    <DocumentPhoto
                                         value={[{
                                             file: document_link,
                                         }]}
