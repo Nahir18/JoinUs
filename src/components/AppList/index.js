@@ -20,10 +20,12 @@ class AppList extends Component {
                 const rowData = data[i]
                 result.push(
                   <>
-                    <div className={`${nestedData && "bg-color-light-blue"}`}>
+                    <div
+                        className={`${nestedData && "bg-color-light-blue"}`}
+                        key={i}
+                    >
                       <Row
                         className=""
-                        key={i}
                         settings={settings}
                         data={rowData}
                         nestedLevel={0}
