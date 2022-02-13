@@ -1,20 +1,19 @@
 import React, {Component} from 'react';
 import AppList from "../../../../components/AppList";
-import { DocumentIcon } from "../../../Constants";
 import axios from "axios";
 import Input from "@Components/Fields/Input"
-import ChekBox from "@Components/Fields/CheckBox"
-import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_GOALS} from "../../../../components/APIList";
+import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_GOALS, ADAPTATION_EMPLOYEE} from "../../../../components/APIList";
 import Modal from "../../../../components/ModalWindow";
-import {ModalTableBody, ModalTableHeader} from "../Documents/style";
 import { settings } from "./FormConfig";
 import ArrowInput from "../../../../components/ArrowsInput";
-import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
 import { programsBreadcrumbs } from "../../configs";
 import PageHeader from "../../../../components/PageHeader";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
+import DatePicker from "@Components/Fields/DatePicker"
 import { addGoalsModalConfig } from "./addGoalsModalConfig";
+import EditDateForSave from "../../../../utils/Date/EditDateForSave";
+import RefSelect from "@Components/Fields/RefSelect/index"
 
 class Goals extends Component {
 
@@ -26,6 +25,7 @@ class Goals extends Component {
             editModal: false,
             isLoaded: false,
             goals: [],
+            goalSelection: true,
             addGoalsModal: false,
             selectedGoals: [],
             modalData: {},
@@ -56,8 +56,7 @@ class Goals extends Component {
                 }
             )
     }
-    componentDidMount() {
-        this.loadPageData()
+    loadGoalsList = () => {
         axios.get(`${DEFAULT_URL}/${ADAPTATION_GOALS}`)
             .then(
                 (response) => {
@@ -76,11 +75,15 @@ class Goals extends Component {
                 }
             )
     }
+    componentDidMount() {
+        this.loadPageData()
+        this.loadGoalsList()
+    }
 
     handleEdit = (data) => {
         this.setState({
             editModal: true,
-            documentSelection: false,
+            goalSelection: false,
             modalData: data
         })
     }
@@ -91,10 +94,16 @@ class Goals extends Component {
         })
     }
      openGoalSelection = () => {
-        const { documentSelection } = this.state
+        const { goalSelection } = this.state
          this.setState({
-             documentSelection: !documentSelection
+             goalSelection: !goalSelection
          })
+     }
+     saveNewGoal = async () => {
+        const { modalData, modalData: { create_date } } = this.state
+        await axios.post(`${DEFAULT_URL}/${ADAPTATION_GOALS}/`, {...modalData, create_date: EditDateForSave(create_date), status: 0 })
+         this.setState({goalSelection: false})
+         this.loadGoalsList()
      }
      saveEditGoal = async ({goal_name}) => {
         const { modalData } = this.state
@@ -179,7 +188,7 @@ class Goals extends Component {
     tierUp = () => {
         const {  modalData, modalData: { tier } } = this.state
         this.setState({
-            modalData: { ...modalData, tier: tier + 1}
+            modalData: { ...modalData, tier: tier ? tier + 1 : 1}
         })
     }
     tierDown = () => {
@@ -253,8 +262,8 @@ class Goals extends Component {
             items,
             editModal,
             modalData,
-            documentSelection,
-            modalData: { goal_name, tier },
+            goalSelection,
+            modalData: { goal_name, tier, create_date },
             selectedGoals,
             addGoalsModal,
             programData: { program_name },
@@ -274,7 +283,8 @@ class Goals extends Component {
             actionButtonTierUp,
             actionButtonTierDown,
             pageHeaderTitle,
-            actionsDeleteItem
+            actionsDeleteItem,
+            saveNewGoal
         } = this
 
 
@@ -291,7 +301,7 @@ class Goals extends Component {
                 <Modal
                     isOpen={editModal}
                     title="Редактирование цели"
-                    closeModal={() => this.setState({editModal: false})}
+                    closeModal={() => this.setState({editModal: false, modalData: []})}
                     handleSave={() => saveEditGoal(modalData)}
                 >
                     <div>
@@ -328,63 +338,80 @@ class Goals extends Component {
                                     className="mt-2"
                                 />
                             </div>
-                            {/*<div*/}
-                            {/*    className="pt-8"*/}
-                            {/*>*/}
-                            {/*    <PhotoFiles*/}
-                            {/*        className="pt-8"*/}
-                            {/*    />*/}
-                            {/*</div>*/}
                         </div>
                     </div>
                 </Modal>
                 <Modal
-                    isOpen={documentSelection}
+                    isOpen={goalSelection}
                     title="Добавить цель"
                     closeModal={openGoalSelection}
-                    handleSave={() => saveEditGoal(selectedGoals)}
+                    handleSave={saveNewGoal}
                 >
-                    <ModalTableHeader>
-                        <div>№</div>
-                        <div>
-                            Наименование цели
-                        </div>
-                        <div>
-                            Наименование программы
-                        </div>
-                    </ModalTableHeader>
                     <ScrollBar>
-                        {
-                           items && items.map(({goal_name, description, id}, index) => {
-                                return (
-                                    <ModalTableBody
-                                        key={`${id}${index}`}
+                        <span
+                            className="font-normal color-light-blue-2"
+                        >
+                                Наименование цели
+                            </span>
+                        <Input
+                            value={goal_name}
+                            key="goal_name"
+                            id="goal_name"
+                            onInput={() => this.handleInputChange(document.getElementById('goal_name').value, "goal_name")}
+                            className="mt-2 font-normal"
+                        />
+                        <div className="pt-4">
+                                    <span
+                                        className="font-normal color-light-blue-2"
                                     >
-                                        <div className="flex items-center">
-                                            {index + 1}
-                                        </div>
-                                        <div className="flex items-center">
-                                            <div
-                                                className="pr-2"
-                                                dangerouslySetInnerHTML={{__html: DocumentIcon}}
-                                            />
-                                            {goal_name}
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                {description}
-                                            </div>
-                                            <ChekBox
-                                                id="selectedGoals"
-                                                value={selectedGoals}
-                                                checkBoxValue={id}
-                                                onInput={checkDocument}
-                                            />
-                                        </div>
-                                    </ModalTableBody>
-                                )
-                            })
-                        }
+                                        Номер п.п.
+                                    </span>
+                            <div className="relative">
+                                <ArrowInput
+                                    className="mt-2 font-normal"
+                                    value={tier}
+                                    top="21px"
+                                    arrowUp={this.tierUp}
+                                    arrowDown={this.tierDown}
+                                />
+                            </div>
+                            <div className="pt-4">
+                                <span
+                                    className="font-normal color-light-blue-2"
+                                >
+                                    Дата создания
+                                </span>
+                                <DatePicker
+                                    className="mt-2 font-normal"
+                                    value={create_date}
+                                    onInput={(value) => (this.setState({modalData: {...modalData, create_date: value}}))}
+                                />
+                            </div>
+                            <div
+                                className="pt-4"
+                            >
+                                 <span
+                                     className="font-normal color-light-blue-2"
+                                 >
+                                    Создатель
+                                </span>
+                                <RefSelect
+                                    className="mt-2"
+                                    labelKey="name"
+                                    valueKey="id"
+                                    value={modalData.id_employee}
+                                    onInput={(value) => (this.setState({modalData: {...modalData, id_employee: value}}))}
+                                    refLoader={async () => {
+                                       const {
+                                            data
+                                        } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
+                                        return data.map(({first_name, last_name, id}) => {
+                                            return { name: `${first_name} ${last_name}`, id }
+                                        })
+                                    }}
+                                />
+                            </div>
+                        </div>
                     </ScrollBar>
                 </Modal>
                 <Modal
@@ -403,8 +430,7 @@ class Goals extends Component {
                 <div className="pt-6 pb-6 pl-4 flex">
                     <button
                         className="blue btn width-m pt-1.5"
-                        // onClick={openGoalSelection}
-                        onClick={() => ({})}
+                        onClick={openGoalSelection}
                     >
                         + Добавить цель
                     </button>

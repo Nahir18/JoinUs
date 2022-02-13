@@ -1,22 +1,27 @@
 import React, {Component} from 'react';
 import AppList from "../../../../components/AppList";
 import "../levels/style.css"
-import {DocumentIcon} from "../../../Constants";
 import Modal from "../../../../components/ModalWindow";
 import Input from "@Components/Fields/Input"
-import ChekBox from "@Components/Fields/CheckBox"
 import axios from "axios";
-import {ADAPTATION_PROGRAM, ADAPTATION_DOCUMENT, DEFAULT_URL} from "../../../../components/APIList";
-import {ModalTableHeader, ModalTableBody} from "./style";
+import {
+    ADAPTATION_PROGRAM,
+    ADAPTATION_DOCUMENT,
+    DEFAULT_URL,
+    ADAPTATION_EMPLOYEE
+} from "../../../../components/APIList";
+import DatePicker from "@Components/Fields/DatePicker"
 import ArrowInput from "../../../../components/ArrowsInput";
 import { settings } from "./tableConfig";
-import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
 import { programsBreadcrumbs } from "../../configs";
 import PageHeader from "../../../../components/PageHeader";
 import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
 import DocumentPhoto from "../../../../components/DocumentPhoto"
+import EditDateForSave from "../../../../utils/Date/EditDateForSave";
+import Select from "../../../../components/Fields/Select";
+import RefSelect from "@Components/Fields/RefSelect/index"
 
 class Documents extends Component {
 
@@ -30,6 +35,7 @@ class Documents extends Component {
             modalData: {},
             addNewDocument: false,
             documentSelection: false,
+            employee: [],
             selectedDocuments: [],
             programData: {},
             documents: [],
@@ -60,9 +66,7 @@ class Documents extends Component {
                 }
             )
     }
-
-    componentDidMount() {
-        this.loadPageData()
+    loadDocumentList = () => {
         axios.get(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}`)
             .then(
                 (response) => {
@@ -70,6 +74,30 @@ class Documents extends Component {
                     this.setState({
                         isLoaded: true,
                         documents: data
+                    })
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    })
+                }
+            )
+    }
+
+    componentDidMount() {
+        this.loadPageData()
+        this.loadDocumentList()
+        axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
+            .then(
+                (response) => {
+                    const { data } = response
+                    this.setState({
+                        isLoaded: true,
+                        employee: data.map(({first_name, last_name, id}) => {
+                            return { name: `${first_name} ${last_name}`, id }
+                        })
                     })
                 },
                 (error) => {
@@ -115,11 +143,14 @@ class Documents extends Component {
             modalData: []
         })
     }
-    saveSelectedDocuments = () => {
+    saveSelectedDocuments = async () => {
+       const { modalData, modalData: { create_date } } = this.state
+        await axios.post(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/`, {...modalData, create_date: EditDateForSave(create_date)})
         this.setState({
-            selectedDocuments: [],
             documentSelection: false
         })
+        this.loadPageData()
+        this.loadDocumentList()
     }
     saveNewDocuments = async (closeModal) => {
         const {
@@ -185,7 +216,7 @@ class Documents extends Component {
     tierUp = () => {
         const {  modalData, modalData: { tier } } = this.state
         this.setState({
-            modalData: { ...modalData, tier: tier + 1}
+            modalData: { ...modalData, tier: tier ? tier + 1 : 1}
         })
     }
     tierDown = () => {
@@ -247,7 +278,6 @@ class Documents extends Component {
     }
     addDocumentFile = (value) => {
         const { modalData } = this.state
-        console.log(value)
         value.length ?
         this.setState({
             modalData: {...modalData, document_link: value[0].file}
@@ -264,7 +294,7 @@ class Documents extends Component {
             editModal,
             items,
             documents,
-            modalData: {document_name, document_link, tier},
+            modalData: {document_name, document_link, tier, create_date},
             modalData,
             documentSelection,
             selectedDocuments,
@@ -313,11 +343,11 @@ class Documents extends Component {
                                     />
                                 </div>
                                 <div className="pt-4">
-                            <span
-                                className="font-normal color-light-blue-2"
-                            >
-                                Номер п.п.
-                            </span>
+                                    <span
+                                        className="font-normal color-light-blue-2"
+                                    >
+                                        Номер п.п.
+                                    </span>
                                     <div className="relative">
                                         <ArrowInput
                                             value={tier}
@@ -345,47 +375,82 @@ class Documents extends Component {
                         closeModal={this.openDocumentSelection}
                         handleSave={() => this.saveSelectedDocuments()}
                     >
-                        <ModalTableHeader>
-                            <div>№</div>
-                            <div>
-                                Наименование документа
-                            </div>
-                            <div>
-                                Наименование программы
-                            </div>
-                        </ModalTableHeader>
                         <ScrollBar>
-                           {
-                               items && items.map(({document_name, id}, index) => {
-                                   return (
-                                       <ModalTableBody
-                                           key={index}
-                                       >
-                                           <div className="flex items-center">
-                                               {index + 1}
-                                           </div>
-                                           <div className="flex items-center">
-                                               <div
-                                                   className="pr-2"
-                                                   dangerouslySetInnerHTML={{__html: DocumentIcon}}
-                                               />
-                                               {document_name}
-                                           </div>
-                                           <div className="flex items-center justify-between">
-                                               <div>
-                                                   {document_name}
-                                               </div>
-                                               <ChekBox
-                                                   id="selectedDocuments"
-                                                   value={selectedDocuments}
-                                                   checkBoxValue={id}
-                                                   onInput={this.checkDocument}
-                                               />
-                                           </div>
-                                       </ModalTableBody>
-                                   )
-                               })
-                           }
+                            <span
+                                className="font-normal color-light-blue-2"
+                            >
+                                Наименование документа
+                            </span>
+                            <Input
+                                value={document_name}
+                                key="document_name"
+                                id="document_name"
+                                onInput={() => this.handleInputChange(document.getElementById('document_name').value, "document_name")}
+                                className="mt-2 font-normal"
+                            />
+                            <div className="pt-4">
+                                    <span
+                                        className="font-normal color-light-blue-2"
+                                    >
+                                        Номер п.п.
+                                    </span>
+                                <div className="relative">
+                                    <ArrowInput
+                                        className="mt-2 font-normal"
+                                        value={tier}
+                                        top="21px"
+                                        arrowUp={this.tierUp}
+                                        arrowDown={this.tierDown}
+                                    />
+                                </div>
+                            </div>
+                            <div className="pt-4">
+                                <span
+                                    className="font-normal color-light-blue-2"
+                                >
+                                    Дата создания
+                                </span>
+                                <DatePicker
+                                    className="mt-2 font-normal"
+                                    value={create_date}
+                                    onInput={(value) => (this.setState({modalData: {...modalData, create_date: value}}))}
+                                />
+                            </div>
+                            <div
+                                className="pt-4"
+                            >
+                                 <span
+                                     className="font-normal color-light-blue-2"
+                                 >
+                                    Создатель
+                                </span>
+                                <RefSelect
+                                    className="mt-2"
+                                    labelKey="name"
+                                    valueKey="id"
+                                    value={modalData.id_employee}
+                                    onInput={(value) => (this.setState({modalData: {...modalData, id_employee: value}}))}
+                                    options={this.state.employee}
+                                    refLoader={async () => {
+                                        const {
+                                            data
+                                        } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
+                                        return data.map(({first_name, last_name, id}) => {
+                                            return { name: `${first_name} ${last_name}`, id }
+                                        })
+                                    }}
+                                />
+                            </div>
+                            <div
+                                className="pt-8"
+                            >
+                                <DocumentPhoto
+                                    value={[{
+                                        file: document_link,
+                                    }]}
+                                    onInput={addDocumentFile}
+                                />
+                            </div>
                         </ScrollBar>
                     </Modal>
                     <Modal
@@ -407,8 +472,7 @@ class Documents extends Component {
                     <div className="pt-6 pb-6 pl-4 flex">
                         <button
                             className="blue btn width-m pt-1.5"
-                            onClick={() => ({})}
-                            // onClick={this.openDocumentSelection}
+                            onClick={this.openDocumentSelection}
                         >
                             + Добавить документ
                         </button>

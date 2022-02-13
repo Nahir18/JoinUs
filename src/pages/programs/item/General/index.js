@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ModalSidebar from "../../../../components/ModalSidebar";
-import RadioButton from "../../../../components/RadioButton";
 import { WithValidationHocRenderPropAdapter } from "../../../../Validator";
 import {NAV_BUTTON_LINKS} from "../../Constants";
 import { fieldMap, rules} from "./formConfig";
