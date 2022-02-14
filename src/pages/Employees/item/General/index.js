@@ -51,9 +51,7 @@ const General = (props) => {
   const inputDataOfEmployee = (value) => {
     setData({ ...data, ...value } )
   }
-// todo переделать сохранение файла и выгрузку его
-  // todo чистить payload от null, пустых массивов и объектов
-  // чтобы если illustration не был изменен не отправлять его
+
   const saveDataOfEmployee = async (payload) => {
     try {
       const result = await axios[newEmploy ? "post" : "put"](`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`,

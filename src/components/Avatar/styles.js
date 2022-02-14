@@ -13,25 +13,26 @@ export const EditButton = styled.button`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  outline: 4px solid #ffffff;
   fill: white;
   background: var(--color-blue-hover-gradient);
   right: -4px;
   bottom: 9px;
+  border: 4px solid var(--color-white);
+  box-sizing: content-box;
   &:hover {
     fill: white!important;
   }
 `
 
 export const BaseAvatarContainer = styled.div`
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    outline: 1px solid #ebeff2;
-    border-radius: 50%;
-  }
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--color-light-grey-2);
+  width: 140px;
+  height: 140px;
+  min-width: 140px;
+  min-height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
