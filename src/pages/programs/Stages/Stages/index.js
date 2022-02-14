@@ -209,6 +209,13 @@ class levelStages extends Component {
         })
         this.loadPageData()
     }
+    openStageSelection = () => {
+        const { items } = this.state
+        this.setState({
+            addStageModal: true,
+            selectedStage: items.map(({id}) => id)
+        })
+    }
     pageHeaderTitle = (level_name) => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
@@ -253,7 +260,8 @@ class levelStages extends Component {
             actionTierUp,
             actionTierDown,
             handleDeleteItem,
-            appListData
+            appListData,
+            openStageSelection
         } = this
 
         return (
@@ -347,7 +355,7 @@ class levelStages extends Component {
                     </NavLink>
                     <button
                         className="blue btn width-m pt-1.5 ml-4"
-                        onClick={() => this.setState({addStageModal: true})}
+                        onClick={openStageSelection}
                     >
                         Выбрать этап
                     </button>

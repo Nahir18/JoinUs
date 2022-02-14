@@ -61,9 +61,10 @@ class Contacts extends Component {
                 })
     }
     toggleAddContactModal = () => {
-        const { contactsModal } = this.state
+        const { contactsModal, items } = this.state
         this.setState({
-            contactsModal: !contactsModal
+            contactsModal: !contactsModal,
+            selectedContacts: items.map(({id}) => id)
         })
     }
     checkContact = (value, id) => {
