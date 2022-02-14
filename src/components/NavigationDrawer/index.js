@@ -4,6 +4,8 @@ import {
 } from "./styles"
 import {tabNavigationMenu} from "./constants"
 import { NavLink } from "react-router-dom"
+import MinLogo from '../../../public/assets/minLogo.svg'
+import Logo from '../../../public/assets/logo.svg'
 
 
 const NavigationDrawer = ({widthPage}) => {
@@ -52,13 +54,13 @@ const NavigationDrawer = ({widthPage}) => {
       <LeftMenuLogo>
         {hideToolbar ? (
           <OpenMenuItem hideToolbar={!hideToolbar} className="flex items-center">
-            <img src="../assets/minLogo.svg" alt="" />
+            <img src={MinLogo} alt="" />
           </OpenMenuItem>
         )
         :
         (
           <OpenMenuItem hideToolbar={hideToolbar} className="flex items-center">
-            <img src="../assets/logo.svg" alt="" />
+            <img src={Logo} alt="" />
           </OpenMenuItem>
         )
         }
