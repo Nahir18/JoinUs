@@ -60,10 +60,11 @@ class Levels extends Component {
                 }
             )
     }
-    toggleModal = () => {
-        const { editModal } = this.state
+    selectLevel = () => {
+        const { editModal, items } = this.state
         this.setState({
-            editModal: !editModal
+            editModal: !editModal,
+            selectedLevels: items.map(({id}) => id)
         })
     }
     editStage = (data, nestedlevel) => {
@@ -218,7 +219,7 @@ render() {
                   <Modal
                       isOpen={editModal}
                       title="Выбор уровня"
-                      closeModal={this.toggleModal}
+                      closeModal={this.selectLevel}
                       handleSave={saveNewLevel}
                       style={{"minWidth": "500px"}}
                   >
@@ -236,7 +237,7 @@ render() {
                       </NavLink>
                       <button
                         className="white btn width-m pt-1.5 ml-4"
-                        onClick={this.toggleModal}
+                        onClick={this.selectLevel}
                       >
                           Выбрать уровень
                       </button>

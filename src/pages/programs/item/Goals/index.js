@@ -93,7 +93,7 @@ class Goals extends Component {
             modalData: {...modalData, [id]: value}
         })
     }
-     openGoalSelection = () => {
+     addNewGoal = () => {
         const { goalSelection } = this.state
          this.setState({
              goalSelection: !goalSelection
@@ -178,6 +178,13 @@ class Goals extends Component {
         const { editModal } = this.state
         this.setState({
             editModal: !editModal
+        })
+    }
+    openGoalSelection = () => {
+        const { items } = this.state
+        this.setState({
+            addGoalsModal: true,
+            selectedGoals: items.map(({id}) => id)
         })
     }
     checkDocument = (value, id) => {
@@ -273,7 +280,7 @@ class Goals extends Component {
         const {
             handleEdit,
             handleInputChange,
-            openGoalSelection,
+            addNewGoal,
             saveEditGoal,
             toggleModal,
             checkDocument,
@@ -284,7 +291,8 @@ class Goals extends Component {
             actionButtonTierDown,
             pageHeaderTitle,
             actionsDeleteItem,
-            saveNewGoal
+            saveNewGoal,
+            openGoalSelection
         } = this
 
 
@@ -344,7 +352,7 @@ class Goals extends Component {
                 <Modal
                     isOpen={goalSelection}
                     title="Добавить цель"
-                    closeModal={openGoalSelection}
+                    closeModal={addNewGoal}
                     handleSave={saveNewGoal}
                 >
                     <ScrollBar>
@@ -430,13 +438,13 @@ class Goals extends Component {
                 <div className="pt-6 pb-6 pl-4 flex">
                     <button
                         className="blue btn width-m pt-1.5"
-                        onClick={openGoalSelection}
+                        onClick={addNewGoal}
                     >
                         + Добавить цель
                     </button>
                     <button
                         className="blue btn width-m pt-1.5 ml-4"
-                        onClick={() => this.setState({addGoalsModal: true})}
+                        onClick={openGoalSelection}
                     >
                         Выбрать цель
                     </button>

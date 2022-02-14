@@ -20,7 +20,6 @@ import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
 import DocumentPhoto from "../../../../components/DocumentPhoto"
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
-import Select from "../../../../components/Fields/Select";
 import RefSelect from "@Components/Fields/RefSelect/index"
 
 class Documents extends Component {
@@ -196,8 +195,9 @@ class Documents extends Component {
         }
     }
     addDocument = () => {
-        const { addNewDocument } = this.state
+        const { addNewDocument, items } = this.state
         this.setState({
+            selectedDocuments: items.map(({id}) => id),
             addNewDocument: !addNewDocument
         })
     }
