@@ -19,7 +19,7 @@ const Avatar = ({className, ...props}) => {
             {value && value.length > 0
               ?
               (value.map(({file}) => (
-                  <div className="flex flex-col w-full h-full overflow-hidden rounded-full">
+                  <div key={file} className="flex flex-col w-full h-full overflow-hidden rounded-full">
                     <img className="h-full" src={file} alt=""/>
                   </div>
                 ))

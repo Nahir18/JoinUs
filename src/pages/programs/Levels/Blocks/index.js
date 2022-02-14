@@ -108,6 +108,7 @@ const Blocks = (props) => {
                   onMove={handleMoveItem}
                   onDelete={() => handleDelete(value, index)}
                   environmentState={data.json}
+                  // onEdit={handleEdit}
                 />
               )
             })
