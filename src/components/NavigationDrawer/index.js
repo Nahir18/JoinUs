@@ -52,13 +52,13 @@ const NavigationDrawer = ({widthPage}) => {
       <LeftMenuLogo>
         {hideToolbar ? (
           <OpenMenuItem hideToolbar={!hideToolbar} className="flex items-center">
-            <img src="/assets/minLogo.svg" alt="" />
+            <img src="../assets/minLogo.svg" alt="" />
           </OpenMenuItem>
         )
         :
         (
           <OpenMenuItem hideToolbar={hideToolbar} className="flex items-center">
-            <img src="/assets/logo.svg" alt="" />
+            <img src="../assets/logo.svg" alt="" />
           </OpenMenuItem>
         )
         }
