@@ -4,8 +4,8 @@ import {
 } from "./styles"
 import {tabNavigationMenu} from "./constants"
 import { NavLink } from "react-router-dom"
-import MinLogo from '../../../public/assets/minLogo.svg'
-import Logo from '../../../public/assets/logo.svg'
+import MinLogo from './icons/minLogo.svg'
+import Logo from './icons/logo.svg'
 
 
 const NavigationDrawer = ({widthPage}) => {
