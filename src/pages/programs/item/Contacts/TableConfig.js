@@ -13,13 +13,13 @@ export const settings = [
     key: "value",
     name: "Контакт",
     component: CardForUser,
-    size: "45%"
+    size: "40%"
   },
   {
     id: 3,
     key: "role",
     name: "Роль",
-    size: "30%"
+    size: "25%"
   },
   {
     id: 4,
