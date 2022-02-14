@@ -10,7 +10,7 @@ const PhotoContainer = styled.img`
 
 const PhotoFiles = (props) => {
     return (
-        <FileInput title="фото" {...props}>
+        <FileInput title="документ" {...props}>
             {({value, onDelete, onEdit, onDeleteTempFile, onReUpload, onInput}) => (
                 <div className="flex flex-wrap">
                     {value.map(({file, progress, fail}, index) => (
@@ -19,7 +19,7 @@ const PhotoFiles = (props) => {
                                 className="rounded-2xl overflow-hidden"
                                 src={file}
                             />
-                            {progress === undefined && <div className="flex items-center mt-1.5">
+                            {value.file && progress === undefined && <div className="flex items-center mt-1.5">
                                 <button
                                     className="edit-icon"
                                     dangerouslySetInnerHTML={{__html: EditIcon}}
