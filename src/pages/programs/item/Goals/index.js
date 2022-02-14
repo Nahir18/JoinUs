@@ -25,7 +25,7 @@ class Goals extends Component {
             editModal: false,
             isLoaded: false,
             goals: [],
-            goalSelection: true,
+            goalSelection: false,
             addGoalsModal: false,
             selectedGoals: [],
             modalData: {},

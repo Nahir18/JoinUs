@@ -24,7 +24,7 @@ export const selectStageModalConfig = (selectedStage, checkStage) => {
             id: 4,
             key: "program_name",
             name: "Наименование программы",
-            size: "25%"
+            size: "32%"
         },
         {
             id: 5,
@@ -35,14 +35,14 @@ export const selectStageModalConfig = (selectedStage, checkStage) => {
                 return (
                     <ChekBox
                         id="selectedStage"
-                        className="p-r-14"
+                        className=""
                         value={selectedStage}
                         checkBoxValue={id}
                         onInput={checkStage}
                     />
                 )
             },
-            size: "15%"
+            size: "8%"
         },
     ]
 }

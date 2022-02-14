@@ -191,7 +191,7 @@ class StagesGeneral extends Component {
                                         />
                                     </FormContainer>
                                     <div
-                                        className="flex justify-end mt-auto"
+                                        className="flex justify-end p-b-24"
                                     >
                                         <button
                                             name="cancel"
