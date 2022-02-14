@@ -101,5 +101,6 @@ export const rules = {
   create_date: "required",
   release_date: "required",
   email: "required",
-  mobile_phone: "required"
+  mobile_phone: "required",
+  post: "required"
 }

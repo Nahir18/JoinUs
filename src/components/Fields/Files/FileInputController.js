@@ -193,10 +193,9 @@ const FileInputController = ({
     setTempFiles( (prevTempFiles) => PureDeleteItems(prevTempFiles, prevTempFiles.findIndex(v=> v.id === deletedValue.id)))
   },[mergedValue])
 
-
   const onReUpload = useCallback((index) => {
     const deletedValue = mergedValue[index]
-    return uploadFiles([tempFiles.findIndex(v=> v.id === deletedValue.id)])
+    return uploadFiles([tempFiles[tempFiles.findIndex(v=> v.id === deletedValue.id)]])
   },[mergedValue, tempFiles, uploadFiles])
 
   return (
@@ -207,7 +206,7 @@ const FileInputController = ({
         onEdit: focusInput,
         onDelete,
         onDeleteTempFile,
-        onReUpload,
+        onReUpload
       })}
       <input
         className="hidden"

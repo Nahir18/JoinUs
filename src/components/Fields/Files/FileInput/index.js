@@ -7,12 +7,12 @@ const FileInput = ({children, title, className, ...props}) => {
   const refContainer = useRef()
   return (
     <FileInputController {...props} containerRef={refContainer}>
-      {({value, onEdit, onDelete}) => (
+      {({value, onEdit, onDelete, onDeleteTempFile, onReUpload}) => (
         <div
           className={`bg-color-light-grey p-2 pb-4 rounded-md flex flex-col items-start ${className}`}
           ref={refContainer}
         >
-          {children({value, onDelete})}
+          {children({value, onDelete, onDeleteTempFile, onReUpload, onEdit})}
           <button
             onClick={onEdit}
             className="color-blue flex items-center justify-center fw-700 mt-5"
