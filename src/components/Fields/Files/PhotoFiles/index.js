@@ -32,6 +32,7 @@ const ContainerOpacity = styled.div`
 
 // onReUpload повторная загрузка
 // onDeleteTempFile удаление временного файла, который не загрузился
+// fail когда файл не загрузился
 
 const PhotoFiles = (props) => {
   return (
@@ -46,6 +47,24 @@ const PhotoFiles = (props) => {
                   src={file}
                 />
               </ContainerOpacity>
+              {fail && (
+                <div className="flex items-center mt-1.5">
+                  <button
+                    className="edit-icon"
+                    dangerouslySetInnerHTML={{__html: EditIcon}}
+                    onClick={() => onReUpload(index)}
+                  />
+                  <button
+                    className="trash-icon ml-7"
+                    dangerouslySetInnerHTML={{__html: Trash}}
+                    onClick={() => onDeleteTempFile(index)}
+                  />
+                  <button
+                    className="trash-icon ml-7"
+                    dangerouslySetInnerHTML={{__html: RotateIcon}}
+                  />
+                </div>
+              )}
               {progress === undefined && <div className="flex items-center mt-1.5">
                 <button
                   className="edit-icon"
@@ -56,10 +75,6 @@ const PhotoFiles = (props) => {
                   className="trash-icon ml-7"
                   dangerouslySetInnerHTML={{__html: Trash}}
                   onClick={() => onDelete(index)}
-                />
-                <button
-                  className="trash-icon ml-7"
-                  dangerouslySetInnerHTML={{__html: RotateIcon}}
                 />
               </div>
               }
