@@ -20,7 +20,7 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
         label: "Программа",
         id: "program_name",
         component: RefSelect,
-        placeholder: "программа",
+        placeholder: "Программа",
         formColumn: 0,
         labelKey: "program_name",
         valueKey: "program_name",

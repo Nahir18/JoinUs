@@ -8,7 +8,7 @@ export const settings = (editStage, deleteButton, actionButtonTierUp, actionButt
         {
             id: 1,
             key: ["level_name", "stage_name"],
-            name: "Уровень/этап",
+            name: "Уровень/Этап",
             size: "30%"
         },
         {
