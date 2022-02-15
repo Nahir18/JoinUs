@@ -16,20 +16,20 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
         placeholder: "Введите наименование уровня",
         formColumn: 0,
     },
-    {
-        label: "Программа",
-        id: "program_name",
-        component: RefSelect,
-        placeholder: "Программа",
-        formColumn: 0,
-        labelKey: "program_name",
-        valueKey: "program_name",
-        preload: true,
-        async refLoader() {
-            const {data } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
-            return data
-        },
-    },
+    // {
+    //     label: "Программа",
+    //     id: "program_name",
+    //     component: RefSelect,
+    //     placeholder: "Программа",
+    //     formColumn: 0,
+    //     labelKey: "program_name",
+    //     valueKey: "program_name",
+    //     preload: true,
+    //     async refLoader() {
+    //         const {data } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
+    //         return data
+    //     },
+    // },
     {
         label: "Номер п.п",
         id: "tier",
@@ -37,11 +37,13 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
             <ArrowInput
                 id="tier"
                 key="tier"
+                onInput={props.onInput}
                 arrowUp={arrowUp}
                 arrowDown={arrowDown}
                 {...props}
             />
         ),
+        disabled: true,
         placeholder: "Номер п.п",
         formColumn: 0,
     },

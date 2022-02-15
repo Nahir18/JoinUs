@@ -3,7 +3,6 @@ import memoizeOne from "memoize-one";
 import Form from "@Components/Forms/index"
 import PropTypes from "prop-types"
 import ModalSidebar from "../../../../components/ModalSidebar";
-import RadioButton from "../../../../components/RadioButton";
 import {WithValidationHocRenderPropAdapter} from "../../../../Validator";
 import {fieldMap, rules} from "./formConfig";
 import {FormContainer} from "../../item/General/style"
