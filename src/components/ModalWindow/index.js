@@ -5,10 +5,12 @@ import {CloseIcon} from "../../pages/ConstantsIcons";
 
 class ModalWindow extends Component {
   render() {
-    const {isOpen, closeModal, title, children, handleSave} = this.props
+    const {isOpen, closeModal, title, children, handleSave, width, maxWidth} = this.props
     return isOpen ? (
       <ModalContainer onClick={closeModal}>
-        <Modal onClick={e => e.stopPropagation()}>
+        <Modal
+          style={{width, maxWidth}}
+          onClick={e => e.stopPropagation()}>
           <div
             className="flex justify-end mt-7 mr-7 cursor"
             dangerouslySetInnerHTML={{__html: CloseIcon}}
@@ -40,6 +42,14 @@ class ModalWindow extends Component {
   }
 }
 
-ModalWindow.propTypes = {};
+ModalWindow.propTypes = {
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+};
+
+ModalWindow.defaultProps = {
+  width: "",
+  maxWidth: "80vh"
+}
 
 export default ModalWindow;

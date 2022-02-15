@@ -17,8 +17,7 @@ export const ModalContainer = styled.div`
 export const Modal = styled.div`
   background-color: var(--color-white);
   border-radius: 24px;
-  min-width: 500px;
-  max-width: 80vh;
+  min-width: 576px;
   max-height: 80vh;
   overflow: hidden;
   position: relative;
