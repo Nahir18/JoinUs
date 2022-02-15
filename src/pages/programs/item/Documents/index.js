@@ -328,7 +328,7 @@ class Documents extends Component {
                 >
                     <Modal
                         isOpen={editModal}
-                        title="редактирование документа"
+                        title="Редактирование документа"
                         closeModal={this.closeModal}
                         handleSave={() => this.saveEditDocument(this.closeModal, modalData)}
                     >

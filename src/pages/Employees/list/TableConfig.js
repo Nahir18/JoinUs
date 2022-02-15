@@ -60,7 +60,7 @@ export const settings = [
     id: 5,
     key: "PROGRESS",
     name: "Прогресс",
-    size: "1.2fr",
+    size: "228px",
     component: Progress
   }
 ]

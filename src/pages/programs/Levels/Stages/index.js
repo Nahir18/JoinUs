@@ -116,6 +116,8 @@ class levelStages extends Component {
                     title="Выбор этапа"
                     closeModal={openDocumentSelection}
                     handleSave={() => saveEditDocument(selectedStage)}
+                    width="932px"
+                    maxWidth="932px"
                 >
                     <ModalTableHeader>
                         <div>№</div>

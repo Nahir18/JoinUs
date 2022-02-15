@@ -1,18 +1,6 @@
 import ActionsButtons from "../../../../components/ActionsButtons";
 import React from "react";
-import {DocumentIcon} from "../../../ConstantsIcons";
-
-
-const DocumentName = ({data}) => (
-    <div className="flex items-center">
-        <div
-            dangerouslySetInnerHTML={{__html: DocumentIcon}}
-        />
-        <div className="ml-2">
-            { data }
-        </div>
-    </div>
-)
+import DocumentName from "../../../../components/ComponentsForListTable/DocumentName";
 
 export const settings = (editModal, closeModal, handleEdit, deleteItem, actionButtonTierUp, actionButtonTierDown) => [
     {
