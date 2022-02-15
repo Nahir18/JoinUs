@@ -37,6 +37,9 @@ export const SelectInput = styled.input`
     font-size: var(--plachodler-font-size);
     letter-spacing: 0.2px;
   }
+  @media (max-width: 1350px) {
+    position: absolute;
+  }
 `
 
 export const MultipleValue = styled.div`
@@ -51,6 +54,9 @@ export const MultipleValue = styled.div`
       display: none;
     }
   }
+  @media (max-width: 1350px) {
+    height: 20px;
+  }
 `
 
 export const MultipleValuePrerenderContainer = styled.div`
@@ -62,6 +68,10 @@ export const MultipleValuePrerenderContainer = styled.div`
   display: inline-flex;
   z-index: 200;
   pointer-events: none;
+  @media (max-width: 1350px) {
+    position: static;
+    padding: 5px 5px 5px 0;
+  }
 `
 
 export const InputSelectContainer = styled.div`
@@ -71,6 +81,9 @@ export const InputSelectContainer = styled.div`
   background: var(--background-input);
   height: var(--height-input);
   align-items: center;
+  @media (max-width: 1350px) {
+    height: auto;
+  }
   ${props => props.disabled && `background: var(--pink); ${MultipleOptionContainer} {
       background-color: var(--color-white);
     }`
@@ -105,7 +118,6 @@ export const OverlayItemsContainer = styled.div`
 `
 
 export const RemoveIconContainer = styled.button`
-  padding: 0 8px;
   color: var(--color-light-blue-2);
 `
 
