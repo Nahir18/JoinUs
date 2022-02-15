@@ -1,5 +1,5 @@
 import React from "react";
-import {ArrowUP, DocumentIcon, EditIcon, Trash} from "../../../Constants";
+import {ArrowUP, DocumentIcon, EditIcon, Trash} from "../../../ConstantsIcons";
 
 
 const DocumentName = ({data}) => {

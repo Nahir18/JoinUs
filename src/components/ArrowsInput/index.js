@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from "@Components/Fields/Input"
-import {SmallArrowUp} from "../../pages/Constants";
+import {SmallArrowUp} from "../../pages/ConstantsIcons";
 import { Arrows } from "./style";
 import PropTypes from 'prop-types';
 

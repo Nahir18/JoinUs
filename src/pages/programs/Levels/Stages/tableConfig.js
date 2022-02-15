@@ -1,4 +1,4 @@
-import {ActiveIcon, ArrowUP, EditIcon, Trash} from "../../../Constants";
+import {ActiveIcon, ArrowUP, EditIcon, Trash} from "../../../ConstantsIcons";
 import React from "react";
 
 const ActiveIndicator = ({ data } ) => data ? (

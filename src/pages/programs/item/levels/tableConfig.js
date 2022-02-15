@@ -1,6 +1,6 @@
 import React from "react";
 import Actions from "./Actions";
-import {ActiveIcon} from "../../../Constants";
+import {ActiveIcon} from "../../../ConstantsIcons";
 import StatusIndicator from "../../../../components/StatusIndicator";
 
 export const settings = (editStage, deleteButton, actionButtonTierUp, actionButtonTierDown) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FileInput from "./fileInput";
 import styled from "styled-components"
-import {EditIcon, Trash, RotateIcon} from "../../pages/Constants";
+import {EditIcon, Trash, RotateIcon} from "../../pages/ConstantsIcons";
 
 const PhotoContainer = styled.img`
   width: 300px;

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Input from "@Components/Fields/Input"
 import { ToggleArrowContainer } from "./style";
-import {SmallArrow} from "../../pages/Constants";
+import {SmallArrow} from "../../pages/ConstantsIcons";
 
 class ModalSelectInput extends Component {
     render() {

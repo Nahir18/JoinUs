@@ -1,7 +1,7 @@
 import React, { useMemo } from "react"
 import PropTypes from "prop-types"
 import { PaginationContainer } from "./styles"
-import {ArrowRight, ArrowLeft} from "../../pages/Constants";
+import {ArrowRight, ArrowLeft} from "../../pages/ConstantsIcons";
 
 const PaginationDatsIcon = `
 <svg fill="none" height="16" width="16" viewBox="0 0 12 3">

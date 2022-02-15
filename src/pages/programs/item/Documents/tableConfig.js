@@ -1,6 +1,6 @@
 import ActionsButtons from "../../../../components/ActionsButtons";
 import React from "react";
-import {DocumentIcon} from "../../../Constants";
+import {DocumentIcon} from "../../../ConstantsIcons";
 
 
 const DocumentName = ({data}) => (

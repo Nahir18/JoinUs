@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {RadioOn, RadioOff} from "../../pages/Constants";
+import {RadioOn, RadioOff} from "../../pages/ConstantsIcons";
 
 const RadioButton = ({title, id, inputValue, selected, noTitle}) => {
     const active = selected(title)

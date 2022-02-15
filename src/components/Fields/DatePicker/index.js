@@ -9,7 +9,7 @@ import { Calendar, Select } from 'antd';
 import moment from "moment";
 import Sel from "@Components/Fields/Select";
 import withDatePickerHoc from "../../../Core/Decorators/withDatePicker";
-import {arrowDown, arrowUp} from "../../../pages/Constants";
+import {arrowDown, arrowUp} from "../../../pages/ConstantsIcons";
 
 const MonthNames = [
   {

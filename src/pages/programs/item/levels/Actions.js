@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import "./style.css"
-import { EditIcon, ArrowUP, Trash } from "../../../Constants";
+import { EditIcon, ArrowUP, Trash } from "../../../ConstantsIcons";
 import {ActionsForm} from "./style";
 
 class Actions extends Component {
