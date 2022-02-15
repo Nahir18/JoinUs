@@ -5,8 +5,6 @@ import {
 import {tabNavigationMenu} from "./constants"
 import { NavLink } from "react-router-dom"
 import {MinLogo, Logo} from './icons/constantsIcons'
-import {notifications} from "../../pages/ConstantsIcons";
-
 
 const NavigationDrawer = ({widthPage}) => {
   const [leftWidth, setLeftWidth] = useState(84)

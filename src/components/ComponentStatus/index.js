@@ -1,5 +1,6 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from "prop-types"
+import {iconStatusEnd, iconStatusWait, iconStatusWorking} from "./constantsIcons"
 
 const getStages = (data = []) => {
   let sum = 0
@@ -23,15 +24,15 @@ const Status = ({data}) => {
           : "work"
       switch (status) {
         case "end":
-          setIcon("/assets/icons/iconStatus/iconStatusEnd.svg")
+          setIcon(iconStatusEnd)
           setTitle("Завершена")
           break;
         case "wait":
-          setIcon("/assets/icons/iconStatus/iconStatusWait.svg")
+          setIcon(iconStatusWait)
           setTitle("Ожидание")
           break;
         case "work":
-          setIcon("/assets/icons/iconStatus/iconStatusWorking.svg")
+          setIcon(iconStatusWorking)
           setTitle("В процессе")
           break;
         default:
@@ -47,7 +48,7 @@ const Status = ({data}) => {
   })
   return (
     <div className="flex items-center">
-      <img src={icon} alt="" className="p-r-8" />
+      <div dangerouslySetInnerHTML={{__html: icon}} className="p-r-8" />
       {title}
     </div>
   );
