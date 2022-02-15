@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import FileInput from "./fileInput";
 import styled from "styled-components"
 import {EditIcon, Trash, RotateIcon} from "../../pages/Constants";
+import {DEFAULT_URL_FOR_FILE} from "../APIList";
 
 const PhotoContainer = styled.img`
-  width: 300px;
+  width: 100px;
+  height: 100px;
 `
 
 const PhotoFiles = (props) => {
@@ -19,7 +21,7 @@ const PhotoFiles = (props) => {
                                 className="rounded-2xl overflow-hidden"
                                 src={file}
                             />
-                            {value.file && progress === undefined && <div className="flex items-center mt-1.5">
+                            {file.length - 1 > DEFAULT_URL_FOR_FILE.length && progress === undefined && <div className="flex items-center mt-1.5">
                                 <button
                                     className="edit-icon"
                                     dangerouslySetInnerHTML={{__html: EditIcon}}

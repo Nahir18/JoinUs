@@ -35,6 +35,8 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
         id: "tier",
         component: (props) => (
             <ArrowInput
+                id="tier"
+                key="tier"
                 arrowUp={arrowUp}
                 arrowDown={arrowDown}
                 {...props}
