@@ -13,7 +13,7 @@ import PureDeleteItems from "../../../utils/Arrays/PureDeleteItems";
 const FileInputController = ({
  containerRef, id, multiple, allowedTypes, unAllowedMimeTypes, value, onInput, children, onFileInput
 }) => {
-  const [position, setPosition] = useState(0)
+  const [position, setPosition] = useState(null)
   const fileInputRef = useRef()
   const focusInput = useCallback((position) => {
     if (typeof position === "number") {
@@ -59,9 +59,12 @@ const FileInputController = ({
         const nextTempFiles = [...prevTempFiles]
         let position
         files.forEach((file) => {
-          position = [nextTempFiles.splice(nextTempFiles.indexOf(file), 1)].position - files.length - 1;
+          let tempPosition = nextTempFiles.splice(nextTempFiles.indexOf(file), 1)[0]?.position
+          if (tempPosition !== null){
+            position = tempPosition - files.length + 1;
+          }
         })
-        if (position !== 0) {
+        if (position !== undefined) {
           const nextValue = [...value]
           nextValue.splice(position, files.length, ...uploadedFiles)
           updateValue(nextValue)
@@ -123,14 +126,15 @@ const FileInputController = ({
           fail: false,
           size: cur.size,
           file: reader.result,
-          position: position + i
+          position: position !== null ? position + i : null
         })
       }
     })))
-    if (position > 0) {
+    if (position !== null) {
       updateValue(PureDeleteItems(value, position, f.length))
     }
     setTempFiles((prevTempFiles) => multiple ? [...prevTempFiles, ...f] : f)
+    setPosition(null)
     await uploadFiles(f)
   }, [onFileInput, position, uploadFiles, allowedTypes, unAllowedMimeTypes, updateValue, value, multiple])
 

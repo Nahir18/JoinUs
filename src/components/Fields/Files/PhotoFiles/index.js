@@ -32,11 +32,6 @@ const PhotoFiles = (props) => {
               {fail &&
                 <div className="flex items-center mt-1.5">
                   <button
-                    className="edit-icon"
-                    dangerouslySetInnerHTML={{__html: EditIcon}}
-                    onClick={() => onReUpload(index)}
-                  />
-                  <button
                     className="trash-icon ml-7"
                     dangerouslySetInnerHTML={{__html: Trash}}
                     onClick={() => onDeleteTempFile(index)}
