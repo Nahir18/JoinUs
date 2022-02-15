@@ -73,9 +73,7 @@ const FilterForEmployees = ({handleInput}) => {
         />
       </div>
       <div className="flex ml-auto">
-        <div
-          className="fs-12 color-light-blue-2 p-r-16 p-b-14 flex items-end"
-        >
+        <div className="fs-12 color-light-blue-2 p-r-16 p-b-14 flex items-end">
           Дата выхода
         </div>
         <div className="p-r-8 flex-auto">

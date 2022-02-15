@@ -50,7 +50,7 @@ class OverlayMenu extends PureComponent {
         : { top: `calc(${containerMargin} + ${pointerBottom}px)` }
       let rightPosition = zoneRight - right
       rightPosition = rightPosition > 0 ? rightPosition : 0
-      const leftPosition = clientWidth - (left - zoneLeft) > contextMenuWidth ? left : zoneLeft
+      const leftPosition = clientWidth - (left - zoneLeft) >= contextMenuWidth ? left : zoneLeft
       const maxTipLeftPosition = leftPosition + contextMenuWidth - 8
       this.setState({
         positionStyles: (
@@ -130,7 +130,6 @@ class OverlayMenu extends PureComponent {
       state: { containerSizeStyles, positionStyles: { wrapperStyles, tipStyles, containerStyles } },
       props: { renderTip, children, positionStatic, className, onClick, onMouseDown, onMouseUp }
     } = this
-
     return (
       <FixedContainer
         ref={refOverlayContainer}
