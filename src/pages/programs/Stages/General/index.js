@@ -108,7 +108,6 @@ class LevelsGeneral extends Component {
       [id]: value
     });
   }
-
   handleSubmit(event) {
     event.preventDefault();
   }
@@ -124,7 +123,7 @@ class LevelsGeneral extends Component {
   saveNewLevel() {
     const {location: {pathname}, history: { push }} = this.props
     const {data} = this.state
-    const { level_name, tier, status, create_date, id_employee, duration_day } = data
+    const { level_name, tier, status, create_date, id_employee, duration_day, illustration } = data
     const pathnames = pathname.split("/").filter(x => x)
     const newLevel = pathnames[3] === "level"
     const idLevel = newLevel ? "/" : `/${pathnames[3]}/`
@@ -136,7 +135,7 @@ class LevelsGeneral extends Component {
         id_employee,
         duration_day
     }
-    axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, newData)
+    axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, illustration ? {...newData, illustration} : newData)
       .then(
         (response) => {
           const {data, data: {id}} = response
