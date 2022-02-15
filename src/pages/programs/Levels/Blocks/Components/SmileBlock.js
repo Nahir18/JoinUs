@@ -31,7 +31,7 @@ const Smile = styled.button`
 const smilesArray = [Smile1, Smile2, Smile3, Smile4, Smile5, Smile6, Smile7, Smile8, Smile9]
 
 const SmileBlock = ({
-  position, className, onInput, value, value: { entity, text }, onMove, onDelete, environmentState
+  position, className, onInput, value, value: { entity = [], text }, onMove, onDelete, environmentState
 }) => {
   const handleInput = useCallback((nextValue, id) => {
     onInput({ ...value, [id]: nextValue }, position)
@@ -40,7 +40,6 @@ const SmileBlock = ({
   const handleChooseSmile = useCallback((index) => () => {
     handleInput(entity.includes(index) ? PureDeleteItems(entity, entity.indexOf(index)) : [...entity, index], "entity")
   },[entity, handleInput])
-
   return (
     <div className={className}>
       <BlockHeader

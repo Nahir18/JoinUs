@@ -7,7 +7,7 @@ import PureUpdateArrayItems from "../../../../../utils/Arrays/PureUpdateArrayIte
 
 
 const QuizBlock = ({
- position, className, value, value: { entity, text }, onInput, onMove, onDelete, environmentState
+ position, className, value, value: { entity = [], text }, onInput, onMove, onDelete, environmentState
 }) => {
   const handleInput = useCallback((nextValue, id) => {
     onInput({ ...value, [id]: nextValue }, position)
