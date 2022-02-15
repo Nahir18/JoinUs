@@ -1,5 +1,6 @@
 import React from 'react';
 import {HeaderContainer, Search, ProfileUser, Notifications} from "./style";
+import {Trash} from "../../pages/Constants";
 
 const Header = () => {
   return (
@@ -10,6 +11,10 @@ const Header = () => {
       </Search>
       <div className="flex items-center">
         <Notifications className="flex items-center">
+          <button
+            className="trash-icon ml-7"
+            dangerouslySetInnerHTML={{__html: Trash}}
+          />
           <img src="/assets/icons/notifications.svg" alt="" className="p-r-16"/>
           <img src="/assets/icons/notificationsBellFull.svg" alt="" className="p-r-24"/>
         </Notifications>
