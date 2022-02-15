@@ -17,11 +17,13 @@ const Status = ({data}) => {
   const getData = useCallback(() => {
     if (Object.keys(data).length > 0) {
       const { adaptation_status, program_details: [detail]} = data
-      const status = getStages(detail.levels_detail) === adaptation_status.length
+      const status = getStages(detail.levels_detail) > 0 ?
+        getStages(detail.levels_detail) === adaptation_status.length
         ? "end"
         : adaptation_status.length === 0
           ? "wait"
           : "work"
+        : "wait"
       switch (status) {
         case "end":
           setIcon(iconStatusEnd)

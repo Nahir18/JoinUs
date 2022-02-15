@@ -5,11 +5,12 @@ import styled from "styled-components"
 import {EditIcon, Trash, RotateIcon} from "../../pages/ConstantsIcons";
 import {DEFAULT_URL_FOR_FILE} from "../APIList";
 
+// todo дубль PhotoFiles
+
 const PhotoContainer = styled.img`
   width: 100px;
   height: 100px;
 `
-
 const PhotoFiles = (props) => {
     return (
         <FileInput title="документ" {...props}>
