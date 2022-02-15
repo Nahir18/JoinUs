@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ActiveIcon} from "../../pages/Constants";
+import {ActiveIcon} from "../../pages/ConstantsIcons";
 
 const StatusIndicator = ({data}) => {
     return (

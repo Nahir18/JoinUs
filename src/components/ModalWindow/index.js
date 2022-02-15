@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {ModalContainer, Modal} from "./style";
-import {CloseIcon} from "../../pages/Constants";
+import {CloseIcon} from "../../pages/ConstantsIcons";
 
 class ModalWindow extends Component {
   render() {

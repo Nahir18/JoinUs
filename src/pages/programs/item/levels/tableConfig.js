@@ -1,6 +1,6 @@
 import React from "react";
 import Actions from "./Actions";
-import {ActiveIcon} from "../../../Constants";
+import {ActiveIcon} from "../../../ConstantsIcons";
 import StatusIndicator from "../../../../components/StatusIndicator";
 
 export const settings = (editStage, deleteButton, actionButtonTierUp, actionButtonTierDown) => {
@@ -8,7 +8,7 @@ export const settings = (editStage, deleteButton, actionButtonTierUp, actionButt
         {
             id: 1,
             key: ["level_name", "stage_name"],
-            name: "Уровень/этап",
+            name: "Уровень/Этап",
             size: "30%"
         },
         {

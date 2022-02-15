@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FileInput from "../FileInput";
 import styled from "styled-components"
-import {EditIcon, Trash, RotateIcon} from "../../../../pages/Constants";
+import {EditIcon, Trash, RotateIcon} from "../../../../pages/ConstantsIcons";
 import PreloaderIcon from "../../../Preloader";
 import {ContainerOpacity, ContainerPreloader} from "../styles"
 
@@ -31,11 +31,6 @@ const PhotoFiles = (props) => {
               </ContainerOpacity>
               {fail &&
                 <div className="flex items-center mt-1.5">
-                  <button
-                    className="edit-icon"
-                    dangerouslySetInnerHTML={{__html: EditIcon}}
-                    onClick={() => onReUpload(index)}
-                  />
                   <button
                     className="trash-icon ml-7"
                     dangerouslySetInnerHTML={{__html: Trash}}

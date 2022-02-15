@@ -263,9 +263,7 @@ class LevelsGeneral extends Component {
                     />
                   </FormContainer>
                 </div>
-                <div
-                  className="flex justify-end pb-20 pr-8 pt-8"
-                >
+                <div className="flex justify-end p-b-24 pr-8 pt-8">
                   <div
                     onClick={() => goBack()}
                     name="cancel"

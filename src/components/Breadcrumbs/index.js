@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import PropTypes from "prop-types"
-import {ArrowBack} from "../../pages/Constants";
+import {ArrowBack} from "../../pages/ConstantsIcons";
 import { BreadcrumbsDot } from "./style";
 
 const BreadCrumbs = ({location: { pathname }, bredCrumbsConfig}) => {

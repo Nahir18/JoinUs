@@ -1,6 +1,6 @@
 import React, {useCallback, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {PlusIcon} from "../../pages/Constants";
+import {PlusIcon} from "../../pages/ConstantsIcons";
 import FileInputController from "../Fields/Files/FileInputController";
 
 const FileInput = ({children, title, className, ...props}) => {

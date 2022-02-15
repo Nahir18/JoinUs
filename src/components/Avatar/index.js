@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import BaseAvatar from './DefaultAvatarSvg'
-import {EditIcon} from "../../pages/Constants";
+import {EditIcon} from "../../pages/ConstantsIcons";
 import {AvatarContainer, EditButton, BaseAvatarContainer} from "./styles";
 import FileInputController from "../Fields/Files/FileInputController";
 
