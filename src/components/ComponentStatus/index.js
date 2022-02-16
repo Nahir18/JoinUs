@@ -17,8 +17,9 @@ const Status = ({data}) => {
   const getData = useCallback(() => {
     if (Object.keys(data).length > 0) {
       const { adaptation_status, program_details: [detail]} = data
-      const status = getStages(detail.levels_detail) > 0 ?
-        getStages(detail.levels_detail) === adaptation_status.length
+      const sumStages = getStages(detail?.levels_detail)
+      const status = adaptation_status.length > 0 ?
+        sumStages === adaptation_status.length
         ? "end"
         : adaptation_status.length === 0
           ? "wait"

@@ -17,6 +17,8 @@ class RouterEmployees extends Component {
     const pathnames = pathname.split("/").filter(x => x)
     const newEmploy = pathnames[1] === "new_employ"
     const nameEmploy = newEmploy ? "Новый сотрудник" : pathnames[2]
+    const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
+
     return (
       <div className="flex-container">
         {
@@ -35,10 +37,10 @@ class RouterEmployees extends Component {
                 links={newEmploy ? TAB_FOR_NEW_EMPLOY : EMPLOYEES_TAB}
               >
                 <Route path="/employees/new_employ/general" component={General} />
-                <Route path="/employees/new_employ/contacts" component={Contacts}/>
-                <Route path="/employees/new_employ/adaptation_progress" component={AdaptationProgress}/>
-                <Route path="/employees/new_employ/documents" component={Documents}/>
-                <Route path="/employees/new_employ/goals" component={Goals}/>
+                {/*<Route path="/employees/new_employ/contacts" component={Contacts}/>*/}
+                {/*<Route path="/employees/new_employ/adaptation_progress" component={AdaptationProgress}/>*/}
+                {/*<Route path="/employees/new_employ/documents" component={Documents}/>*/}
+                {/*<Route path="/employees/new_employ/goals" component={Goals}/>*/}
 
                 <Route path="/employees/:employID/:employName/general" component={General} />
                 <Route path="/employees/:employID/:employName/contacts" component={Contacts}/>

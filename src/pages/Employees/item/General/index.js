@@ -25,11 +25,9 @@ const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnl
   return acc
 }, [[], []]))
 
-const General = (props) => {
+const General = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState({})
-  const [valueImg, setValueImg] = useState([])
 
-  const { location: { pathname }, history: { push, goBack } } = props
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "" : `${pathnames[1]}/`

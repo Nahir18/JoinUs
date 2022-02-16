@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useMemo} from 'react';
+import React, {Component, useEffect, useMemo, useState} from 'react';
 import CardIconAndTitle from "../../../../components/CardIconAndTitle";
 import AppList from "../../../../components/AppList";
 import {settings} from "./tableConfig";
@@ -6,48 +6,32 @@ import axios from "axios";
 import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import memoizeOne from "memoize-one"
 
-class AdaptationProgress extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      error: false,
-      isLoaded: false,
-      data: [],
-      adaptation_status: [],
-      program_details: [],
-      comment: []
-    }
-  }
+const AdaptationProgress = ({location: { pathname }, history: { push, goBack }}) => {
+  const [data, setData] = useState([])
+  const [adaptation_status, setAdaptation_status] = useState([])
+  const [program_details, SetProgram_details] = useState([])
+  const [comment, setComment] = useState([])
 
-  componentDidMount() {
-    const { location: { pathname }, history: { push } } = this.props
-    const pathnames = pathname.split("/").filter(x => x)
-    const newEmploy = pathnames[1] === "new_employ"
-    const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
+  const pathnames = pathname.split("/").filter(x => x)
+  const newEmploy = pathnames[1] === "new_employ"
+  const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
+
+  useEffect(() => {
     axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
     .then(
       (response) => {
-        this.setState({
-          isLoaded: true,
-          data: response.data.program_details.map(({levels_detail}) => {
-            return levels_detail
-          }).flat(),
-          adaptation_status: response.data.adaptation_status,
-          program_details: response.data.program_details,
-          comment: response.data.comment
-        })
+        setData(response.data.program_details.map(({levels_detail}) => levels_detail).flat())
+        SetProgram_details(response.data.program_details)
+        setAdaptation_status(response.data.adaptation_status)
+        setComment(response.data.comment)
       },
       (error) => {
-        this.setState({
-          isLoaded: true,
-          error
-        })
+        console.log(error)
       }
     )
+  }, [])
 
-  }
-
-  getPoint = memoizeOne((data = []) => {
+ const getPoint = memoizeOne((data = []) => {
     let sum = 0
     data.forEach(({stages}) => {
       for(let i = 0; i < stages.length; i++){
@@ -57,7 +41,7 @@ class AdaptationProgress extends Component {
     return sum
   })
 
-  getNewData = memoizeOne((data = [], adaptation_status, program_details, comment) => {
+  const getNewData = memoizeOne((data = [], adaptation_status, program_details, comment) => {
     return data.reduce((acc, item = {}) => {
       const { stages } = item
       acc.push(
@@ -76,36 +60,30 @@ class AdaptationProgress extends Component {
       return acc
     }, [])
   })
-
-  render() {
-    const { data, adaptation_status, program_details, comment  } = this.state
-    const newData = this.getNewData(data, adaptation_status, program_details, comment)
-    const point = this.getPoint(data)
-
-    return (
-      <div className="flex-container hidden">
-        <div className="flex p-t-16 p-r-16 p-l-16">
-          <CardIconAndTitle
-            title="Заработано баллов:"
-            value={point}
-            icon="points"
-            className="m-r-16"
-          />
-          <CardIconAndTitle
-            title="Пройдено уровней:"
-            value={[2, 3]}
-            icon="levels"
-          />
-        </div>
-        <AppList
-          settings={settings}
-          data={newData}
-          nestedData={true}
-          nestedKey="stages"
+  const newData = getNewData(data, adaptation_status, program_details, comment)
+  return (
+    <div className="flex-container hidden">
+      <div className="flex p-t-16 p-r-16 p-l-16">
+        <CardIconAndTitle
+          title="Заработано баллов:"
+          value={getPoint(data)}
+          icon="points"
+          className="m-r-16"
+        />
+        <CardIconAndTitle
+          title="Пройдено уровней:"
+          value={[2, 3]}
+          icon="levels"
         />
       </div>
-    );
-  }
+      <AppList
+        settings={settings}
+        data={newData}
+        nestedData={true}
+        nestedKey="stages"
+      />
+    </div>
+  );
 }
 
 export default AdaptationProgress;
