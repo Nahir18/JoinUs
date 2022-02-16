@@ -50,27 +50,28 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
     setData({ ...data, ...value } )
   }
 
+  const cleanObj = (obj) => {
+    for (let propName in obj) {
+      if (obj[propName] === null || obj[propName] === undefined) {
+        delete obj[propName];
+      }
+    }
+    return obj
+  }
+
   const saveDataOfEmployee = async (payload) => {
     try {
       const result = await axios[newEmploy ? "post" : "put"](`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`,
         newEmploy
           ?
           {
-            ...payload,
+            ...cleanObj(payload),
             program: [payload.program],
-            release_date: payload.release_date,
-            create_date: payload.create_date,
-            id_customer: 1,
-            id_employee: 1,
-            status: 1,
             salary: Number(payload.salary)
           }
           :
           {
-            ...payload,
-            program: payload.program,
-            release_date: payload.release_date,
-            create_date: payload.create_date,
+            ...cleanObj(payload),
             salary: Number(payload.salary),
           }
       )
