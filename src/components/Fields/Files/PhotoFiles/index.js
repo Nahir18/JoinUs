@@ -4,7 +4,7 @@ import FileInput from "../FileInput";
 import styled from "styled-components"
 import {EditIcon, Trash, RotateIcon} from "../../../../pages/ConstantsIcons";
 import PreloaderIcon from "../../../Preloader";
-import {ContainerOpacity, ContainerPreloader} from "../styles"
+import {ContainerOpacity, ContainerPreloader, DefaultContainer} from "../styles"
 
 const PhotoContainer = styled.img`
   width: 300px;
@@ -23,11 +23,18 @@ const PhotoFiles = (props) => {
           {value.map(({file, progress, fail}, index) => (
             <div key={index} className="flex items-center flex-col mr-2 mb-2">
               <ContainerOpacity fail={fail}>
-                {progress && <ContainerPreloader><PreloaderIcon/></ContainerPreloader>}
+                {progress > 0 && <ContainerPreloader>
+                  <PreloaderIcon/>
+                </ContainerPreloader>}
                 <PhotoContainer
                   className="rounded-2xl overflow-hidden"
                   src={file}
                 />
+                {/*{file.match(/\.([^.]+)$/)[1] !== "jpg" && file.match(/\.([^.]+)$/)[1] !== "png" ? (*/}
+                {/*  <DefaultContainer>*/}
+                {/*    .{file.match(/\.([^.]+)$/)[1]}*/}
+                {/*  </DefaultContainer>*/}
+                {/*)*/}
               </ContainerOpacity>
               {fail &&
                 <div className="flex items-center mt-1.5">

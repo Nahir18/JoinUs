@@ -31,6 +31,7 @@ const VideoBlock = ({
           className="mt-2.5"
           value={entity}
           onInput={handleInput}
+          multiple
         />
       </div>
     </div>

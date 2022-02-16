@@ -15,8 +15,8 @@ const Contacts = ({location: { pathname }, history: { push, goBack }}) => {
   useEffect(() => {
     axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
     .then(
-      (response) => {
-        setData(response.data.program_details.map(({contacts_detail}) => contacts_detail).flat())
+      ({data}) => {
+        setData(data.program_details.map(({contacts_detail}) => contacts_detail).flat())
       },
       (error) => {
         console.log(error)

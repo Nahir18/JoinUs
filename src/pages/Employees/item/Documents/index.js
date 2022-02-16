@@ -17,9 +17,9 @@ const Documents = ({location: { pathname }, history: { push, goBack }}) => {
   useEffect(() => {
     axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
     .then(
-      (response) => {
-        setData(response.data.program_details.map(({documents_detail}) => documents_detail).flat())
-        setLevels_detail(response.data.program_details.map(({levels_detail}) => levels_detail).flat())
+      ({data}) => {
+        setData(data.program_details.map(({documents_detail}) => documents_detail).flat())
+        setLevels_detail(data.program_details.map(({levels_detail}) => levels_detail).flat())
       },
       (error) => {
         console.log(error)

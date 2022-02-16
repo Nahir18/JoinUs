@@ -19,11 +19,11 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
   useEffect(() => {
     axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
     .then(
-      (response) => {
-        setData(response.data.program_details.map(({levels_detail}) => levels_detail).flat())
-        SetProgram_details(response.data.program_details)
-        setAdaptation_status(response.data.adaptation_status)
-        setComment(response.data.comment)
+      ({data})=> {
+        setData(data.program_details.map(({levels_detail}) => levels_detail).flat())
+        SetProgram_details(data.program_details)
+        setAdaptation_status(data.adaptation_status)
+        setComment(data.comment)
       },
       (error) => {
         console.log(error)

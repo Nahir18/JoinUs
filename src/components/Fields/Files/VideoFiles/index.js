@@ -15,8 +15,6 @@ const VideoContainer = styled.div`
   align-items: center;
 `
 
-// выводится 0 если не загрузилось
-// возможно выводит progress
 const VideoFiles = (props) => {
 return (
  <FileInput title="видео" {...props}>
@@ -26,7 +24,7 @@ return (
          <div className="flex items-center flex-col mr-2" key={file}>
            <VideoContainer className="rounded-2xl overflow-hidden" >
              <ContainerOpacity fail={fail}>
-               {progress && <ContainerPreloader><PreloaderIcon/></ContainerPreloader>}
+               {progress > 0 && <ContainerPreloader><PreloaderIcon/></ContainerPreloader>}
                <video
                  src={file}
                  controls
