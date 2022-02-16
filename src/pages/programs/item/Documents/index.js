@@ -458,7 +458,7 @@ class Documents extends Component {
                             >
                                 <DocumentPhoto
                                     value={[{
-                                        file: document_link,
+                                        file: document_link || 0,
                                     }]}
                                     onInput={addDocumentFile}
                                 />
