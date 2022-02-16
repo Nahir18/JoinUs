@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import { PositionBadge, Title } from '../styles'
-import {ArrowUP, Trash} from "../../../../Constants";
+import {ArrowUP, Trash} from "../../../../ConstantsIcons";
 import {DIRECTION_DOWN, DIRECTION_UP} from "../../../../../constants";
 const BlockHeader = ({ title, position, onDelete, onMove, environmentState }) => {
 

@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ContainerCard, CircleForIcon} from "./style"
 import PropTypes from 'prop-types';
+import {promotions, document, goals, stairs} from "./constantsIcons"
 
 const CardIconAndTitle = ({title, icon, value, className}) => {
   const [img, setImg] = useState("")
@@ -8,16 +9,16 @@ const CardIconAndTitle = ({title, icon, value, className}) => {
   const getIcon = useCallback(() => {
     switch (icon) {
       case "points":
-        setImg("/assets/icons/promotions.svg")
+        setImg(promotions)
         break;
       case "documents":
-        setImg("/assets/icons/document.svg")
+        setImg(document)
         break;
       case "goals":
-        setImg("/assets/icons/goals.svg")
+        setImg(goals)
         break;
       case "levels":
-        setImg("/assets/icons/stairs.svg")
+        setImg(stairs)
         break;
       default:
         setImg("")
@@ -30,7 +31,7 @@ const CardIconAndTitle = ({title, icon, value, className}) => {
   return (
     <ContainerCard className={className}>
       <CircleForIcon>
-        <img src={img} alt=""/>
+        <div dangerouslySetInnerHTML={{__html: img}}/>
       </CircleForIcon>
       <div className="p-l-8">
         <div className="fs-12 color-light-blue-2 lh-16 ls-01">

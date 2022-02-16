@@ -1,5 +1,5 @@
 import React from 'react';
-import {DocumentIcon} from "../../../pages/Constants";
+import {DocumentIcon} from "../../../pages/ConstantsIcons";
 import PropTypes from "prop-types"
 
 const DocumentName = ({data}) => {

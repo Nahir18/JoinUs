@@ -1,4 +1,5 @@
 import ChekBox from "@Components/Fields/CheckBox"
+import DocumentName from "../../../../components/ComponentsForListTable/DocumentName";
 
 export const selectDocumentModalConfig = (selectedDocuments, checkNewDocument) => {
     return [
@@ -12,14 +13,9 @@ export const selectDocumentModalConfig = (selectedDocuments, checkNewDocument) =
             id: 2,
             key: "document_name",
             name: "Наименование документа",
+            component: DocumentName,
             size: "80%"
         },
-        // {
-        //     id: 3,
-        //     key: "document_name",
-        //     name: "Наименование программы",
-        //     size: "35%"
-        // },
         {
             id: 4,
             key: "",

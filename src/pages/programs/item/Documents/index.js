@@ -213,6 +213,12 @@ class Documents extends Component {
             modalData: { ...modalData, [id]: value}
         })
     }
+    handleNumericInputChange = (value, id) => {
+        const { modalData } = this.state
+        this.setState({
+            modalData: { ...modalData, [id]: isNaN(value) ? modalData[id] : value}
+        })
+    }
     tierUp = () => {
         const {  modalData, modalData: { tier } } = this.state
         this.setState({
@@ -322,7 +328,7 @@ class Documents extends Component {
                 >
                     <Modal
                         isOpen={editModal}
-                        title="редактирование документа"
+                        title="Редактирование документа"
                         closeModal={this.closeModal}
                         handleSave={() => this.saveEditDocument(this.closeModal, modalData)}
                     >
@@ -351,6 +357,9 @@ class Documents extends Component {
                                     <div className="relative">
                                         <ArrowInput
                                             value={tier}
+                                            key="tier"
+                                            id="tier"
+                                            onInput={() => this.handleNumericInputChange(Number(document.getElementById('tier').value), "tier")}
                                             arrowUp={this.tierUp}
                                             arrowDown={this.tierDown}
                                         />
@@ -399,6 +408,9 @@ class Documents extends Component {
                                         className="mt-2 font-normal"
                                         value={tier}
                                         top="21px"
+                                        key="tier"
+                                        id="tier"
+                                        onInput={() => this.handleNumericInputChange(Number(document.getElementById('tier').value), "tier")}
                                         arrowUp={this.tierUp}
                                         arrowDown={this.tierDown}
                                     />

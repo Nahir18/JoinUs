@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import Input from "@Components/Fields/Input"
-import {SmallArrowUp} from "../../pages/Constants";
+import {SmallArrowUp} from "../../pages/ConstantsIcons";
 import { Arrows } from "./style";
 import PropTypes from 'prop-types';
 
 const ArrowInput = props => {
-    const { value, arrowUp, arrowDown, right, top } = props
+    const { value, onInput, arrowUp, arrowDown, right, top } = props
     const iconColor = value <= 1 ? "0.3" : ""
+
     return (
         <div className="flex">
             <Input
+                onInput={onInput}
                 {...props}
             />
             <Arrows
@@ -37,6 +39,7 @@ const ArrowInput = props => {
 ArrowInput.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     arrowUp: PropTypes.func,
+    onInput: PropTypes.func,
     arrowDown: PropTypes.func,
 };
 

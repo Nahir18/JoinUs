@@ -3,7 +3,6 @@ import memoizeOne from "memoize-one";
 import Form from "@Components/Forms/index"
 import PropTypes from "prop-types"
 import ModalSidebar from "../../../../components/ModalSidebar";
-import RadioButton from "../../../../components/RadioButton";
 import {WithValidationHocRenderPropAdapter} from "../../../../Validator";
 import {fieldMap, rules} from "./formConfig";
 import {FormContainer} from "../../item/General/style"
@@ -108,7 +107,6 @@ class LevelsGeneral extends Component {
       [id]: value
     });
   }
-
   handleSubmit(event) {
     event.preventDefault();
   }
@@ -124,7 +122,7 @@ class LevelsGeneral extends Component {
   saveNewLevel() {
     const {location: {pathname}, history: { push }} = this.props
     const {data} = this.state
-    const { level_name, tier, status, create_date, id_employee, duration_day } = data
+    const { level_name, tier, status, create_date, id_employee, duration_day, illustration } = data
     const pathnames = pathname.split("/").filter(x => x)
     const newLevel = pathnames[3] === "level"
     const idLevel = newLevel ? "/" : `/${pathnames[3]}/`
@@ -136,7 +134,7 @@ class LevelsGeneral extends Component {
         id_employee,
         duration_day
     }
-    axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, newData)
+    axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, illustration ? {...newData, illustration} : newData)
       .then(
         (response) => {
           const {data, data: {id}} = response
@@ -264,9 +262,7 @@ class LevelsGeneral extends Component {
                     />
                   </FormContainer>
                 </div>
-                <div
-                  className="flex justify-end pb-20 pr-8 pt-8"
-                >
+                <div className="flex justify-end p-b-24 pr-8 pt-8">
                   <div
                     onClick={() => goBack()}
                     name="cancel"

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FileInput from "../FileInput";
 import styled from "styled-components"
-import {EditIcon, RotateIcon, Trash} from "../../../../pages/Constants";
+import {EditIcon, RotateIcon, Trash} from "../../../../pages/ConstantsIcons";
 import PreloaderIcon from "../../../Preloader";
 import {ContainerOpacity, ContainerPreloader} from "../styles"
 

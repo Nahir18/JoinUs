@@ -1,21 +1,7 @@
 import React from "react";
-import {ArrowUP, DocumentIcon, EditIcon, Trash} from "../../../Constants";
+import {ArrowUP, EditIcon, Trash} from "../../../ConstantsIcons";
 
-
-const DocumentName = ({data}) => {
-    return (
-        <div className="flex items-center">
-            <div
-                dangerouslySetInnerHTML={{__html: DocumentIcon}}
-            />
-            <div className="ml-2">
-                { data }
-            </div>
-        </div>
-    )
-}
-
-
+// todo дубль ActionsButtons
 const DocumentActions = ({handleEdit, data, actionButtonTierUp, actionButtonTierDown, actionsDelete}) => {
     const iconColor = data.tier <= 1 ? "0.3" : ""
     return (
@@ -60,7 +46,6 @@ export const settings = (editModal, closeModal, handleEdit, actionButtonTierUp, 
         id: 2,
         key: "goal_name",
         name: "Наименование",
-        component: DocumentName,
         size: "30%"
     },
     {

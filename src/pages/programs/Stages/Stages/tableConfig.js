@@ -1,4 +1,4 @@
-import {ArrowUP, EditIcon, Trash} from "../../../Constants";
+import {ArrowUP, EditIcon, Trash} from "../../../ConstantsIcons";
 import React from "react";
 import StatusIndicator from "../../../../components/StatusIndicator";
 

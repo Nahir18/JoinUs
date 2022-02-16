@@ -2,17 +2,17 @@ import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import BlockHeader from "./BlockHeader";
 import BsInput from "../../../../../components/Fields/Input";
-import {PlusIcon} from "../../../../Constants";
+import {PlusIcon} from "../../../../ConstantsIcons";
 import PureUpdateArrayItems from "../../../../../utils/Arrays/PureUpdateArrayItems";
 
 
 const QuizBlock = ({
- position, className, value, value: { entity, text }, onInput, onMove, onDelete, environmentState
+ position, className, value, value: { entity = [], text }, onInput, onMove, onDelete, environmentState
 }) => {
   const handleInput = useCallback((nextValue, id) => {
     onInput({ ...value, [id]: nextValue }, position)
   }, [onInput, value, position])
-  
+
   const onOptionInput = useCallback((index) => (nextValue, id) => {
     handleInput(PureUpdateArrayItems(entity || [], index, nextValue), id)
   }, [entity, handleInput])
@@ -20,7 +20,7 @@ const QuizBlock = ({
   const onAddOption = useCallback(() => {
     handleInput([...entity, ""], "entity")
   }, [handleInput, entity])
-  
+
   return (
     <div className={className}>
       <BlockHeader

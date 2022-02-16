@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ArrowUP, EditIcon, Trash} from "../../pages/Constants";
+import {ArrowUP, EditIcon, Trash} from "../../pages/ConstantsIcons";
 
 const ActionsButtons = ({handleEdit, data, dataKey, arrowUp, arrowDown, deleteItem}) => {
     const iconColor = data[dataKey] <= 1 ? "0.3" : ""

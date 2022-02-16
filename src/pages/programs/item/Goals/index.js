@@ -93,6 +93,12 @@ class Goals extends Component {
             modalData: {...modalData, [id]: value}
         })
     }
+    handleNumericInputChange = (value, id) => {
+        const { modalData } = this.state
+        this.setState({
+            modalData: {...modalData, [id]: isNaN(value) ? modalData[id] : value}
+        })
+    }
      addNewGoal = () => {
         const { goalSelection } = this.state
          this.setState({
@@ -341,6 +347,7 @@ class Goals extends Component {
                                     key="tier"
                                     value={tier}
                                     top="20px"
+                                    onInput={() => this.handleNumericInputChange(Number(document.getElementById('tier').value), "tier")}
                                     arrowUp={tierUp}
                                     arrowDown={tierDown}
                                     className="mt-2"
@@ -379,6 +386,9 @@ class Goals extends Component {
                                     className="mt-2 font-normal"
                                     value={tier}
                                     top="21px"
+                                    key="tier"
+                                    id="tier"
+                                    onInput={() => this.handleNumericInputChange(Number(document.getElementById('tier').value), "tier")}
                                     arrowUp={this.tierUp}
                                     arrowDown={this.tierDown}
                                 />

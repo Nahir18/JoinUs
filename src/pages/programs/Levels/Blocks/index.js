@@ -93,7 +93,7 @@ const Blocks = (props) => {
         url="programs"
         links={STAGES_LINKS}
     >
-      <div className="flex-container">
+      <div className="flex-container hidden">
         <ScrollBar className="p-l-24 p-r-24 p-b-24 p-t-24 bg-white">
           {
             data.json.map((value, index) => {
@@ -118,7 +118,7 @@ const Blocks = (props) => {
             onInput={handleCreate}
           />
         </ScrollBar>
-      <div className="flex justify-end mt-auto m-b-24 bg-white p-b-24 p-r-24">
+      <div className="flex justify-end mt-auto m-b-24 bg-white p-t-24 p-r-24">
         <button
           name="cancel"
           type="submit"
