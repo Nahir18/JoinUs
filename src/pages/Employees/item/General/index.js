@@ -25,11 +25,9 @@ const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnl
   return acc
 }, [[], []]))
 
-const General = (props) => {
+const General = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState({})
-  const [valueImg, setValueImg] = useState([])
 
-  const { location: { pathname }, history: { push, goBack } } = props
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "" : `${pathnames[1]}/`
@@ -52,27 +50,28 @@ const General = (props) => {
     setData({ ...data, ...value } )
   }
 
+  const cleanObj = (obj) => {
+    for (let propName in obj) {
+      if (obj[propName] === null || obj[propName] === undefined) {
+        delete obj[propName];
+      }
+    }
+    return obj
+  }
+
   const saveDataOfEmployee = async (payload) => {
     try {
       const result = await axios[newEmploy ? "post" : "put"](`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`,
         newEmploy
           ?
           {
-            ...payload,
+            ...cleanObj(payload),
             program: [payload.program],
-            release_date: payload.release_date,
-            create_date: payload.create_date,
-            id_customer: 1,
-            id_employee: 1,
-            status: 1,
             salary: Number(payload.salary)
           }
           :
           {
-            ...payload,
-            program: payload.program,
-            release_date: payload.release_date,
-            create_date: payload.create_date,
+            ...cleanObj(payload),
             salary: Number(payload.salary),
           }
       )
