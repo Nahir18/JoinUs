@@ -5,6 +5,7 @@ import styled from "styled-components"
 import {EditIcon, RotateIcon, Trash} from "../../../../pages/ConstantsIcons";
 import PreloaderIcon from "../../../Preloader";
 import {ContainerOpacity, ContainerPreloader} from "../styles"
+import { Player } from 'video-react';
 
 const VideoContainer = styled.div`
   width: 300px;
@@ -25,10 +26,10 @@ return (
            <VideoContainer className="rounded-2xl overflow-hidden" >
              <ContainerOpacity fail={fail}>
                {progress > 0 && <ContainerPreloader><PreloaderIcon/></ContainerPreloader>}
-               <video
-                 src={file}
-                 controls
-               />
+              <Player
+                playsInline
+                src={file}
+              />
              </ContainerOpacity>
            </VideoContainer>
 
