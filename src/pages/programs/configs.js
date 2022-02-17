@@ -1,9 +1,17 @@
+import {
+    PAGE_NAME_GENERAL,
+    PAGE_NAME_STAGES,
+    PAGE_NAME_PROGRAMS,
+    PAGE_NAME_LEVELS,
+    NEW_PROGRAM
+} from "./Constants";
+
 export const programsBreadcrumbs = [
     {
         page: "New_level",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -16,7 +24,7 @@ export const programsBreadcrumbs = [
         page: "general",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -29,7 +37,7 @@ export const programsBreadcrumbs = [
         page: "levels",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -42,7 +50,7 @@ export const programsBreadcrumbs = [
         page: "contacts",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -55,7 +63,7 @@ export const programsBreadcrumbs = [
         page: "documents",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -68,7 +76,7 @@ export const programsBreadcrumbs = [
         page: "goals",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -84,15 +92,15 @@ export const levelsBreadcrumbs = [
         page: "general",
         config:[
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
-                name: (pathname) =>`${pathname[1] === "new_program" ? "Новая програма" : pathname[1]}`,
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? "Новая програма" : pathname[1]}`,
                 link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
             },
             {
-                name: "Общие",
+                name: PAGE_NAME_GENERAL,
                 link: "/"
             }
         ]
@@ -101,7 +109,7 @@ export const levelsBreadcrumbs = [
         page: "levelStages",
         config:[
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -109,7 +117,7 @@ export const levelsBreadcrumbs = [
                 link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
             },
             {
-                name: "Общие",
+                name: PAGE_NAME_STAGES,
                 link: "/"
             }
         ]
@@ -118,7 +126,7 @@ export const levelsBreadcrumbs = [
         page: "newStage",
         config:[
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -135,7 +143,7 @@ export const levelsBreadcrumbs = [
         page: "programs",
         config:[
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -143,7 +151,7 @@ export const levelsBreadcrumbs = [
                 link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
             },
             {
-                name: "Общие",
+                name: "Программы",
                 link: "/"
             }
         ]
@@ -152,7 +160,7 @@ export const levelsBreadcrumbs = [
         page: "blocks",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {
@@ -169,7 +177,7 @@ export const levelsBreadcrumbs = [
         page: "levels",
         config: [
             {
-                name: "Програмы",
+                name: PAGE_NAME_GENERAL,
                 link: "programs"
             },
             {

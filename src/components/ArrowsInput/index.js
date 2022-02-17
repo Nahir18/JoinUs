@@ -1,8 +1,9 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import Input from "@Components/Fields/Input"
 import {SmallArrowUp} from "../../pages/ConstantsIcons";
 import { Arrows } from "./style";
 import PropTypes from 'prop-types';
+import NumericInput from "../Fields/NumericInput";
 
 const ArrowInput = props => {
     const { value, onInput, arrowUp, arrowDown, right, top } = props
@@ -10,9 +11,9 @@ const ArrowInput = props => {
 
     return (
         <div className="flex">
-            <Input
-                onInput={onInput}
+            <NumericInput
                 {...props}
+                onInput={onInput}
             />
             <Arrows
                 right={right}
