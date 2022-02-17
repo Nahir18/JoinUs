@@ -5,18 +5,17 @@ import styled from "styled-components"
 import {EditIcon, RotateIcon, Trash} from "../../../../pages/ConstantsIcons";
 import PreloaderIcon from "../../../Preloader";
 import {ContainerOpacity, ContainerPreloader} from "../styles"
+import { Player } from 'video-react';
 
 const VideoContainer = styled.div`
-  width: 300px;
-  height: 168.75px;
+  //width: 300px;
+  //height: 168.75px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 `
 
-// выводится 0 если не загрузилось
-// возможно выводит progress
 const VideoFiles = (props) => {
 return (
  <FileInput title="видео" {...props}>
@@ -26,11 +25,13 @@ return (
          <div className="flex items-center flex-col mr-2" key={file}>
            <VideoContainer className="rounded-2xl overflow-hidden" >
              <ContainerOpacity fail={fail}>
-               {progress && <ContainerPreloader><PreloaderIcon/></ContainerPreloader>}
-               <video
-                 src={file}
-                 controls
-               />
+               {progress > 0 && <ContainerPreloader><PreloaderIcon/></ContainerPreloader>}
+              <Player
+                width={300}
+                // height={168.75}
+                playsInline
+                src={file}
+              />
              </ContainerOpacity>
            </VideoContainer>
 

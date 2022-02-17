@@ -36,8 +36,8 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
     if (!newEmploy) {
       axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
       .then(
-        (response) => {
-          setData(response.data)
+        ({data}) => {
+          setData(data)
         },
         (error) => {
          console.log(error)

@@ -20,12 +20,12 @@ const Goals = ({location: { pathname }, history: { push, goBack }}) => {
   useEffect(() => {
     axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
     .then(
-      (response) => {
-        setData(response.data.program_details.map(({goals_detail}) => goals_detail).flat())
-        setDocuments_detail(response.data.program_details.map(({documents_detail}) => documents_detail).flat())
-        setLevels_detail(response.data.program_details.map(({levels_detail}) => levels_detail).flat())
-        SetProgram_details(response.data.program_details)
-        setAdaptation_status(response.data.adaptation_status)
+      ({data}) => {
+        setData(data.program_details.map(({goals_detail}) => goals_detail).flat())
+        setDocuments_detail(data.program_details.map(({documents_detail}) => documents_detail).flat())
+        setLevels_detail(data.program_details.map(({levels_detail}) => levels_detail).flat())
+        SetProgram_details(data.program_details)
+        setAdaptation_status(data.adaptation_status)
       },
       (error) => {
         console.log(error)
