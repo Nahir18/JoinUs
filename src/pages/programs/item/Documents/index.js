@@ -13,9 +13,7 @@ import {
 import DatePicker from "@Components/Fields/DatePicker"
 import ArrowInput from "../../../../components/ArrowsInput";
 import { settings } from "./tableConfig";
-import { programsBreadcrumbs } from "../../configs";
-import PageHeader from "../../../../components/PageHeader";
-import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
+import {NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
 import DocumentPhoto from "../../../../components/DocumentPhoto"
@@ -305,7 +303,6 @@ class Documents extends Component {
             documentSelection,
             selectedDocuments,
             addNewDocument,
-            programData: { program_name }
         } = this.state
         const handleEdit = (data) => this.setState({
             editModal: true,
@@ -314,18 +311,10 @@ class Documents extends Component {
         const {
             actionButtonTierUp,
             actionButtonTierDown,
-            pageHeaderTitle,
             addDocumentFile
         } = this
         return (
-                <PageHeader
-                    className="h-full"
-                    {...this.props}
-                    pageData={pageHeaderTitle(program_name)}
-                    bredCrumbsConfig={programsBreadcrumbs}
-                    url="programs"
-                    links={NAV_BUTTON_LINKS}
-                >
+            <>
                     <Modal
                         isOpen={editModal}
                         title="Редактирование документа"
@@ -499,7 +488,7 @@ class Documents extends Component {
                         settings={settings(editModal, this.closeModal, handleEdit, this.deleteItem, actionButtonTierUp, actionButtonTierDown)}
                         data={items}
                     />
-                </PageHeader>
+            </>
         );
     }
 }

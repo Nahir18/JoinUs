@@ -6,9 +6,7 @@ import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_GOALS, ADAPTATION_EMPLOYEE} 
 import Modal from "../../../../components/ModalWindow";
 import { settings } from "./FormConfig";
 import ArrowInput from "../../../../components/ArrowsInput";
-import { programsBreadcrumbs } from "../../configs";
-import PageHeader from "../../../../components/PageHeader";
-import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
+import {NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import DatePicker from "@Components/Fields/DatePicker"
 import { addGoalsModalConfig } from "./addGoalsModalConfig";
@@ -273,7 +271,6 @@ class Goals extends Component {
             modalData: { goal_name, tier, create_date, description },
             selectedGoals,
             addGoalsModal,
-            programData: { program_name },
             goals
         } = this.state
 
@@ -289,7 +286,6 @@ class Goals extends Component {
             tierDown,
             actionButtonTierUp,
             actionButtonTierDown,
-            pageHeaderTitle,
             actionsDeleteItem,
             saveNewGoal,
             openGoalSelection
@@ -298,14 +294,7 @@ class Goals extends Component {
 
 
         return (
-            <PageHeader
-                className="h-full"
-                {...this.props}
-                pageData={pageHeaderTitle(program_name)}
-                bredCrumbsConfig={programsBreadcrumbs}
-                url="programs"
-                links={NAV_BUTTON_LINKS}
-            >
+            <>
                 <Modal
                     isOpen={editModal}
                     title="Редактирование цели"
@@ -471,7 +460,7 @@ class Goals extends Component {
                     settings={settings(editModal, toggleModal, handleEdit, actionButtonTierUp, actionButtonTierDown, actionsDeleteItem)}
                     data={items}
                 />
-            </PageHeader>
+            </>
         );
     }
 }

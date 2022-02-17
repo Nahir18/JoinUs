@@ -57,13 +57,16 @@ class levelStages extends Component {
             })
     }
 
-    loadPageData = () => {
+    idLevel = () => {
         const {
             location: { pathname }
         } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[3]}/` : ""
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`)
+        const pathNames = pathname.split("/").filter(x => x)
+        return pathNames[5]
+    }
+
+    loadPageData = () => {
+        axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}/${this.idLevel()}/`)
             .then(
                 (response) => {
                     const { data, data: { stages } } = response
@@ -155,12 +158,7 @@ class levelStages extends Component {
         })
     }
     saveAddStages = async () => {
-        const {
-            location: { pathname }
-        } = this.props
         const { selectedStage, stages } = this.state
-        const pathnames = pathname.split("/").filter(x => x)
-        const idLevel = pathnames[3]
         const { loadPageData } = this
         for (let i = 0; i < selectedStage.length; i++) {
             const { stage_name, create_date, duration_day } = stages.find(({id}) => id === selectedStage[i])
@@ -168,7 +166,7 @@ class levelStages extends Component {
                 stage_name,
                 create_date,
                 duration_day,
-                level: Number(idLevel)
+                level: Number(this.idLevel())
             })
         }
         this.setState({
@@ -216,12 +214,6 @@ class levelStages extends Component {
             selectedStage: items.map(({id}) => id)
         })
     }
-    pageHeaderTitle = (level_name) => {
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[1] === NEW_PROGRAM
-        return newProgram ? "Новая программа" : level_name ? `Уровень "${level_name}"` : ""
-    }
     appListData = () => {
         const { programs, stages, levels } = this.state
         return stages.map((item) => {
@@ -240,8 +232,6 @@ class levelStages extends Component {
             modalData: { stage_name, tier },
             selectedStage,
             addStageModal,
-            stages,
-            levelData: { level_name }
         } = this.state
 
         const { location: { pathname } } = this.props
@@ -256,7 +246,6 @@ class levelStages extends Component {
             saveEditStage,
             openDocumentSelection,
             checkStage,
-            pageHeaderTitle,
             actionTierUp,
             actionTierDown,
             handleDeleteItem,
@@ -265,14 +254,7 @@ class levelStages extends Component {
         } = this
 
         return (
-            <PageHeader
-                className="h-full"
-                {...this.props}
-                pageData={pageHeaderTitle(level_name)}
-                bredCrumbsConfig={levelsBreadcrumbs}
-                url="programs"
-                links={LEVELS_LINKS}
-            >
+            <>
                 <Modal
                     isOpen={editModal}
                     title="редактирование этапа"
@@ -308,6 +290,7 @@ class levelStages extends Component {
                                     key="tier"
                                     value={tier}
                                     top="20px"
+                                    onInput={() => handleInputChange(document.getElementById('tier').value, "tier")}
                                     arrowUp={tierUp}
                                     arrowDown={tierDown}
                                     className="mt-2"
@@ -368,7 +351,7 @@ class levelStages extends Component {
                     settings={settings(handleEdit, actionTierUp, actionTierDown, handleDeleteItem)}
                     data={items}
                 />
-            </PageHeader>
+            </>
         );
     }
 }

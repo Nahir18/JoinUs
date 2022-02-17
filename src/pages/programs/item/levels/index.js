@@ -5,10 +5,8 @@ import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_LEVELS, ADAPTATION_STAGE} fr
 import { NavLink } from "react-router-dom";
 import { settings } from "./tableConfig";
 import Modal from "../../../../components/ModalWindow";
-import { programsBreadcrumbs } from "../../configs";
-import PageHeader from "../../../../components/PageHeader";
 import { levelSelectionModalConfig } from "./levelSelectionModalConfig";
-import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
+import {NEW_PROGRAM, PAGE_LINK_LEVEL, NEW_LEVEL, PAGE_LINK_GENERAL} from "../../Constants";
 
 class Levels extends Component {
     constructor(props) {
@@ -73,9 +71,10 @@ class Levels extends Component {
             selectedLevels: items.map(({id}) => id)
         })
     }
-    editStage = (data, nestedlevel) => {
-        const { id } = data
+    editStage = ({id, level_name}, nestedlevel) => {
         const { history: { push } } = this.props
+        !nestedlevel ?
+        push(`level/${level_name}/${id}/general`) :
         push(`${id}/${nestedlevel ? "stage" : "level"}/general`)
     }
     checkLevels = (value, id) => {
@@ -196,65 +195,50 @@ class Levels extends Component {
             this.loadPageData()
         }
     }
-    pageHeaderTitle = (program_name) => {
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[1] === NEW_PROGRAM
-        return newProgram ? "Новая программа" : program_name
-    }
 render() {
-    const { items, editModal, selectedLevels, levels, programData: { program_name } } = this.state
+    const { items, editModal, selectedLevels, levels } = this.state
         const {
             editStage,
             checkLevels,
             saveNewLevel,
             deleteItem,
-            pageHeaderTitle,
             actionButtonTierUp,
             actionButtonTierDown
     } = this
         return (
           <div className="flex-container">
-              <PageHeader
-                  {...this.props}
-                  bredCrumbsConfig={programsBreadcrumbs}
-                  pageData={pageHeaderTitle(program_name)}
-                  url="programs"
-                  links={NAV_BUTTON_LINKS}
+              <Modal
+                  isOpen={editModal}
+                  title="Выбор уровня"
+                  closeModal={this.selectLevel}
+                  handleSave={saveNewLevel}
+                  style={{"minWidth": "500px"}}
               >
-                  <Modal
-                      isOpen={editModal}
-                      title="Выбор уровня"
-                      closeModal={this.selectLevel}
-                      handleSave={saveNewLevel}
-                      style={{"minWidth": "500px"}}
-                  >
-                      <AppList
-                          settings={levelSelectionModalConfig(selectedLevels, checkLevels)}
-                          data={levels}
-                      />
-                  </Modal>
-                  <div className="pt-6 mb-4 ml-4 flex">
-                      <NavLink
-                        className="blue btn width-m pt-1.5"
-                        to="level/general"
-                      >
-                          + Добавить уровень
-                      </NavLink>
-                      <button
-                        className="white btn width-m pt-1.5 ml-4"
-                        onClick={this.selectLevel}
-                      >
-                          Выбрать уровень
-                      </button>
-                  </div>
                   <AppList
-                    settings={settings(editStage, deleteItem, actionButtonTierUp, actionButtonTierDown)}
-                    nestedData={true}
-                    data={items}
-                    nestedKey="stages"
+                      settings={levelSelectionModalConfig(selectedLevels, checkLevels)}
+                      data={levels}
                   />
-              </PageHeader>
+              </Modal>
+              <div className="pt-6 mb-4 ml-4 flex">
+                  <NavLink
+                    className="blue btn width-m pt-1.5"
+                    to={`${PAGE_LINK_LEVEL}/${NEW_LEVEL}/${PAGE_LINK_GENERAL}`}
+                  >
+                      + Добавить уровень
+                  </NavLink>
+                  <button
+                    className="white btn width-m pt-1.5 ml-4"
+                    onClick={this.selectLevel}
+                  >
+                      Выбрать уровень
+                  </button>
+              </div>
+              <AppList
+                settings={settings(editStage, deleteItem, actionButtonTierUp, actionButtonTierDown)}
+                nestedData={true}
+                data={items}
+                nestedKey="stages"
+              />
           </div>
         );
     }

@@ -9,7 +9,7 @@ import axios from "axios";
 import { ADAPTATION_STAGE, ADAPTATION_BLOCK, DEFAULT_URL } from "../../../../components/APIList";
 import { levelsBreadcrumbs } from "../../configs";
 import PageHeader from "../../../../components/PageHeader";
-import {STAGES_LINKS, NEW_PROGRAM, NEW_STAGE} from "../../Constants";
+import {STAGES_LINKS, NEW_STAGE} from "../../Constants";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
     .reduce((acc, c) => {
