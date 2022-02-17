@@ -110,6 +110,10 @@ body {
     border-radius: 4px;
 }
 
+body > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(7) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div > div > div > video {
+    display: inline-block!important;
+}
+
  /*стили скролла*/
 
 .ps__rail-y {

@@ -43,3 +43,15 @@ export const ContainerPreloader = styled.div`
     align-items: center;
   }
 `
+
+export const DefaultContainer = styled.div`
+  width: 300px;
+  height: 168.75px;
+  border-radius: 16px;
+  color: var(--color-white);
+  background: var(--color-light-blue-2);
+  padding: 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+`
