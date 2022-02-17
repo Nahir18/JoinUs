@@ -8,8 +8,8 @@ import {ContainerOpacity, ContainerPreloader} from "../styles"
 import { Player } from 'video-react';
 
 const VideoContainer = styled.div`
-  width: 300px;
-  height: 168.75px;
+  //width: 300px;
+  //height: 168.75px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -27,6 +27,8 @@ return (
              <ContainerOpacity fail={fail}>
                {progress > 0 && <ContainerPreloader><PreloaderIcon/></ContainerPreloader>}
               <Player
+                width={300}
+                // height={168.75}
                 playsInline
                 src={file}
               />
