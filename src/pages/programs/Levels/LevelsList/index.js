@@ -4,9 +4,7 @@ import axios from 'axios';
 import {NavLink} from "react-router-dom";
 import { settings } from "./settings";
 import {DEFAULT_URL, ADAPTATION_LEVELS, ADAPTATION_STAGE} from "../../../../components/APIList";
-import PageHeader from "../../../../components/PageHeader";
-import { levelsBreadcrumbs } from "../../configs";
-import {STAGES_LINKS} from "../../Constants";
+import {NEW_LEVEL, PAGE_LINK_GENERAL, PAGE_LINK_LEVEL} from "../../Constants";
 
 class LevelsList extends Component {
     constructor(props) {
@@ -20,7 +18,7 @@ class LevelsList extends Component {
     }
     componentDidMount() {
         const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
+        const pathNames = pathname.split("/").filter(x => x)
         axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}`)
             .then(
                 (response) => {
@@ -36,7 +34,7 @@ class LevelsList extends Component {
                     })
                 }
             )
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${pathnames[3]}/`)
+        axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${pathNames[5]}/`)
             .then(({data}) => {
                 this.setState({
                     stageData: data
@@ -51,47 +49,39 @@ class LevelsList extends Component {
     render() {
         const { items } = this.state
         const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const subPage = pathnames.length > 1
+        const pathNames = pathname.split("/").filter(x => x)
+        const subPage = pathNames.length > 1
         return (
-            <PageHeader
-                {...this.props}
-                pageData={this.pageHeaderTitle()}
-                bredCrumbsConfig={levelsBreadcrumbs}
-                url="programs"
-                links={STAGES_LINKS}
-            >
-                <div className="flex-container">
-                    {
-                        !subPage ? (
-                            <div className="flex justify-between my-3">
+            <div className="flex-container">
+                {
+                    !subPage ? (
+                        <div className="flex justify-between my-3">
 
-                                <div className="text-2xl">
-                                    Программы
-                                </div>
-                                <NavLink
-                                    className="blue btn width-m flex items-center"
-                                    to="/programs/new_program/general"
-                                >
-                                    + Создать программу
-                                </NavLink>
-
+                            <div className="text-2xl">
+                                Программы
                             </div>
-                        ) : (
                             <NavLink
-                                className="blue btn width-m flex items-center my-3 ml-4"
+                                className="blue btn width-m flex items-center"
                                 to="/programs/new_program/general"
                             >
-                                + Добавить уровень
+                                + Создать программу
                             </NavLink>
-                        )
-                    }
-                    <AppList
-                        settings={settings(pathname)}
-                        data={items}
-                    />
-                </div>
-            </PageHeader>
+
+                        </div>
+                    ) : (
+                        <NavLink
+                            className="blue btn width-m flex items-center my-3 ml-4"
+                            to={`/${pathNames[0]}/${pathNames[1]}/${pathNames[2]}/${PAGE_LINK_LEVEL}/${NEW_LEVEL}/${PAGE_LINK_GENERAL}`}
+                        >
+                            + Добавить уровень
+                        </NavLink>
+                    )
+                }
+                <AppList
+                    settings={settings(pathname)}
+                    data={items}
+                />
+            </div>
         );
     }
 }

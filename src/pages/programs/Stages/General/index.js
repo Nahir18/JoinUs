@@ -9,11 +9,10 @@ import {FormContainer} from "../../item/General/style"
 import axios from "axios";
 import { ADAPTATION_EMPLOYEE, ADAPTATION_LEVELS, ADAPTATION_PROGRAM, DEFAULT_URL } from "../../../../components/APIList";
 import Avatar from "../../../../components/Avatar";
-import { levelsBreadcrumbs } from "../../configs";
-import PageHeader from "../../../../components/PageHeader";
-import {LEVELS_LINKS} from "../../Constants";
+import {PAGE_LINK_LEVELS} from "../../Constants";
 import AppList from "../../../../components/AppList";
 import { employeesModalConfig } from "../../item/General/employeesModalConfig";
+import { NEW_LEVEL } from "../../Constants";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
   .reduce((acc, c) => {
@@ -44,29 +43,34 @@ class LevelsGeneral extends Component {
     this.handleInputChange = this.handleInputChange.bind(this)
   }
 
-  loadPageData = () => {
+  pathNames = () => {
       const {location: {pathname}} = this.props
-      const pathnames = pathname.split("/").filter(x => x)
-      const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[3]}` : ""
-      if (pathnames[1] !== "new_program" && pathnames[3] !== "level") {
-          axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`)
-              .then(
-                  ({data, data: { level_name }}) => {
-                      this.setState({
-                          isLoaded: true,
-                          data: data,
-                          pageTitle: level_name
-                      })
-                  },
-                  (error) => {
-                      this.setState({
-                          isLoaded: true,
-                          error
-                      })
-                  }
-              )
-      }
+      return pathname.split("/").filter(x => x)
   }
+
+  idLevel = () => {
+      return this.pathNames()[5]
+  }
+
+  loadPageData = () => {
+      const { pathNames } = this
+      axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}/${pathNames()[5]}`)
+          .then(
+              ({data, data: { level_name }}) => {
+                  this.setState({
+                      isLoaded: true,
+                      data: data,
+                      pageTitle: level_name
+                  })
+              },
+              (error) => {
+                  this.setState({
+                      isLoaded: true,
+                      error
+                  })
+              }
+          )
+     }
 
   componentDidMount() {
     axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
@@ -99,79 +103,79 @@ class LevelsGeneral extends Component {
           })
         }
       )
-    this.loadPageData()
-  }
-
-  handleInputChange(value, id) {
-    this.setState({
-      [id]: value
-    });
-  }
-  handleSubmit(event) {
-    event.preventDefault();
-  }
-
-  selectClient = (value) => {
-    const {customers} = this.state
-    const customer = customers.find((a) => a.customer_name === value)
-    this.setState({
-      modalState: [customer.id]
-    })
-  }
-
-  saveNewLevel() {
-    const {location: {pathname}, history: { push }} = this.props
-    const {data} = this.state
-    const { level_name, tier, status, create_date, id_employee, duration_day, illustration } = data
-    const pathnames = pathname.split("/").filter(x => x)
-    const newLevel = pathnames[3] === "level"
-    const idLevel = newLevel ? "/" : `/${pathnames[3]}/`
-    const newData = {
-        level_name,
-        tier,
-        status,
-        create_date,
-        id_employee,
-        duration_day
+      if (this.pathNames()[4] !== NEW_LEVEL) {
+          this.loadPageData()
+      }
     }
-    axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}${idLevel}`, illustration ? {...newData, illustration} : newData)
-      .then(
-        (response) => {
-          const {data, data: {id}} = response
-          this.setState({
-            isLoaded: true,
-            data: data
-          })
-            newLevel && push(`/${pathnames[0]}/${pathnames[1]}/${pathnames[2]}/${id}/${pathnames[3]}/${pathnames[4]}`)
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          })
+
+    handleInputChange(value, id) {
+        this.setState({
+          [id]: value
+        });
+    }
+    handleSubmit(event) {
+      event.preventDefault();
+    }
+
+    selectClient = (value) => {
+        const {customers} = this.state
+        const customer = customers.find((a) => a.customer_name === value)
+        this.setState({
+          modalState: [customer.id]
+        })
+    }
+
+    saveNewLevel() {
+        const { history: { push }} = this.props
+        const {data} = this.state
+        const { pathNames, idLevel } = this
+        const { level_name, tier, status, create_date, id_employee, duration_day, illustration } = data
+        const newLevel = pathNames()[4] === NEW_LEVEL
+        const newData = {
+            level_name,
+            tier,
+            status,
+            create_date,
+            id_employee,
+            duration_day
         }
-      )
-  }
+        axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}/${newLevel ? '' : `${idLevel()}/`}`, illustration ? {...newData, illustration} : newData)
+          .then(
+            ({data}) => {
+              this.setState({
+                isLoaded: true,
+                data: data
+              })
+                newLevel && push(`/${pathNames()[0]}/${pathNames()[1]}/${pathNames()[2]}/${PAGE_LINK_LEVELS}`)
+            },
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              })
+            }
+        )
+    }
 
-  inputDataOfProgram = (value) => {
-    this.setState(({data}) => ({data: {...data, ...value}}))
-  }
-  saveDataOfStage = (v) => {
-    console.log(v, 8989)
-  }
+    inputDataOfProgram = (value) => {
+      this.setState(({data}) => ({data: {...data, ...value}}))
+    }
+    saveDataOfStage = (v) => {
+      console.log(v, 8989)
+    }
 
-  tierUp = () => {
-    const {data: {tier}, data} = this.state
-    this.setState({
-      data: {...data, tier: tier ? tier + 1 : 1}
-    })
-  }
-  tierDown = () => {
-    const {data: {tier}, data} = this.state
-    this.setState({
-      data: {...data, tier: tier > 1 ? tier - 1 : tier}
-    })
-  }
+    tierUp = () => {
+      const {data: {tier}, data} = this.state
+      this.setState({
+        data: {...data, tier: tier ? tier + 1 : 1}
+      })
+    }
+    tierDown = () => {
+      const {data: {tier}, data} = this.state
+      this.setState({
+        data: {...data, tier: tier > 1 ? tier - 1 : tier}
+      })
+    }
 
     selectCreator = (value) => {
         const { employees, modalState } = this.state
@@ -185,34 +189,20 @@ class LevelsGeneral extends Component {
         const newValue = employees.find((a) => a.id === value)
         return modalState ? modalState === newValue.id : false
     }
-    pageHeaderTitle = (level_name) => {
-        const { location: { pathname } } = this.props
-        const { pageTitle } = this.state
-        const pathnames = pathname.split("/").filter(x => x)
-        const newLevel = pathnames[3] === "level"
-        return newLevel ? "Новый уровень" : level_name ? `Уровень "${pageTitle}"` : ""
-    }
     addAvatar = (value) => {
         const { data } = this.state
         this.setState({data: {...data, illustration: value[0].file}})
     }
   render() {
     const {history: {goBack}} = this.props
-    const {creatorModal, modalState, employees, data, data: {id_employee, level_name, illustration}} = this.state
-    const {tierUp, tierDown, pageHeaderTitle} = this
+    const {creatorModal, modalState, employees, data, data: {id_employee, illustration}} = this.state
+    const {tierUp, tierDown} = this
     const toggleCreatorModal = () => {
       this.setState({creatorModal: !creatorModal})
     }
     const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleCreatorModal, id_employee, tierUp, tierDown, employees))
     return (
-      <PageHeader
-          className="flex-container hidden"
-          {...this.props}
-          pageData={pageHeaderTitle(level_name)}
-          bredCrumbsConfig={levelsBreadcrumbs}
-          url="programs"
-          links={LEVELS_LINKS}
-      >
+      <>
         <ModalSidebar
           title="Выбор создателя"
           closeModal={toggleCreatorModal}
@@ -284,7 +274,7 @@ class LevelsGeneral extends Component {
             )
           }}
         </WithValidationHocRenderPropAdapter>
-      </PageHeader>
+      </>
     );
   }
 }

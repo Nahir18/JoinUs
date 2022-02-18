@@ -4,9 +4,6 @@ import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_CONTACTS} from "../../../../
 import axios from "axios";
 import {settings} from "./TableConfig";
 import Modal from "../../../../components/ModalWindow";
-import { programsBreadcrumbs } from "../../configs";
-import PageHeader from "../../../../components/PageHeader";
-import {NAV_BUTTON_LINKS, NEW_PROGRAM} from "../../Constants";
 import { modalTableConfig } from "./modalTableConfig";
 
 class Contacts extends Component {
@@ -112,8 +109,7 @@ class Contacts extends Component {
         })
     }
     render() {
-        const { items = [], contactsModal, selectedContacts, contacts, programData: { program_name } } = this.state
-        const { location: { pathname } } = this.props
+        const { items = [], contactsModal, selectedContacts, contacts } = this.state
         const { toggleAddContactModal, checkContact, addContacts } = this
         const newData = items.map(({ last_name, first_name, post, role, email, mobile_phone, illustration_link }) =>
             ({
@@ -129,11 +125,6 @@ class Contacts extends Component {
                 }
             })
         )
-        const pageHeaderTitle = () => {
-            const pathnames = pathname.split("/").filter(x => x)
-            const newProgram = pathnames[1] === NEW_PROGRAM
-            return newProgram ? "Новая программа" : program_name
-        }
         return (
             <>
                 <Modal
@@ -148,30 +139,20 @@ class Contacts extends Component {
                         data={contacts}
                     />
                 </Modal>
-                <PageHeader
-                    {...this.props}
-                    bredCrumbsConfig={programsBreadcrumbs}
-                    pageData={pageHeaderTitle()}
-                    url="programs"
-                    links={NAV_BUTTON_LINKS}
+                <div
+                    className="pt-6 pl-4"
                 >
-                    <div
-                        className="pt-6 pl-4"
+                    <button
+                        className="blue btn width-m"
+                        onClick={toggleAddContactModal}
                     >
-                        <button
-                            className="blue btn width-m"
-                            onClick={toggleAddContactModal}
-                        >
-                            + Добавить контакт
-                        </button>
-                    </div>
-                     <div>
-                         <AppList
-                             settings={settings}
-                             data={newData}
-                         />
-                     </div>
-                </PageHeader>
+                        + Добавить контакт
+                    </button>
+                </div>
+                <AppList
+                    settings={settings}
+                    data={newData}
+                />
             </>
         );
     }

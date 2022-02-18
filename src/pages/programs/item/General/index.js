@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ModalSidebar from "../../../../components/ModalSidebar";
 import { WithValidationHocRenderPropAdapter } from "../../../../Validator";
-import {NAV_BUTTON_LINKS} from "../../Constants";
 import { fieldMap, rules} from "./formConfig";
 import Form from "@Components/Forms/index"
 import {CREATE_DATE_FORMAT} from "@constants"
@@ -11,9 +10,7 @@ import axios from "axios";
 import {ADAPTATION_CUSTOMER, ADAPTATION_PROGRAM, ADAPTATION_EMPLOYEE, DEFAULT_URL} from "../../../../components/APIList";
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import Avatar from "../../../../components/Avatar";
-import { programsBreadcrumbs } from "../../configs";
 import {NEW_PROGRAM} from "../../Constants";
-import PageHeader from "@Components/PageHeader";
 import ScrollBar from "@Components/ScrollBar"
 import {FormContainer, TabContainer} from "@Components/StylesComponent/StylesForm"
 import { customerModalConfig } from "./customerModalConfig";
@@ -213,29 +210,13 @@ class General extends Component {
     }
     render() {
         const { history: { goBack } } = this.props
-        const { clientModal, creatorModal, modalState, data, customers, employees, isLoaded, data: { customer = [], employee, program_name, illustration } } = this.state
-        const { toggleModal, toggleCreatorModal, isNewProgram } = this
+        const { clientModal, creatorModal, modalState, data, customers, employees, isLoaded, data: { customer = [], employee, illustration } } = this.state
+        const { toggleModal, toggleCreatorModal } = this
         const customerValue = isLoaded ? customers.find((a) => a.id === customer[0]) : {}
         const employeeValue = isLoaded ? employee && employees.find((a) => a.id === employee) : {}
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleModal, customerValue, toggleCreatorModal, employeeValue))
-        const pageHeaderTitle = () => {
-            return isNewProgram() ? "Новая программа" : program_name
-        }
-        const navButtonConfig = () => {
-            return isNewProgram() ? [{
-                name: "Общие",
-                link: "general"
-            }] : NAV_BUTTON_LINKS
-        }
         return (
-            <PageHeader
-                className="flex-container hidden"
-                {...this.props}
-                bredCrumbsConfig={programsBreadcrumbs}
-                pageData={pageHeaderTitle()}
-                url="programs"
-                links={navButtonConfig()}
-            >
+            <div>
                 <ModalSidebar
                     title="Выбор заказчика"
                     closeModal={toggleModal}
@@ -321,7 +302,7 @@ class General extends Component {
                             </>
                           )}}
                 </WithValidationHocRenderPropAdapter>
-            </PageHeader>
+            </div>
         );
     }
 }

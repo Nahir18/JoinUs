@@ -1,5 +1,6 @@
 import {NavLink} from "react-router-dom";
 import React from "react";
+import {PAGE_LINK_LEVEL, PAGE_LINK_LEVELS} from "../../Constants";
 
 export const settings = (pathname) => [
     {
@@ -16,7 +17,7 @@ export const settings = (pathname) => [
         allData: true,
         component: ({data: { level_name, id }, data}) => {
             const pathnames = pathname.split("/").filter(x => x)
-            const link = `/${pathnames[0]}/${pathnames[1]}/${pathnames[2]}/${id}/level/general`
+            const link = `/${pathnames[0]}/${pathnames[1]}/${pathnames[2]}/${PAGE_LINK_LEVEL}/${level_name}/${id}/general`
             return (
                 <NavLink
                     to={link}

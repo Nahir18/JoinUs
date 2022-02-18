@@ -7,9 +7,7 @@ import { fieldMap, rules} from "./formConfig";
 import { FormContainer } from "../../item/General/style"
 import axios from "axios";
 import { ADAPTATION_STAGE, ADAPTATION_BLOCK, DEFAULT_URL } from "../../../../components/APIList";
-import { levelsBreadcrumbs } from "../../configs";
-import PageHeader from "../../../../components/PageHeader";
-import {STAGES_LINKS, NEW_PROGRAM, NEW_STAGE} from "../../Constants";
+import {NEW_STAGE} from "../../Constants";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
     .reduce((acc, c) => {
@@ -34,17 +32,25 @@ class StagesGeneral extends Component {
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
-    componentDidMount() {
+    pathNames = () => {
         const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const idStage = pathnames[6] !== NEW_STAGE ? `/${pathnames[3]}` : ""
-        if (pathnames[6] !== NEW_STAGE) {
-            axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}${idStage}`)
+        return pathname.split("/").filter(x => x)
+    }
+
+    isNewStage = () => {
+        const { pathNames } = this
+        return pathNames()[4] === NEW_STAGE
+    }
+
+    componentDidMount() {
+        const { isNewStage, pathNames } = this
+        if (!isNewStage()) {
+            axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${pathNames()[5]}/`)
                 .then(
-                    (response) => {
+                    ({data}) => {
                         this.setState({
                             isLoaded: true,
-                            data: response.data
+                            data: data
                         })
                     },
                     (error) => {
@@ -68,12 +74,10 @@ class StagesGeneral extends Component {
     }
 
     async saveStage () {
-        const { location: { pathname } } = this.props
         const { data: {id, stage_name, tier, point, status, create_date, id_employee, duration_day, level} } = this.state
-        const pathnames = pathname.split("/").filter(x => x)
-        const newStage = pathnames[6] === NEW_STAGE
-        const idProgram = newStage ? "/" : `/${pathnames[3]}/`
-        const newData = newStage ? {
+        const { isNewStage, pathNames } = this
+        const idStage = isNewStage() ? "/" : `/${pathNames()[5]}/`
+        const newData = isNewStage() ? {
             stage_name,
             tier,
             create_date,
@@ -92,15 +96,14 @@ class StagesGeneral extends Component {
             duration_day,
             level
         }
-        await axios[newStage ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idProgram}`, newData)
+        await axios[isNewStage() ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idStage}`, newData)
             .then(
-                (response) => {
-                    const { data } = response
+                ({data}) => {
                     this.setState({
                         isLoaded: true,
                         data: data
                     })
-                    if (newStage) {
+                    if (isNewStage()) {
                         axios.post(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/`, {
                             adaptationStage: data.id,
                             json: []
@@ -135,36 +138,14 @@ class StagesGeneral extends Component {
             data: { ...data, tier: tier > 1 ? tier - 1 : tier}
         })
     }
-    pageHeaderTitle = (stage_name) => {
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const newStage = pathnames[6] === NEW_STAGE
-        return newStage ? "Новый этап" : stage_name ? `Этап "${stage_name}"` : ""
-    }
-    pageHeaderLinks = () => {
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const newStage = pathnames[6] === NEW_STAGE
-        return newStage ? [{
-            name: "Общие",
-            link: NEW_STAGE
-        }] : STAGES_LINKS
-    }
 
     render() {
         const { history: { goBack } } = this.props
-        const { data, data: { stage_name } } = this.state
-        const { tierUp, tierDown, pageHeaderTitle, pageHeaderLinks } = this
+        const { data } = this.state
+        const { tierUp, tierDown } = this
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(tierUp, tierDown))
         return (
-            <PageHeader
-                className="p-l-24 p-r-24 p-t-24 flex flex-col h-full"
-                {...this.props}
-                pageData={pageHeaderTitle(stage_name)}
-                bredCrumbsConfig={levelsBreadcrumbs}
-                url="programs"
-                links={pageHeaderLinks()}
-            >
+            <>
                 <div className="p-l-24 p-r-24 p-t-24 flex flex-col h-full">
                     <WithValidationHocRenderPropAdapter
                         onInput={this.inputDataOfStage}
@@ -214,7 +195,7 @@ class StagesGeneral extends Component {
                             )}}
                     </WithValidationHocRenderPropAdapter>
                 </div>
-            </PageHeader>
+            </>
         );
     }
 }

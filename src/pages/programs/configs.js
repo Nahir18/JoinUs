@@ -1,10 +1,36 @@
 import {
-    PAGE_NAME_GENERAL,
-    PAGE_NAME_STAGES,
+    NEW_PROGRAM,
+    NEW_STAGE,
     PAGE_NAME_PROGRAMS,
+    PAGE_NAME_GENERAL,
+    PAGE_NAME_CONTACTS,
+    PAGE_NAME_DOCUMENTS,
     PAGE_NAME_LEVELS,
-    NEW_PROGRAM
+    PAGE_NAME_NEW_LEVEL,
+    PAGE_NAME_NEW_PROGRAM,
+    PAGE_NAME_GOALS,
+    PAGE_NAME_STAGES,
+    PAGE_NAME_BLOCKS,
+    PAGE_LINK_PROGRAMS,
+    PAGE_LINK_GENERAL,
+    PAGE_LINK_LEVELS,
+    PAGE_LINK_CONTACTS,
+    PAGE_LINK_DOCUMENTS,
+    PAGE_LINK_GOALS,
+    PAGE_LINK_STAGES,
+    PAGE_LINK_BLOCKS, NEW_LEVEL
 } from "./Constants";
+
+const programsPageBreadcrumbsConfig = [
+    {
+        name: PAGE_NAME_PROGRAMS,
+        link: PAGE_LINK_PROGRAMS
+    },
+    {
+        name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+        link: ""
+    }
+]
 
 export const programsBreadcrumbs = [
     {
@@ -12,7 +38,7 @@ export const programsBreadcrumbs = [
         config: [
             {
                 name: PAGE_NAME_GENERAL,
-                link: "programs"
+                link: PAGE_LINK_PROGRAMS
             },
             {
                 name: "Новый уровень",
@@ -21,103 +47,57 @@ export const programsBreadcrumbs = [
         ]
     },
     {
-        page: "general",
-        config: [
-            {
-                name: PAGE_NAME_GENERAL,
-                link: "programs"
-            },
-            {
-                name: "Общие",
-                link: ""
-            }
-        ]
+        page: PAGE_LINK_GENERAL,
+        config: programsPageBreadcrumbsConfig
     },
     {
-        page: "levels",
-        config: [
-            {
-                name: PAGE_NAME_GENERAL,
-                link: "programs"
-            },
-            {
-                name: "Уровни",
-                link: "/"
-            }
-        ]
+        page: PAGE_LINK_LEVELS,
+        config: programsPageBreadcrumbsConfig
     },
     {
-        page: "contacts",
-        config: [
-            {
-                name: PAGE_NAME_GENERAL,
-                link: "programs"
-            },
-            {
-                name: "Контакты",
-                link: "/"
-            }
-        ]
+        page: PAGE_LINK_CONTACTS,
+        config: programsPageBreadcrumbsConfig
     },
     {
-        page: "documents",
-        config: [
-            {
-                name: PAGE_NAME_GENERAL,
-                link: "programs"
-            },
-            {
-                name: "Документы",
-                link: "/"
-            }
-        ]
+        page: PAGE_LINK_DOCUMENTS,
+        config: programsPageBreadcrumbsConfig
     },
     {
-        page: "goals",
-        config: [
-            {
-                name: PAGE_NAME_GENERAL,
-                link: "programs"
-            },
-            {
-                name: "Цели",
-                link: "/"
-            }
-        ]
+        page: PAGE_LINK_GOALS,
+        config: programsPageBreadcrumbsConfig
     }
 ]
-
 export const levelsBreadcrumbs = [
     {
-        page: "general",
+        page: PAGE_LINK_GENERAL,
         config:[
             {
                 name: PAGE_NAME_GENERAL,
-                link: "programs"
+                link: PAGE_LINK_PROGRAMS
             },
             {
-                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? "Новая програма" : pathname[1]}`,
-                link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
             },
             {
-                name: PAGE_NAME_GENERAL,
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Уровень "${pathname[4]}"`,
                 link: "/"
             }
         ]
     },
     {
-        page: "levelStages",
+        page: PAGE_LINK_STAGES,
         config:[
             {
                 name: PAGE_NAME_GENERAL,
-                link: "programs"
+                link: PAGE_LINK_PROGRAMS
             },
             {
-                name: (pathname) =>`${pathname[1] === "new_program" ? "Новая програма" : pathname[1]}`,
-                link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
             },
             {
-                name: PAGE_NAME_STAGES,
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Уровень "${pathname[4]}"`,
                 link: "/"
             }
         ]
@@ -127,31 +107,31 @@ export const levelsBreadcrumbs = [
         config:[
             {
                 name: PAGE_NAME_GENERAL,
-                link: "programs"
+                link: PAGE_LINK_PROGRAMS
             },
             {
-                name: (pathname) =>`${pathname[1] === "new_program" ? "Новая програма" : pathname[1]}`,
-                link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
             },
             {
-                name: "Общие",
+                name: PAGE_NAME_GENERAL,
                 link: "/"
             }
         ]
     },
     {
-        page: "programs",
+        page: PAGE_LINK_PROGRAMS,
         config:[
             {
                 name: PAGE_NAME_GENERAL,
-                link: "programs"
+                link: PAGE_LINK_PROGRAMS
             },
             {
-                name: (pathname) =>`${pathname[1] === "new_program" ? "Новая програма" : pathname[1]}`,
-                link: (pathname) => `programs/${pathname[1]}/${pathname[2]}/general`
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
             },
             {
-                name: "Программы",
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Уровень "${pathname[4]}"`,
                 link: "/"
             }
         ]
@@ -161,7 +141,7 @@ export const levelsBreadcrumbs = [
         config: [
             {
                 name: PAGE_NAME_GENERAL,
-                link: "programs"
+                link: PAGE_LINK_PROGRAMS
             },
             {
                 name: (pathname) =>`${pathname[1] === "new_program" ? "Новая програма" : pathname[1]}`,
@@ -178,7 +158,7 @@ export const levelsBreadcrumbs = [
         config: [
             {
                 name: PAGE_NAME_GENERAL,
-                link: "programs"
+                link: PAGE_LINK_PROGRAMS
             },
             {
                 name: (pathname) =>`${pathname[1] === "new_program" ? "Новая програма" : pathname[1]}`,
@@ -190,4 +170,74 @@ export const levelsBreadcrumbs = [
             }
         ]
     },
+]
+export const StagesBreadcrumbs = [
+    {
+        page: PAGE_LINK_GENERAL,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    },
+    {
+        page: NEW_STAGE,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    },
+    {
+        page: PAGE_LINK_BLOCKS,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    },
+    {
+        page: PAGE_LINK_LEVELS,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    }
 ]
