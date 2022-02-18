@@ -37,13 +37,11 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
             <ArrowInput
                 id="tier"
                 key="tier"
-                onInput={props.onInput}
                 arrowUp={arrowUp}
                 arrowDown={arrowDown}
                 {...props}
             />
         ),
-        disabled: true,
         placeholder: "Номер п.п",
         formColumn: 0,
     },

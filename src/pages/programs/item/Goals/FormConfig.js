@@ -1,39 +1,5 @@
 import React from "react";
-import {ArrowUP, EditIcon, Trash} from "../../../ConstantsIcons";
-
-// todo дубль ActionsButtons
-const DocumentActions = ({handleEdit, data, actionButtonTierUp, actionButtonTierDown, actionsDelete}) => {
-    const iconColor = data.tier <= 1 ? "0.3" : ""
-    return (
-        <div>
-            <div className="icon-container transition-icon cursor items-center j-c-center flex">
-                <div
-                    className="edit-icon"
-                    onClick={() => handleEdit(data)}
-                    dangerouslySetInnerHTML={{__html: EditIcon}}
-                />
-                <div className="flex a-i-center j-c-center ml-7">
-                    <div
-                        onClick={() => actionButtonTierUp(data)}
-                        className="arrow-icon"
-                        dangerouslySetInnerHTML={{__html: ArrowUP}}
-                    />
-                    <div
-                        onClick={() => actionButtonTierDown(data)}
-                        style={{"opacity": iconColor}}
-                        className="arrow-icon arrow-down"
-                        dangerouslySetInnerHTML={{__html: ArrowUP}}
-                    />
-                </div>
-                <div
-                    onClick={() => actionsDelete(data)}
-                    className="trash-icon ml-7"
-                    dangerouslySetInnerHTML={{__html: Trash}}
-                />
-            </div>
-        </div>
-    )
-}
+import ActionsButtons from "../../../../components/ActionsButtons";
 
 export const settings = (editModal, closeModal, handleEdit, actionButtonTierUp, actionButtonTierDown, actionsDeleteItem) => [
     {
@@ -54,11 +20,12 @@ export const settings = (editModal, closeModal, handleEdit, actionButtonTierUp, 
         allData: true,
         name: "Действия",
         component: ({rowindex, data}) => (
-            <DocumentActions
+            <ActionsButtons
                 data={data}
-                actionButtonTierUp={actionButtonTierUp}
-                actionButtonTierDown={actionButtonTierDown}
-                actionsDelete={actionsDeleteItem}
+                dataKey="tier"
+                arrowUp={actionButtonTierUp}
+                arrowDown={actionButtonTierDown}
+                deleteItem={actionsDeleteItem}
                 editModal={editModal}
                 closeModal={closeModal}
                 handleEdit={handleEdit}

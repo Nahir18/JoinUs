@@ -82,3 +82,7 @@ export const NAV_BUTTON_LINKS = [
 
 export const NEW_PROGRAM = "new_program"
 export const NEW_STAGE = "newStage"
+export const PAGE_NAME_GENERAL = "Общие"
+export const PAGE_NAME_STAGES = "Этапы"
+export const PAGE_NAME_LEVELS = "Уровни"
+export const PAGE_NAME_PROGRAMS = "Программы"

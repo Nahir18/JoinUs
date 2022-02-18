@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import AppList from "../../../../components/AppList";
 import {settings} from "./tableConfig";
@@ -24,20 +24,23 @@ const Contacts = ({location: { pathname }, history: { push, goBack }}) => {
     )
   }, [])
 
-  const newData = data.map(({ last_name, first_name, post, role, email, mobile_phone, illustration_link }) =>
-    ({
-      value: {
-        name: `${last_name} ${first_name}`,
-        role: `${post}`,
-        img: illustration_link
-      },
-      role: `${role}`,
-      contacts: {
-        mail: email,
-        phone: [mobile_phone]
-      }
-    })
-  )
+  const newData = useMemo(() => (
+    data.map(({ last_name, first_name, post, role, email, mobile_phone, illustration_link }) =>
+      ({
+        value: {
+          name: `${last_name} ${first_name}`,
+          role: `${post}`,
+          img: illustration_link
+        },
+        role: `${role}`,
+        contacts: {
+          mail: email,
+          phone: [mobile_phone]
+        }
+      })
+    )
+  ), [data])
+
   return (
     <div className="flex-container p-t-24">
       <button
