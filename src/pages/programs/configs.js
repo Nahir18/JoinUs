@@ -18,7 +18,7 @@ import {
     PAGE_LINK_DOCUMENTS,
     PAGE_LINK_GOALS,
     PAGE_LINK_STAGES,
-    PAGE_LINK_BLOCKS, NEW_LEVEL
+    PAGE_LINK_BLOCKS, NEW_LEVEL, PAGE_NAME_NEW_STAGE
 } from "./Constants";
 
 const programsPageBreadcrumbsConfig = [
@@ -184,7 +184,7 @@ export const StagesBreadcrumbs = [
                 link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
             },
             {
-                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                name: (pathname) => pathname[4] === NEW_STAGE ? PAGE_NAME_NEW_STAGE : `Этап "${pathname[4]}"`,
                 link: "/"
             }
         ]

@@ -8,7 +8,6 @@ import NumericInput from "../Fields/NumericInput";
 const ArrowInput = props => {
     const { value, onInput, arrowUp, arrowDown, right, top } = props
     const iconColor = value <= 1 ? "0.3" : ""
-
     return (
         <div className="flex">
             <NumericInput
