@@ -41,8 +41,8 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
     return sum
   })
 
-  const getNewData = memoizeOne((data = [], adaptation_status, program_details, comment) => {
-    return data.reduce((acc, item = {}) => {
+  const newData = useMemo(() => (
+    data.reduce((acc, item = {}) => {
       const { stages } = item
       acc.push(
         {
@@ -59,8 +59,8 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
       )
       return acc
     }, [])
-  })
-  const newData = getNewData(data, adaptation_status, program_details, comment)
+  ), [data, adaptation_status, program_details, comment])
+
   return (
     <div className="flex-container hidden">
       <div className="flex p-t-16 p-r-16 p-l-16">

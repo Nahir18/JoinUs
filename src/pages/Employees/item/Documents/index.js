@@ -36,14 +36,13 @@ const Documents = ({location: { pathname }, history: { push, goBack }}) => {
     })
     return sum
   })
-  const point = getPoint(levels_detail)
 
   return (
     <div className="flex-container hidden">
       <div className="flex p-t-16 p-r-16 p-l-16">
         <CardIconAndTitle
           title="Заработано баллов:"
-          value={point}
+          value={getPoint(levels_detail)}
           icon="points"
           className="m-r-16"
         />
