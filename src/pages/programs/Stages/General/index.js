@@ -109,9 +109,12 @@ class LevelsGeneral extends Component {
     }
 
     handleInputChange(value, id) {
-        this.setState({
-          [id]: value
-        });
+      const { data } = this.state
+        if (!isNaN(value)){
+            this.setState({
+                data: {...data, [id]: value}
+            });
+        }
     }
     handleSubmit(event) {
       event.preventDefault();
@@ -200,7 +203,7 @@ class LevelsGeneral extends Component {
     const toggleCreatorModal = () => {
       this.setState({creatorModal: !creatorModal})
     }
-    const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleCreatorModal, id_employee, tierUp, tierDown, employees))
+    const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleCreatorModal, id_employee, tierUp, tierDown, employees, this.handleInputChange))
     return (
       <>
         <ModalSidebar

@@ -51,7 +51,7 @@ class BsInput extends Component {
     this.inputRef.current.focus()
   }
 
-  onInput = ({ target: { value, id } }) => {
+  onInput = ({ target: { value, id } }, target) => {
     this.props.onInput(value, id)
   }
 

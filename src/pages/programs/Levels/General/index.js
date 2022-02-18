@@ -64,9 +64,12 @@ class StagesGeneral extends Component {
     }
 
     handleInputChange (value, id) {
-        this.setState({
-            [id]: value
-        });
+        const { data } = this.state
+        if (!isNaN(value)) {
+            this.setState({
+                data: {...data, [id]: value}
+            })
+        }
     }
 
     handleSubmit(event) {
@@ -143,7 +146,7 @@ class StagesGeneral extends Component {
         const { history: { goBack } } = this.props
         const { data } = this.state
         const { tierUp, tierDown } = this
-        const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(tierUp, tierDown))
+        const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(tierUp, tierDown, this.handleInputChange))
         return (
             <>
                 <div className="p-l-24 p-r-24 p-t-24 flex flex-col h-full">

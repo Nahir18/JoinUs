@@ -109,9 +109,12 @@ class General extends Component {
     }
 
     handleInputChange (value, id) {
-        this.setState({
-            [id]: value
-        });
+        const { data } = this.state
+        if (!isNaN(value)) {
+            this.setState({
+                data: {...data, [id]: value}
+            });
+        }
     }
 
     handleSubmit(event) {
@@ -214,7 +217,7 @@ class General extends Component {
         const { toggleModal, toggleCreatorModal } = this
         const customerValue = isLoaded ? customers.find((a) => a.id === customer[0]) : {}
         const employeeValue = isLoaded ? employee && employees.find((a) => a.id === employee) : {}
-        const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleModal, customerValue, toggleCreatorModal, employeeValue))
+        const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleModal, customerValue, toggleCreatorModal, employeeValue, this.handleInputChange))
         return (
             <div>
                 <ModalSidebar

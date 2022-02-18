@@ -22,7 +22,7 @@ import {
     NEW_LEVEL,
     PAGE_LINK_LEVEL,
     PAGE_LINK_LEVELS,
-    PAGE_LINK_STAGE, PAGE_NAME_GENERAL, PAGE_LINK_GENERAL, PAGE_LINK_STAGE_PAGE, STAGES_LINKS, NEW_STAGE
+    PAGE_LINK_STAGE, PAGE_NAME_GENERAL, PAGE_LINK_GENERAL, PAGE_LINK_STAGE_PAGE, STAGES_LINKS, NEW_STAGE, NEW_PROGRAM
 } from "./Constants";
 
 const Programs = (props) => {
@@ -76,7 +76,10 @@ const Programs = (props) => {
                             {...props}
                             bredCrumbsConfig={programsBreadcrumbs}
                             section={PAGE_LINK_PROGRAMS}
-                            links={NAV_BUTTON_LINKS}
+                            links={pathNames[1] === NEW_PROGRAM ? [{
+                                name: PAGE_NAME_GENERAL,
+                                link: PAGE_LINK_GENERAL
+                            }] : NAV_BUTTON_LINKS}
                         >
                             <Route path="/programs/general" component={NewProgram}/>
                             <Route path="/programs/:programName/:programID/levels" component={Levels}/>

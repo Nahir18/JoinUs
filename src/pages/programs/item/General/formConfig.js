@@ -4,7 +4,7 @@ import ModalSelectInput from "../../../../components/ModalSelectInput";
 import React from "react";
 import MonthInput from "../../../../components/Fields/monthInput";
 
-export const fieldMap = (toggleModal, customer, toggleCreatorModal, creator) => [
+export const fieldMap = (toggleModal, customer, toggleCreatorModal, creator, handleInputChange) => [
     {
         label: "Наименование",
         id: "program_name",
@@ -24,7 +24,11 @@ export const fieldMap = (toggleModal, customer, toggleCreatorModal, creator) => 
     {
         label: "Срок программы",
         id: "duration_day",
-        component: MonthInput,
+        component: (props) => (
+            <MonthInput
+                {...props}
+                onInput={handleInputChange}
+        />),
         placeholder: "Выберите срок программы",
         formColumn: 1,
     },

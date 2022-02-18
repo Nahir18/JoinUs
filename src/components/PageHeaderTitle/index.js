@@ -23,7 +23,6 @@ const HeaderTitle = (props) => {
     const { children, bredCrumbsConfig, section, links } = props
     const { location: { pathname } } = props
     const pathNames = pathname.split("/").filter(x => x)
-    // console.log("pathNames", pathNames[4] === NEW_LEVEL)
     const title = (section) => {
         switch (section) {
             case PAGE_LINK_PROGRAMS:
@@ -34,7 +33,6 @@ const HeaderTitle = (props) => {
                 return pathNames[4] === NEW_STAGE ? PAGE_NAME_NEW_STAGE : `Этап "${pathNames[4]}"`
         }
     }
-    console.log(section, title(section))
     return (
         <div className="flex-container">
             <BreadCrumbs

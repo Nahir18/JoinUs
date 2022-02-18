@@ -4,7 +4,7 @@ import DatePicker from "@Components/Fields/DatePicker"
 import ArrowInput from "../../../../components/ArrowsInput";
 import MonthInput from "../../../../components/Fields/monthInput";
 
-export const fieldMap = (arrowUp, arrowDown) => [
+export const fieldMap = (arrowUp, arrowDown, handleInputChange) => [
     {
         label: "Наименование",
         id: "stage_name",
@@ -17,9 +17,10 @@ export const fieldMap = (arrowUp, arrowDown) => [
         id: "tier",
         component: (props) => (
             <ArrowInput
+                {...props}
                 arrowUp={arrowUp}
                 arrowDown={arrowDown}
-                {...props}
+                onInput={handleInputChange}
             />
         ),
         placeholder: "Номер п.п",
@@ -35,7 +36,11 @@ export const fieldMap = (arrowUp, arrowDown) => [
     {
         label: "Срок программы",
         id: "duration_day",
-        component: MonthInput,
+        component: (props) => (
+            <MonthInput
+                {...props}
+                onInput={handleInputChange}
+        />),
         placeholder: "Выберите срок программы",
         formColumn: 1,
     },

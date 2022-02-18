@@ -8,7 +8,7 @@ import Select from "../../../../components/Fields/Select";
 import axios from "axios";
 import {DEFAULT_URL, ADAPTATION_PROGRAM} from "../../../../components/APIList";
 
-export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employees) => [
+export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employees, handleInputChange) => [
     {
         label: "Наименование",
         id: "level_name",
@@ -35,11 +35,12 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
         id: "tier",
         component: (props) => (
             <ArrowInput
+                {...props}
                 id="tier"
                 key="tier"
                 arrowUp={arrowUp}
                 arrowDown={arrowDown}
-                {...props}
+                onInput={handleInputChange}
             />
         ),
         placeholder: "Номер п.п",
