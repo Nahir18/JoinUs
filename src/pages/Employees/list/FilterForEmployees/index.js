@@ -4,6 +4,8 @@ import Select from "../../../../components/Fields/Select";
 import {FilterContainer, StyleDate} from "./style"
 import ChoiceOfStatusOption from "../../../../components/Fields/Select/ChoiceOfStatusOption";
 
+// todo доделать фильтрацию по статусам
+
 const arrayStatus = [
   {
     ID: "3",
