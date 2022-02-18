@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { RowContainer } from "./style"
 import PropTypes from "prop-types"
 
 class Row extends Component {
@@ -16,9 +15,8 @@ class Row extends Component {
             data = {},
             active
         } = this.props
-
         return (
-            <RowContainer
+            <div
                 className={`grid border-top items-center ${nestedData && active && nestedlevel === 0 && "bg-color-light-blue"}`}
                 style={gridStyle}
                 key={rowKey}
@@ -57,7 +55,7 @@ class Row extends Component {
                             )
                     })
                 }
-            </RowContainer>
+            </div>
         );
     }
 }

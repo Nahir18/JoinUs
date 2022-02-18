@@ -3,9 +3,7 @@ import Header from "./header";
 import Row from "./row"
 import PropTypes from "prop-types"
 import ScrollBar from "@Components/ScrollBar"
-
-// todo последний элемент в списке обрезается
-// поправить верстку
+import {TableContainer} from "./style";
 
 class AppList extends Component {
     render() {
@@ -59,13 +57,15 @@ class AppList extends Component {
         }
 
         return (
-            <div className={`${className} bg-white flex-container border-radius-4 h-full hidden`}>
+            <div className={`${className} bg-white flex-container border-bottom border-radius-4 h-full hidden`}>
                 <Header
                     settings={settings}
                     gridStyle={gridStyle}
                 />
               <ScrollBar>
+                <TableContainer>
                   { TableRows(nestedKey) }
+                </TableContainer>
               </ScrollBar>
             </div>
         );
