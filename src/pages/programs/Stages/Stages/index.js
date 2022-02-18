@@ -9,7 +9,7 @@ import {settings} from "./tableConfig";
 import ArrowInput from "../../../../components/ArrowsInput";
 import { levelsBreadcrumbs } from "../../configs";
 import PageHeader from "../../../../components/PageHeader";
-import {LEVELS_LINKS, NEW_PROGRAM} from "../../Constants";
+import {LEVELS_LINKS, NEW_PROGRAM, NEW_STAGE, PAGE_LINK_GENERAL, PAGE_LINK_STAGE_PAGE} from "../../Constants";
 import { selectStageModalConfig } from "./selectStageModalConfig";
 import {NavLink} from "react-router-dom";
 
@@ -223,6 +223,13 @@ class levelStages extends Component {
            return  levelData ? {...item, level_name: levelData.level_name ? levelData.level_name : "", program_name: programData ? programData.program_name : "" } : item
         })
     }
+    toNewStagePath = () => {
+        const {
+            location: { pathname }
+        } = this.props
+        const pathNames = pathname.split("/").filter(x => x)
+        return `/${pathNames[0]}/${pathNames[1]}/${pathNames[2]}/${PAGE_LINK_STAGE_PAGE}/${NEW_STAGE}/${PAGE_LINK_GENERAL}`
+    }
     render() {
         const {
             items,
@@ -336,7 +343,7 @@ class levelStages extends Component {
                 <div className="pt-8 pb-6 pl-4 flex">
                     <NavLink
                         className="blue btn width-m pt-1.5"
-                        to={`${pathname}/newStage`}
+                        to={this.toNewStagePath()}
                     >
                         + Добавить этап
                     </NavLink>

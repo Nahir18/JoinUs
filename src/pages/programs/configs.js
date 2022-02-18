@@ -67,7 +67,6 @@ export const programsBreadcrumbs = [
         config: programsPageBreadcrumbsConfig
     }
 ]
-
 export const levelsBreadcrumbs = [
     {
         page: PAGE_LINK_GENERAL,
@@ -171,4 +170,74 @@ export const levelsBreadcrumbs = [
             }
         ]
     },
+]
+export const StagesBreadcrumbs = [
+    {
+        page: PAGE_LINK_GENERAL,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    },
+    {
+        page: NEW_STAGE,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    },
+    {
+        page: PAGE_LINK_BLOCKS,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    },
+    {
+        page: PAGE_LINK_LEVELS,
+        config:[
+            {
+                name: PAGE_NAME_GENERAL,
+                link: PAGE_LINK_PROGRAMS
+            },
+            {
+                name: (pathname) =>`${pathname[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathname[1]}`,
+                link: (pathname) => `${PAGE_LINK_PROGRAMS}/${pathname[1]}/${pathname[2]}/${PAGE_LINK_GENERAL}`
+            },
+            {
+                name: (pathname) => pathname[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Этап "${pathname[4]}"`,
+                link: "/"
+            }
+        ]
+    }
 ]

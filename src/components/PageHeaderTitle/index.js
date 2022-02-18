@@ -9,7 +9,7 @@ import {
     PAGE_LINK_LEVEL,
     NEW_PROGRAM,
     PAGE_NAME_NEW_PROGRAM,
-    PAGE_NAME_NEW_LEVEL
+    PAGE_NAME_NEW_LEVEL, PAGE_LINK_STAGE_PAGE, NEW_STAGE, PAGE_NAME_NEW_STAGE
 } from "../../pages/programs/Constants";
 
 const ContentArea = styled.div`
@@ -30,6 +30,8 @@ const HeaderTitle = (props) => {
                 return pathNames[1] === NEW_PROGRAM ? PAGE_NAME_NEW_PROGRAM : pathNames[1]
             case PAGE_LINK_LEVEL:
                 return pathNames[4] === NEW_LEVEL ? PAGE_NAME_NEW_LEVEL : `Уровень "${pathNames[4]}"`
+            case PAGE_LINK_STAGE_PAGE:
+                return pathNames[4] === NEW_STAGE ? PAGE_NAME_NEW_STAGE : `Этап "${pathNames[4]}"`
         }
     }
     console.log(section, title(section))

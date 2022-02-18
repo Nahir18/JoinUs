@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { settings } from "./tableConfig";
 import Modal from "../../../../components/ModalWindow";
 import { levelSelectionModalConfig } from "./levelSelectionModalConfig";
-import {NEW_PROGRAM, PAGE_LINK_LEVEL, NEW_LEVEL, PAGE_LINK_GENERAL} from "../../Constants";
+import {NEW_PROGRAM, PAGE_LINK_LEVEL, NEW_LEVEL, PAGE_LINK_GENERAL, PAGE_LINK_STAGE_PAGE} from "../../Constants";
 
 class Levels extends Component {
     constructor(props) {
@@ -71,11 +71,11 @@ class Levels extends Component {
             selectedLevels: items.map(({id}) => id)
         })
     }
-    editStage = ({id, level_name}, nestedlevel) => {
+    editStage = ({id, level_name, stage_name}, nestedlevel) => {
         const { history: { push } } = this.props
         !nestedlevel ?
-        push(`level/${level_name}/${id}/general`) :
-        push(`${id}/${nestedlevel ? "stage" : "level"}/general`)
+        push(`${PAGE_LINK_LEVEL}/${level_name}/${id}/${PAGE_LINK_GENERAL}`) :
+        push(`${PAGE_LINK_STAGE_PAGE}/${stage_name}/${id}/${PAGE_LINK_GENERAL}`)
     }
     checkLevels = (value, id) => {
         this.setState({

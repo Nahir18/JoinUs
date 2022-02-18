@@ -1,7 +1,8 @@
 export const NEW_PROGRAM = "new_program"
 export const NEW_LEVEL = "New_Level"
-export const NEW_STAGE = "newStage"
+export const NEW_STAGE = "New_Stage"
 export const PAGE_NAME_NEW_PROGRAM = "Новая програма"
+export const PAGE_NAME_NEW_STAGE = "Новый этап"
 export const PAGE_NAME_PROGRAMS = "Программы"
 export const PAGE_NAME_GENERAL = "Общие"
 export const PAGE_NAME_CONTACTS = "Контакты"
@@ -21,6 +22,7 @@ export const PAGE_LINK_DOCUMENTS = "documents"
 export const PAGE_LINK_GOALS = "goals"
 export const PAGE_LINK_STAGES = "levelStages"
 export const PAGE_LINK_STAGE = "stages"
+export const PAGE_LINK_STAGE_PAGE = "stage"
 export const PAGE_LINK_BLOCKS = "blocks"
 
 export const LEVELS_LINKS = [

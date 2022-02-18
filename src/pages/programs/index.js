@@ -14,7 +14,7 @@ import LevelsProgramsList from "./Stages/ProgramsList"
 import Blocks from "./Levels/Blocks"
 import LevelsList from "./Levels/LevelsList"
 import HeaderTitle from "../../components/PageHeaderTitle";
-import { programsBreadcrumbs, levelsBreadcrumbs } from "./configs";
+import {programsBreadcrumbs, levelsBreadcrumbs, StagesBreadcrumbs} from "./configs";
 import {
     NAV_BUTTON_LINKS,
     LEVELS_LINKS,
@@ -22,13 +22,12 @@ import {
     NEW_LEVEL,
     PAGE_LINK_LEVEL,
     PAGE_LINK_LEVELS,
-    PAGE_LINK_STAGE, PAGE_NAME_GENERAL, PAGE_LINK_GENERAL
+    PAGE_LINK_STAGE, PAGE_NAME_GENERAL, PAGE_LINK_GENERAL, PAGE_LINK_STAGE_PAGE, STAGES_LINKS, NEW_STAGE
 } from "./Constants";
 
 const Programs = (props) => {
     const { location: { pathname } } = props
     const pathNames = pathname.split("/").filter(x => x)
-    console.log(pathNames)
 
     return (
         <div className="flex-container">
@@ -54,19 +53,24 @@ const Programs = (props) => {
                             <Route exact path="/programs/:programName/:programID/level/:levelName/:levelID/levelStages" component={levelStages}/>
                             <Route path="/programs/:programName/:programID/level/:levelName/:levelID/programs" component={LevelsProgramsList}/>
                             <Route path="/programs/:programName/:programID/level/New_Level/general" component={LevelsGeneral} />
-                            <Route path="/programs/:programName/:programID/level/levelStages" component={levelStages}/>
-                            <Route path="/programs/:programName/:programID/level/programs" component={LevelsProgramsList}/>
-                            <Route path="/programs/:programName/level/general" component={LevelsGeneral} />
-                            <Route path="/programs/:programName/level/levelStages" component={levelStages}/>
-                            <Route path="/programs/:programName/level/programs" component={LevelsProgramsList}/>
-                            <Route path="/programs/new_program/level/New_level" component={LevelsGeneral}/>
                         </HeaderTitle>
-                    ) : pathNames[4] === PAGE_LINK_STAGE ? (
-                        <>
-                            <Route path="/programs/:programName/:programID/:stageID/stage/general" component={StagesGeneral} />
-                            <Route path="/programs/:programName/:programID/:stageID/stage/blocks" component={Blocks} />
-                            <Route path="/programs/:programName/:programID/:stageID/stage/levels" component={LevelsList} />
-                        </>
+                    ) : pathNames[3] === PAGE_LINK_STAGE_PAGE ? (
+                        <HeaderTitle
+                            {...props}
+                            bredCrumbsConfig={StagesBreadcrumbs}
+                            section={PAGE_LINK_STAGE_PAGE}
+                            links={pathNames[4] === NEW_STAGE ?
+                                [{
+                                    name: PAGE_NAME_GENERAL,
+                                    link: PAGE_LINK_GENERAL
+                                }] :
+                                STAGES_LINKS}
+                        >
+                            <Route path="/programs/:programName/:programID/stage/:stageName/:stageID/general" component={StagesGeneral} />
+                            <Route path="/programs/:programName/:programID/stage/New_Stage/general" component={StagesGeneral} />
+                            <Route path="/programs/:programName/:programID/stage/:stageName/:stageID/blocks" component={Blocks} />
+                            <Route path="/programs/:programName/:programID/stage/:stageName/:stageID/levels" component={LevelsList} />
+                        </HeaderTitle>
                     ) : (
                         <HeaderTitle
                             {...props}

@@ -86,13 +86,7 @@ const Blocks = (props) => {
     return `Этап "${stage_name}"`
   }
   return (
-    <PageHeader
-        {...props}
-        pageData={pageHeaderTitle(stageData)}
-        bredCrumbsConfig={levelsBreadcrumbs}
-        url="programs"
-        links={STAGES_LINKS}
-    >
+    <>
       <div className="flex-container hidden">
         <ScrollBar className="p-l-24 p-r-24 p-b-24 p-t-24 bg-white">
           {
@@ -137,7 +131,7 @@ const Blocks = (props) => {
         </button>
       </div>
       </div>
-    </PageHeader>
+    </>
   );
 };
 
