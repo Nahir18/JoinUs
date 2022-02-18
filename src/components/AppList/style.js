@@ -7,6 +7,10 @@ export const HeaderContainer = styled.div`
   line-height: 19px;
   letter-spacing: 0.01em
 `
-export const RowContainer = styled.div`
-  border-bottom: 1px solid var(--color-light-grey);
+export const TableContainer = styled.div`
+  > div {
+    &:last-child {
+      border-bottom: 1px solid var(--color-light-grey);
+    }
+  }
 `

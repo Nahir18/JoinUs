@@ -1,4 +1,4 @@
-import Status from "../../../../components/ComponentStatus";
+import StatusGoals from "./StatusGoals";
 
 export const settings = [
   {
@@ -15,9 +15,9 @@ export const settings = [
   },
   {
     id: 2,
-    key: "STATUS",
+    key: "STATUS_GOAL",
     name: "Статус",
     size: "2fr",
-    component: Status,
+    component: StatusGoals,
   },
 ]
