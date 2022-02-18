@@ -25,11 +25,17 @@ class Levels extends Component {
         }
     }
 
+    isNewProgram = () => {
+        const { location: { pathname } } = this.props
+        const pathnames = pathname.split("/").filter(x => x)
+        return  pathnames[1] === NEW_PROGRAM
+    }
+    
     loadPageData = () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
         const newProgram = pathnames[1] === "new_program"
-        const url = newProgram ? `${ADAPTATION_LEVELS}` : `${ADAPTATION_PROGRAM}/${pathnames[2]}`
+        const url = this.isNewProgram() ? `${ADAPTATION_LEVELS}` : `${ADAPTATION_PROGRAM}/${pathnames[2]}`
         axios.get(`${DEFAULT_URL}/${url}`)
             .then(
                 (response) => {

@@ -1,12 +1,13 @@
-import React from "react"
+import React, {useCallback} from "react"
 import {StyleIcon} from "./style"
-import Input from "@Components/Fields/Input"
+import NumericInput from "../NumericInput";
 
 const MonthInput = (props) => (
-    <div className="flex justify-space-between h-full">
-        <Input {...props} />
-        <StyleIcon>мес.</StyleIcon>
-    </div>
-)
-
+        <div className="flex justify-space-between h-full">
+            <NumericInput
+                {...props}
+            />
+            <StyleIcon>мес.</StyleIcon>
+        </div>
+    )
 export default MonthInput

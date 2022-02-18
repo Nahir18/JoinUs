@@ -33,11 +33,20 @@ class Goals extends Component {
         }
     }
 
-    loadPageData = () => {
+    programId = () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}` : ""
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`)
+        return pathnames[1] !== "new_program" ? `/${pathnames[2]}` : ""
+    }
+
+    isNewProgram = () => {
+        const { location: { pathname } } = this.props
+        const pathnames = pathname.split("/").filter(x => x)
+        return pathnames[1] === NEW_PROGRAM
+    }
+
+    loadPageData = () => {
+        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}`)
             .then(
                 (response) => {
                     const { data: { goals_detail }, data } = response
@@ -135,12 +144,7 @@ class Goals extends Component {
          })
     }
     saveNewGoals = async () => {
-        const {
-            location: { pathname }
-        } = this.props
         const { programData: { documents, goals, program_name, create_date, id, status, tier, employee, duration_day, description }, selectedGoals } = this.state
-        const pathnames = pathname.split("/").filter(x => x)
-        const idGoal = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
         const newData = {
             documents,
             program_name,
@@ -154,7 +158,7 @@ class Goals extends Component {
             goals: goals.concat(selectedGoals.filter(item => !goals.some(a => a === item)))
         }
         if (selectedGoals.length) {
-            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idGoal}`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}/`, newData)
                 .then(
                     (response) => {
                         const {data: {goals_detail}, data} = response
@@ -210,31 +214,21 @@ class Goals extends Component {
             modalData: { ...modalData, tier: tier > 1 ? tier - 1 : tier}
         })
     }
-    actionButtonTierUp = async (data) => {
-        const { id, tier } = data
-        const newData = { ...data, tier: tier + 1 }
-        await axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, newData)
+    actionButtonTierUp = async ({ id, tier, goal_name }) => {
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, { id, tier: tier <= 0 ? 1 : tier + 1, goal_name })
         this.loadPageData()
     }
-    actionButtonTierDown = async (data) => {
-        const { id, tier } = data
+    actionButtonTierDown = async ({ id, tier, goal_name }) => {
         if (tier > 1) {
-            const newData = { ...data, tier: tier - 1 }
-            await axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_GOALS}/${id}/`, { id, tier: tier - 1, goal_name })
             this.loadPageData()
         }
     }
     pageHeaderTitle = (program_name) => {
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[1] === NEW_PROGRAM
-        return newProgram ? "Новая программа" : program_name
+        return this.isNewProgram() ? "Новая программа" : program_name
     }
-    actionsDeleteItem = async ({id: deleteItemID}) => {
-        const { location: { pathname } } = this.props
+    actionsDeleteItem = async (deleteItemID) => {
         const { programData: { documents, program_name, goals, create_date, id, status, tier, employee, duration_day, description } } = this.state
-        const pathnames = pathname.split("/").filter(x => x)
-        const idGoal = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
         const newData = {
             documents,
             program_name,
@@ -247,7 +241,7 @@ class Goals extends Component {
             description,
             goals: goals.filter(item => item !== deleteItemID)
         }
-        await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idGoal}`, newData)
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}/`, newData)
             .then(
                 (response) => {
                     const {data: {goals_detail}, data} = response
@@ -276,7 +270,7 @@ class Goals extends Component {
             editModal,
             modalData,
             goalSelection,
-            modalData: { goal_name, tier, create_date },
+            modalData: { goal_name, tier, create_date, description },
             selectedGoals,
             addGoalsModal,
             programData: { program_name },
@@ -375,6 +369,20 @@ class Goals extends Component {
                             onInput={() => this.handleInputChange(document.getElementById('goal_name').value, "goal_name")}
                             className="mt-2 font-normal"
                         />
+                        <div className="pt-4">
+                             <span
+                                 className="font-normal color-light-blue-2"
+                             >
+                            Описание цели
+                        </span>
+                            <Input
+                                value={description}
+                                key="description"
+                                id="description"
+                                type="textarea"
+                                onInput={() => this.handleInputChange(document.getElementById('description').value, "description")}
+                            />
+                        </div>
                         <div className="pt-4">
                                     <span
                                         className="font-normal color-light-blue-2"
