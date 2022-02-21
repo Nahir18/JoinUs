@@ -4,57 +4,61 @@ import axios from 'axios';
 import AppList from "../../../components/AppList";
 import {settings} from "./TableConfig"
 import {NavLink} from "react-router-dom";
-import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL} from "../../../components/APIList";
+import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL, FILTER} from "../../../components/APIList";
 import debounce from "@Utils/debounce"
 import Pagination from "@Components/Pagination"
 
 const Employees = ({}) => {
   const [data, setData] = useState([])
-  const [error, setError] = useState(false)
   const [countList, setCountList] = useState("")
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(11)
   const [programList, setProgramList] = useState([])
 
-  // todo сделать фильтрацию по статусам на фронте
   const filterList = (debounce(useCallback((value, id) => {
-    if (id === "status") {
-      // search
-      console.log(value)
-
-      // axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
-      //   params: {status: value}
-      // })
-      // .then((response) => {
-      //     setData(response.data.results)
-      //   },
-      //   (error) => {
-      //     setError({error})
-      //   }
-      // )
-    }
-    if (id === "name") {
-      axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
-        params: {search: value}
-      })
-      .then((response) => {
-          setData(response.data.results)
-        },
-        (error) => {
-          setError({error})
+    switch (id) {
+      case ("status"):
+        if(value && value.length > 0) {
+          axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${FILTER}/`, {
+            params: {statuses: value.reduce((acc, {ID}) => {
+                acc.push(ID)
+                return acc
+              }, []).join()}
+          })
+          .then((response) => {
+              setData(response.data.results)
+            },
+            (error) => {
+              console.log(error)
+            }
+          )
+        } else {
+          getCandidateList()
         }
-      )
-    } else {
-      axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/filter/`, {
-        params: {[id]: value}
-      })
-      .then((response) => {
-          setData(response.data)
-        },
-        (error) => {
-          setError({error})
-        }
-      )
+        break;
+      case "name":
+        axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
+          params: {search: value}
+        })
+        .then((response) => {
+            setData(response.data.results)
+          },
+          (error) => {
+            console.log(error)
+          }
+        )
+        break;
+      default:
+        axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${FILTER}/`, {
+          params: {[id]: value}
+        })
+        .then((response) => {
+            setData(response.data)
+          },
+          (error) => {
+            console.log(error)
+          }
+        )
     }
   },[]), 250))
 
@@ -70,22 +74,26 @@ const Employees = ({}) => {
   //   })()
   // }, [])
 
-  useEffect(() => {
+  const getCandidateList = () => {
     axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
     .then((response) => {
         setData(response.data.results)
         setCountList(response.data.count)
       },
       (error) => {
-        setError({error})
+        console.log(error)
       }
     )
+  }
+
+  useEffect(() => {
+    getCandidateList()
     axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
     .then((response) => {
         setProgramList(response.data)
       },
       (error) => {
-        setError({error})
+        console.log(error)
       }
     )
   }, [])
@@ -98,7 +106,7 @@ const Employees = ({}) => {
         setData(response.data.results)
       },
       (error) => {
-        setError({error})
+        console.log(error)
       }
     )
     setPage(value)

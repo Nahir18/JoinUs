@@ -16,3 +16,4 @@ export const CONTACTS =  "icontacts"
 export const DIRECTORY = "directory"
 export const CANDIDATE_LIST = "candidate"
 
+export const FILTER = "filter"
