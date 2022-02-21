@@ -19,7 +19,7 @@ const PhotoFiles = (props) => {
                     {value.map(({file, progress, fail}, index) => (
                         <div className="flex items-center flex-col mr-2 mb-2">
                             {
-                                file.length - 1 > DEFAULT_URL_FOR_FILE.length &&
+                                file.replace(DEFAULT_URL_FOR_FILE, "") !== "null" && file.length - 1 > DEFAULT_URL_FOR_FILE.length &&
                                 (
                                     <PhotoContainer
                                     className="rounded-2xl overflow-hidden"
