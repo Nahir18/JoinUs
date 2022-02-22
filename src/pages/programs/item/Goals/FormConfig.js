@@ -6,7 +6,7 @@ export const settings = (editModal, closeModal, handleEdit, actionButtonTierUp, 
         id: 1,
         key: "number",
         name: "№",
-        size: "5%"
+        size: "50px"
     },
     {
         id: 2,

@@ -7,7 +7,7 @@ export const settings = (pathname) => [
         id: 1,
         key: "number",
         name: "№",
-        size: "5%"
+        size: "50px"
     },
     {
         id: 2,

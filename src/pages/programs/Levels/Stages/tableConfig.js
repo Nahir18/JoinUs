@@ -38,7 +38,7 @@ export const settings = (editModal, closeModal, handleEdit) => [
         id: 1,
         key: "number",
         name: "№",
-        size: "5%"
+        size: "50px"
     },
     {
         id: 2,
