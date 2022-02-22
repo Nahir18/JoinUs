@@ -43,8 +43,7 @@ class Documents extends Component {
     loadPageData = () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}` : ""
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`)
+        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}`)
             .then(
                 (response) => {
                     const { data: { documents_detail }, data } = response
@@ -117,8 +116,9 @@ class Documents extends Component {
         })
     }
     saveEditDocument = async (closeModal, data) => {
-        const { id } = data
-        await axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, data)
+        const { id, document_name, document_link, tier, create_date, id_employee } = data
+        const newData = { id, document_name, tier, create_date, id_employee }
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, document_link ? {...newData, document_link} : newData)
             .then(
                 (response) => {
                     const { data: { documents_detail } } = response
@@ -155,7 +155,6 @@ class Documents extends Component {
         } = this.props
         const { programData: { documents, program_name, create_date, id, status, tier, employee, duration_day, description }, selectedDocuments } = this.state
         const pathnames = pathname.split("/").filter(x => x)
-        const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
         const newData = {
             program_name,
             create_date,
@@ -168,7 +167,7 @@ class Documents extends Component {
             documents: documents.concat(selectedDocuments.filter(item => !documents.some(a => a === item)))
         }
         if (selectedDocuments.length) {
-            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
+            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}/`, newData)
                 .then(
                     (response) => {
                         const {data: {documents_detail}, data} = response
@@ -246,7 +245,7 @@ class Documents extends Component {
             description,
             documents: documents.filter(item => item !== deleteItemId)}
         const pathnames = pathname.split("/").filter(x => x)
-        const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
+        const idProgram =`/${pathnames[2]}/`
         await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
             .then(
                 (response) => {
@@ -286,12 +285,6 @@ class Documents extends Component {
         this.setState({
             modalData: {...modalData, document_link: value[0].file}
         }) : this.setState({modalData: {...modalData, document_link: 0}})
-    }
-    pageHeaderTitle = (program_name) => {
-        const { location: { pathname } } = this.props
-        const pathnames = pathname.split("/").filter(x => x)
-        const newProgram = pathnames[1] === NEW_PROGRAM
-        return newProgram ? "Новая программа" : program_name
     }
     render() {
         const {
