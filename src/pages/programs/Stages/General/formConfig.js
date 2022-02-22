@@ -87,7 +87,7 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
                 toggleModal={toggleCreatorModal}
             />
             )},
-        formColumn: 1,
+        formColumn: 0,
     },
 ]
 

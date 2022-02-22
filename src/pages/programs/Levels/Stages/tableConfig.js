@@ -1,19 +1,10 @@
-import {ActiveIcon, ArrowUP, EditIcon, Trash} from "../../../ConstantsIcons";
+import { ArrowUP, EditIcon, Trash} from "../../../ConstantsIcons";
 import React from "react";
+import StatusIndicator from "../../../../components/StatusIndicator";
 
-const ActiveIndicator = ({ data } ) => data ? (
-    <div className="flex justify-between items-center">
-        <div
-            dangerouslySetInnerHTML={{__html: ActiveIcon}}
-        />
-        <div
-            className="ml-2"
-        >
-            {`${data > 0 ? "Активен" : "Неактивен"}`}
-        </div>
-    </div>
-) : ""
+// этот конфиг дубль конфига в stages/stages
 
+// todo Actions сделать компонентом. есть дубль
 const Actions = ({handleEdit, data}) => {
     return (
         <div>
@@ -72,7 +63,7 @@ export const settings = (editModal, closeModal, handleEdit) => [
         key: "status",
         name: "Статус",
         size: "10%",
-        component: ActiveIndicator
+        component: StatusIndicator
     },
     {
         id: 5,

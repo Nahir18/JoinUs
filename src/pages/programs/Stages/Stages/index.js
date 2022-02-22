@@ -264,7 +264,7 @@ class levelStages extends Component {
             <>
                 <Modal
                     isOpen={editModal}
-                    title="редактирование этапа"
+                    title="Редактирование этапа"
                     closeModal={() => this.setState({editModal: false})}
                     handleSave={() => saveEditStage(modalData)}
                 >
@@ -306,6 +306,7 @@ class levelStages extends Component {
                         </div>
                     </div>
                 </Modal>
+                {/*// todo в этой модалке не выводятся данные? почему?*/}
                 <Modal
                     isOpen={StageSelection}
                     title="Выбор этапа"
@@ -327,6 +328,7 @@ class levelStages extends Component {
                         </div>
                     </ModalTableHeader>
                 </Modal>
+
                 <Modal
                     isOpen={addStageModal}
                     title="Выбор этапа"

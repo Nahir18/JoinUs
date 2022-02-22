@@ -2,6 +2,10 @@ import {ArrowUP, EditIcon, Trash} from "../../../ConstantsIcons";
 import React from "react";
 import StatusIndicator from "../../../../components/StatusIndicator";
 
+// этот конфиг дубль конфига в levels/stages
+
+// todo Actions сделать компонентом. есть дубль
+
 const Actions = ({handleEdit, data, data: {tier}, tierUp, tierDown, handleDelete}) => {
     const iconColor = tier <= 1 ? "0.3" : ""
     return (

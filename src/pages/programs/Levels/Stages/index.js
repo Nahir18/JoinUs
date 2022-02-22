@@ -80,7 +80,7 @@ class levelStages extends Component {
             <div>
                 <Modal
                     isOpen={editModal}
-                    title="редактирование этапа"
+                    title="Редактирование этапа"
                     closeModal={() => this.setState({editModal: false})}
                     handleSave={() => saveEditDocument(modalData)}
                 >
