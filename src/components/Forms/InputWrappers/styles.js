@@ -15,7 +15,7 @@ export const InputLabel = styled.label`
   font-size: 12px;
 letter-spacing: 0.2px;
 `
-
+// todo баг сборки. не находит стиль в переменной --validation-color
 export const InputContainer = styled.div`
  position: relative;
  display: flex;
@@ -27,7 +27,7 @@ export const InputContainer = styled.div`
    display: ${props => props.hasError ? "block" : "none"};
    width: 100%;
    height: 1px;
-   background: var(--validation-color);
+   background: var(--pink);
    position: absolute;
    border-radius: 6px;
    bottom: -1px;
@@ -35,9 +35,7 @@ export const InputContainer = styled.div`
 `
 
 export const InputErrorContainer = styled.div`
- color: var(--validation-color);
- //color: var(--pink);
- //color: #FF7979;
+ color: var(--pink);
  position: absolute;
  left: 0;
  top: calc(100% + 4px);
