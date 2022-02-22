@@ -67,7 +67,7 @@ body {
     --grey-gradient: linear-gradient(89.43deg, #000000 0.12%, rgba(0, 0, 0, 0) 99.82%);
     --active-gradient: linear-gradient(94.2deg, #009BF6 0%, #3DC0FA 100%);
 
-    --validation-color: var(--pink);
+    --validation-color: #FF7979;
     --flex-input: 1 1 auto;
     --width-input: 100%;
     --border-color-input: var(--color-light-grey-2);

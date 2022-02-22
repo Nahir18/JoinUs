@@ -36,7 +36,6 @@ export const InputContainer = styled.div`
 
 export const InputErrorContainer = styled.div`
  color: var(--validation-color);
- ${`border: 2px solid var(--validation-color);`}
  position: absolute;
  left: 0;
  top: calc(100% + 4px);
