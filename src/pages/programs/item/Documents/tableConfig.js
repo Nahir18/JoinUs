@@ -7,7 +7,7 @@ export const settings = (editModal, closeModal, handleEdit, deleteItem, actionBu
         id: 1,
         key: "number",
         name: "№",
-        size: "5%"
+        size: "50px"
     },
     {
         id: 2,

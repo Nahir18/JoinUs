@@ -40,11 +40,11 @@ class ProgramsList extends Component {
             <div className="flex-container">
                 {
                     !subPage ? (
-                        <div className="flex justify-between my-3">
+                        <div className="flex justify-between p-b-24">
 
-                                <div className="text-2xl">
+                                <h1>
                                     Программы
-                                </div>
+                                </h1>
                                 <NavLink
                                     className="blue btn width-m flex items-center"
                                     to="/programs/new_program/general"

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { ModalContainer, Modal } from "./style"
 import {CloseIcon} from "../../pages/ConstantsIcons";
 
+// todo дубль ModalWindow
+
 class ModalSidebar extends Component {
     render() {
     const { closeModal, title, children, handleSave, isOpen } = this.props
@@ -13,15 +15,15 @@ class ModalSidebar extends Component {
                 <Modal
                     onClick={e => e.stopPropagation()}
                 >
-                    <div>
-                        <div className="flex justify-end mt-7 mr-7 cursor">
+                    <div className="mt-7 mr-7 mb-7 ml-7">
+                        <div className="flex justify-end  cursor">
                             <div
                                 dangerouslySetInnerHTML={{__html: CloseIcon}}
                                 onClick={closeModal}
                             />
                         </div>
                         <div
-                            className="font-bold fs-24 flex justify-center m-b-32"
+                            className="font-bold fs-24 flex  m-b-32"
                         >
                             {title}
                         </div>

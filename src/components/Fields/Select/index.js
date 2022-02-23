@@ -394,7 +394,7 @@ class Select extends PureComponent {
                                 className="flex items-center m-l-8"
                                 key={ID}
                               >
-                                <img src={icon} alt="" className="p-r-8"/>
+                                <div dangerouslySetInnerHTML={{__html: icon}} className="p-r-8"/>
                                 <div className="fz14">
                                   {SYS_NAME}
                                 </div>

@@ -258,7 +258,7 @@ class General extends Component {
         const employeeValue = isLoaded ? employee && employees.find((a) => a.id === employee) : {}
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(toggleModal, customerValue, toggleCreatorModal, employeeValue, this.handleInputChange))
         return (
-            <div>
+            <div className="flex-container hidden">
                 <ModalSidebar
                     title="Выбор заказчика"
                     closeModal={toggleModal}

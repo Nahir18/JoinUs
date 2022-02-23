@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {ModalContainer, Modal} from "./style";
 import {CloseIcon} from "../../pages/ConstantsIcons";
 
+// todo дубль ModalSidebar
+
 class ModalWindow extends Component {
   render() {
     const {isOpen, closeModal, title, children, handleSave, width, maxWidth} = this.props

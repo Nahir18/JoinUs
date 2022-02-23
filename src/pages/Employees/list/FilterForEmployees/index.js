@@ -3,22 +3,23 @@ import Input from "@Components/Fields/Input"
 import Select from "../../../../components/Fields/Select";
 import {FilterContainer, StyleDate} from "./style"
 import ChoiceOfStatusOption from "../../../../components/Fields/Select/ChoiceOfStatusOption";
+import {iconStatusEnd, iconStatusWait, iconStatusWorking} from "../../../../components/ComponentStatus/constantsIcons";
 
 const arrayStatus = [
   {
     ID: "3",
     SYS_NAME: "Завершена",
-    icon: "/assets/icons/iconStatus/iconStatusEnd.svg"
+    icon: iconStatusEnd
   },
   {
     ID: "1",
     SYS_NAME: "Ожидание",
-    icon: "/assets/icons/iconStatus/iconStatusWait.svg"
+    icon: iconStatusWait
   },
   {
     ID: "2",
     SYS_NAME: "В процессе",
-    icon: "/assets/icons/iconStatus/iconStatusWorking.svg"
+    icon: iconStatusWorking
   }
 ]
 

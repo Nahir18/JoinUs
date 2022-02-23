@@ -70,7 +70,7 @@ const BsCheckBox = ({
       {label && (
         <div className="flex items-center">
           {iconLabel && (
-            <img src={iconLabel} alt="" className="p-r-8"/>
+            <div dangerouslySetInnerHTML={{__html: iconLabel}} className="p-r-8"/>
           )}
           <div
             className="p-r-15 fz14"

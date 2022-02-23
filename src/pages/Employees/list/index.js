@@ -49,11 +49,11 @@ const Employees = ({}) => {
         )
         break;
       default:
-        axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${FILTER}/`, {
+        axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
           params: {[id]: value}
         })
         .then((response) => {
-            setData(response.data)
+            setData(response.data.results)
           },
           (error) => {
             console.log(error)

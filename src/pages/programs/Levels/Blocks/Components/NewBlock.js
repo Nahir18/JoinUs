@@ -23,11 +23,11 @@ const options = [
   },
   {
     label: "Опрос",
-    type: FORM_TYPE,
+    type: QUIZ_TYPE,
   },
   {
     label: "Список полей",
-    type: QUIZ_TYPE,
+    type: FORM_TYPE,
   },
   {
     label: "Опрос смайлами",
