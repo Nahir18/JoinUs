@@ -36,7 +36,7 @@ const BreadCrumbs = ({location: { pathname }, bredCrumbsConfig}) => {
                             }
                             <NavLink
                                 to={`/${link}`}
-                                className={`${activeLink ? "pointer-events-none" : "color-light-blue-2"} capitalize`}
+                                className={`${activeLink ? "pointer-events-none" : "color-light-blue-2"}`}
                             >
                                 {name}
                             </NavLink>
