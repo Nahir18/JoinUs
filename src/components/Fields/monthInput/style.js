@@ -5,7 +5,7 @@ export const StyleIcon = styled.div`
   right: 0;
   bottom: 13px;
   font-size: 14px;
-  font-weight: 700;
+  //font-weight: 700;
   display: flex;
   align-items: center;
   padding-right: 8px;

@@ -24,11 +24,7 @@ export const fieldMap = (toggleModal, customer, toggleCreatorModal, creator, han
     {
         label: "Срок программы",
         id: "duration_day",
-        component: (props) => (
-            <MonthInput
-                {...props}
-                onInput={handleInputChange}
-        />),
+        component: MonthInput,
         placeholder: "Выберите срок программы",
         formColumn: 1,
     },
