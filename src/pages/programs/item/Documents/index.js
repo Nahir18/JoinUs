@@ -292,6 +292,13 @@ class Documents extends Component {
             modalData: {...modalData, json: fieldValue}
         })
     }
+
+    handleEdit = (data) => {
+        this.setState({
+            editModal: true,
+            modalData: data
+        })
+    }
     render() {
         const {
             editModal,
@@ -303,10 +310,8 @@ class Documents extends Component {
             selectedDocuments,
             addNewDocument,
         } = this.state
-        const handleEdit = (data) => this.setState({
-            editModal: true,
-            modalData: data
-        })
+
+
         const {
             actionButtonTierUp,
             actionButtonTierDown,
@@ -342,7 +347,7 @@ class Documents extends Component {
                                     >
                                         Номер п.п.
                                     </span>
-                                    <div className="relative">
+                                    <div className="relative mt-2">
                                         <ArrowInput
                                             value={tier}
                                             key="tier"
@@ -398,7 +403,7 @@ class Documents extends Component {
                                     >
                                         Номер п.п.
                                     </span>
-                                <div className="relative">
+                                <div className="relative mt-2">
                                     <ArrowInput
                                         className="mt-2 font-normal"
                                         value={tier}
@@ -498,7 +503,7 @@ class Documents extends Component {
                         </button>
                     </div>
                     <AppList
-                        settings={settings(editModal, this.closeModal, handleEdit, this.deleteItem, actionButtonTierUp, actionButtonTierDown)}
+                        settings={settings(editModal, this.closeModal, this.handleEdit, this.deleteItem, actionButtonTierUp, actionButtonTierDown)}
                         data={items}
                     />
             </>

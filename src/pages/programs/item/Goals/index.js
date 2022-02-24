@@ -359,11 +359,11 @@ class Goals extends Component {
                             className="mt-2 font-normal"
                         />
                         <div className="pt-4">
-                             <span
-                                 className="font-normal color-light-blue-2"
+                             <div
+                                 className="font-normal color-light-blue-2 mb-2"
                              >
                             Описание цели
-                        </span>
+                        </div>
                             <Input
                                 value={description}
                                 key="description"

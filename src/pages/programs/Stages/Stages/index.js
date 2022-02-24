@@ -256,7 +256,6 @@ class levelStages extends Component {
             actionTierUp,
             actionTierDown,
             handleDeleteItem,
-            appListData,
             openStageSelection
         } = this
 
@@ -338,7 +337,7 @@ class levelStages extends Component {
                     maxWidth="932px"
                 >
                     <AppList
-                        data={appListData()}
+                        data={this.appListData()}
                         settings={selectStageModalConfig(selectedStage, checkStage)}
                     />
                 </Modal>
