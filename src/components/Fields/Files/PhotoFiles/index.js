@@ -15,18 +15,27 @@ const PhotoContainer = styled.img`
 // onDeleteTempFile удаление временного файла, который не загрузился
 // fail когда файл не загрузился
 
-const PhotoFiles = (props) => {
+const PhotoFiles = ({titleForFileInput, style, className, width, ...props}) => {
   return (
-    <FileInput title="фото" {...props}>
+    <FileInput
+      title={titleForFileInput}
+      className={className}
+      style={style}
+      {...props}
+    >
       {({value, onDelete, onEdit, onDeleteTempFile, onReUpload}) => (
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap items-end">
           {value.map(({file, progress, fail}, index) => (
             <div key={index} className="flex items-center flex-col mr-2 mb-2">
-              <ContainerOpacity fail={fail}>
+              <ContainerOpacity
+                style={{width: width}}
+                fail={fail}
+              >
                 {progress > 0 && <ContainerPreloader>
                   <PreloaderIcon/>
                 </ContainerPreloader>}
                 <PhotoContainer
+                  style={{width: width}}
                   className="rounded-2xl overflow-hidden"
                   src={file}
                 />
@@ -71,6 +80,17 @@ const PhotoFiles = (props) => {
   );
 };
 
-PhotoFiles.propTypes = {};
+PhotoFiles.propTypes = {
+  titleForFileInput: PropTypes.string,
+  style: PropTypes.object,
+  className: PropTypes.string,
+  width: PropTypes.string,
+};
 
+PhotoFiles.defaultProps = {
+  titleForFileInput: "фото",
+  width: "300px",
+  style: {},
+  className: ""
+}
 export default PhotoFiles;

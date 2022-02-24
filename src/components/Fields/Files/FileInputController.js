@@ -175,7 +175,6 @@ const FileInputController = ({
   }, [handleInput, containerRef])
 
   const mergedValue = useMemo(() => {
-    console.log(value)
     const tempVal = [...value]
 
     tempFiles.forEach((item) => {

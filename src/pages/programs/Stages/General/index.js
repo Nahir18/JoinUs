@@ -128,11 +128,9 @@ class LevelsGeneral extends Component {
         })
     }
 
-    saveNewLevel() {
-        const { history: { push }} = this.props
-        const {data} = this.state
-        const { pathNames, idLevel } = this
-        const { level_name, tier, status, create_date, id_employee, duration_day, illustration } = data
+    saveNewLevel = () => {
+    const { props: {history: { push }}, state: {data: { level_name, tier, status, create_date, id_employee, duration_day, illustration }}, pathNames, idLevel } = this
+
         const newLevel = pathNames()[4] === NEW_LEVEL
         const newData = {
             level_name,
@@ -162,9 +160,6 @@ class LevelsGeneral extends Component {
 
     inputDataOfProgram = (value) => {
       this.setState(({data}) => ({data: {...data, ...value}}))
-    }
-    saveDataOfStage = (v) => {
-      console.log(v, 8989)
     }
 
     tierUp = () => {
@@ -222,7 +217,7 @@ class LevelsGeneral extends Component {
         </ModalSidebar>
         <WithValidationHocRenderPropAdapter
           onInput={this.inputDataOfProgram}
-          onSubmit={this.saveDataOfStage}
+          onSubmit={this.saveNewLevel}
           value={data}
           rules={rules}
         >
@@ -265,7 +260,7 @@ class LevelsGeneral extends Component {
                     Отмена
                   </div>
                   <button
-                    onClick={() => this.saveNewLevel()}
+                    onClick={onSubmit}
                     name="save"
                     type="submit"
                     className="blue btn width-m"

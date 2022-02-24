@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState, useMemo} from 'react';
 import {Oval, Container} from "./style"
 import PropTypes from "prop-types"
+import {calculationOfStages} from "../../../utils/calculationOfStages";
 
 // progress: 1
 // 0/4 - 0
@@ -8,20 +9,16 @@ import PropTypes from "prop-types"
 // 2/4 - 0,5
 // 3/4 - 0,75
 // 4/4 - 1
-const getStages = (data = []) => {
-  let sum = 0
-  data.forEach(({stages}) => {
-    sum = sum + stages.length
-  })
-  return sum
-}
+
 const Progress = ({data}) => {
-  const [result, setResult] = useState(0)
   const { adaptation_status, program_details: [detail], programList, program } = data
+
+  const [result, setResult] = useState(0)
+  const [numberStages, setNumberStages] = useState(0)
 
   const getProgress = useCallback(() => {
     if (adaptation_status && adaptation_status.length > 0) {
-      setResult(adaptation_status.length / getStages(detail.levels_detail))
+      setResult(adaptation_status.length / numberStages)
     }
   }, [adaptation_status, detail])
 
@@ -32,6 +29,7 @@ const Progress = ({data}) => {
   }, [programList, program])
 
   useEffect(() => {
+    setNumberStages(calculationOfStages(detail.levels_detail))
     getProgress()
   })
   return (
@@ -49,7 +47,7 @@ const Progress = ({data}) => {
           <Oval active={result >= 1}/>
         </Container>
         <div className="fs-14 color-darken-blue fw-700 p-l-6">
-          {adaptation_status.length}/{getStages(detail.levels_detail)}
+          {adaptation_status.length}/{numberStages}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useCallback} from 'react';
 import AppList from "../../../../components/AppList";
 import "../levels/style.css"
 import Modal from "../../../../components/ModalWindow";
@@ -16,7 +16,6 @@ import { settings } from "./tableConfig";
 import {NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
-import DocumentPhoto from "../../../../components/DocumentPhoto"
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import RefSelect from "@Components/Fields/RefSelect/index"
 import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
@@ -286,6 +285,20 @@ class Documents extends Component {
             modalData: {...modalData, json: json ? [...json, value[0]] : [value[0]]}
         })
     }
+
+    handleInput = (fieldValue) => {
+        const { modalData } = this.state
+        this.setState({
+            modalData: {...modalData, json: fieldValue}
+        })
+    }
+
+    handleEdit = (data) => {
+        this.setState({
+            editModal: true,
+            modalData: data
+        })
+    }
     render() {
         const {
             editModal,
@@ -297,10 +310,8 @@ class Documents extends Component {
             selectedDocuments,
             addNewDocument,
         } = this.state
-        const handleEdit = (data) => this.setState({
-            editModal: true,
-            modalData: data
-        })
+
+
         const {
             actionButtonTierUp,
             actionButtonTierDown,
@@ -336,7 +347,7 @@ class Documents extends Component {
                                     >
                                         Номер п.п.
                                     </span>
-                                    <div className="relative">
+                                    <div className="relative mt-2">
                                         <ArrowInput
                                             value={tier}
                                             key="tier"
@@ -351,10 +362,17 @@ class Documents extends Component {
                                     className="pt-8"
                                 >
                                     <PhotoFiles
-                                        value={json}
-                                        multiple
-                                        onInput={addDocumentFile}
-                                        // onDelete={(index) => (console.log(index))}
+                                      titleForFileInput="документ"
+                                      id="entity"
+                                      className="mt-2.5 bg-color-white"
+                                      type="textarea"
+                                      autosize
+                                      minHeight={150}
+                                      value={json}
+                                      width="100px"
+                                      onInput={this.handleInput}
+                                      style={{backgroundColor: "var(--color-white)", padding: 0}}
+                                      multiple
                                     />
                                 </div>
                             </div>
@@ -385,7 +403,7 @@ class Documents extends Component {
                                     >
                                         Номер п.п.
                                     </span>
-                                <div className="relative">
+                                <div className="relative mt-2">
                                     <ArrowInput
                                         className="mt-2 font-normal"
                                         value={tier}
@@ -438,9 +456,18 @@ class Documents extends Component {
                             <div
                                 className="pt-8"
                             >
-                                <DocumentPhoto
-                                    value={json === null ? [] : json}
-                                    onInput={addDocumentFile}
+                                <PhotoFiles
+                                  titleForFileInput="документ"
+                                  id="entity"
+                                  className="mt-2.5 bg-color-white"
+                                  type="textarea"
+                                  autosize
+                                  minHeight={150}
+                                  value={json}
+                                  onInput={this.handleInput}
+                                  multiple
+                                  width="100px"
+                                  style={{backgroundColor: "var(--color-white)", padding: 0}}
                                 />
                             </div>
                         </ScrollBar>
@@ -476,7 +503,7 @@ class Documents extends Component {
                         </button>
                     </div>
                     <AppList
-                        settings={settings(editModal, this.closeModal, handleEdit, this.deleteItem, actionButtonTierUp, actionButtonTierDown)}
+                        settings={settings(editModal, this.closeModal, this.handleEdit, this.deleteItem, actionButtonTierUp, actionButtonTierDown)}
                         data={items}
                     />
             </>

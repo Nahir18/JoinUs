@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {PlusIcon} from "../../../../pages/ConstantsIcons";
 import FileInputController from "../FileInputController";
 
-const FileInput = ({children, title, className, ...props}) => {
+const FileInput = ({children, title, className, style, ...props}) => {
   const refContainer = useRef()
   return (
     <FileInputController {...props} containerRef={refContainer}>
@@ -11,6 +11,7 @@ const FileInput = ({children, title, className, ...props}) => {
         <div
           className={`bg-color-light-grey p-2 pb-4 rounded-md flex flex-col items-start ${className}`}
           ref={refContainer}
+          style={style}
         >
           {children({value, onDelete, onDeleteTempFile, onReUpload, onEdit})}
           <button
@@ -27,6 +28,7 @@ const FileInput = ({children, title, className, ...props}) => {
 
 FileInput.propTypes = {
   className: PropTypes.string,
+  title: PropTypes.string,
 };
 FileInput.defaultProps = {
   className: ""

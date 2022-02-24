@@ -49,4 +49,6 @@ export const fieldMap = (arrowUp, arrowDown, handleInputChange) => [
 export const rules = {
     stage_name: "required",
     tier: "required",
+    create_date: "required",
+    duration_day: "required"
 }

@@ -1,10 +1,10 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CardIconAndTitle from "../../../../components/CardIconAndTitle";
 import {settings} from "./tableConfig";
 import AppList from "../../../../components/AppList";
 import axios from "axios";
 import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
-import memoizeOne from "memoize-one";
+import {calculationOfPoints} from "../../../../utils/calculationOfPoints";
 
 const Documents = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState([])
@@ -27,22 +27,12 @@ const Documents = ({location: { pathname }, history: { push, goBack }}) => {
     )
   }, [])
 
- const getPoint = memoizeOne((data = []) => {
-    let sum = 0
-    data.forEach(({stages}) => {
-      for(let i = 0; i < stages.length; i++){
-        sum = sum + parseInt(stages[i].point)
-      }
-    })
-    return sum
-  })
-
   return (
     <div className="flex-container hidden">
       <div className="flex p-t-16 p-r-16 p-l-16">
         <CardIconAndTitle
           title="Заработано баллов:"
-          value={getPoint(levels_detail)}
+          value={calculationOfPoints(levels_detail)}
           icon="points"
           className="m-r-16"
         />
