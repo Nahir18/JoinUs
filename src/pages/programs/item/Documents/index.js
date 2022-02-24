@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useCallback} from 'react';
 import AppList from "../../../../components/AppList";
 import "../levels/style.css"
 import Modal from "../../../../components/ModalWindow";
@@ -16,7 +16,6 @@ import { settings } from "./tableConfig";
 import {NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
-import DocumentPhoto from "../../../../components/DocumentPhoto"
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import RefSelect from "@Components/Fields/RefSelect/index"
 import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
@@ -286,6 +285,13 @@ class Documents extends Component {
             modalData: {...modalData, json: json ? [...json, value[0]] : [value[0]]}
         })
     }
+
+    handleInput = (fieldValue) => {
+        const { modalData } = this.state
+        this.setState({
+            modalData: {...modalData, json: fieldValue}
+        })
+    }
     render() {
         const {
             editModal,
@@ -350,11 +356,18 @@ class Documents extends Component {
                                 <div
                                     className="pt-8"
                                 >
-                                    <DocumentPhoto
-                                        value={json}
-                                        multiple
-                                        onInput={addDocumentFile}
-                                        // onDelete={(index) => (console.log(index))}
+                                    <PhotoFiles
+                                      titleForFileInput="документ"
+                                      id="entity"
+                                      className="mt-2.5 bg-color-white"
+                                      type="textarea"
+                                      autosize
+                                      minHeight={150}
+                                      value={json}
+                                      width="100px"
+                                      onInput={this.handleInput}
+                                      style={{backgroundColor: "var(--color-white)", padding: 0}}
+                                      multiple
                                     />
                                 </div>
                             </div>
@@ -438,9 +451,18 @@ class Documents extends Component {
                             <div
                                 className="pt-8"
                             >
-                                <DocumentPhoto
-                                    value={json === null ? [] : json}
-                                    onInput={addDocumentFile}
+                                <PhotoFiles
+                                  titleForFileInput="документ"
+                                  id="entity"
+                                  className="mt-2.5 bg-color-white"
+                                  type="textarea"
+                                  autosize
+                                  minHeight={150}
+                                  value={json}
+                                  onInput={this.handleInput}
+                                  multiple
+                                  width="100px"
+                                  style={{backgroundColor: "var(--color-white)", padding: 0}}
                                 />
                             </div>
                         </ScrollBar>
