@@ -1,10 +1,11 @@
-import React, {Component, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import CardIconAndTitle from "../../../../components/CardIconAndTitle";
 import AppList from "../../../../components/AppList";
 import {settings} from "./tableConfig";
 import axios from "axios";
 import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
-import memoizeOne from "memoize-one"
+import {calculationOfPoints} from "../../../../utils/calculationOfPoints";
+import {calculationOfStages} from "../../../../utils/calculationOfStages";
 
 const AdaptationProgress = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState([])
@@ -31,15 +32,35 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
     )
   }, [])
 
- const getPoint = memoizeOne((data = []) => {
-    let sum = 0
-    data.forEach(({stages}) => {
-      for(let i = 0; i < stages.length; i++){
-        sum = sum + parseInt(stages[i].point)
-      }
-    })
-    return sum
-  })
+  // todo расчет количества пройденных уровней
+  // надо тестить
+
+  const numberCompletedLevels = useMemo(() => {
+    if (adaptation_status && adaptation_status.length > 0) {
+      // let sum = 0
+      //   program_details.forEach(({stages}) => {
+      //     for(let i = 0; i < stages.length; i++){
+      //       sum = sum + parseInt(stages[i].point)
+      //     }
+      //   })
+      //   return sum
+
+      const [detail] = program_details
+
+      let sum = 0
+      sum = sum + (calculationOfStages(detail?.levels_detail) === adaptation_status.length ? 1 : 0 )
+      return sum
+
+      // calculationOfStages(detail?.levels_detail) === adaptation_status.length
+    } else {
+      return 0
+    }
+  }, [adaptation_status, program_details])
+
+  const getNumberLevels = useMemo(() => {
+    const [detail] = program_details
+    return detail?.levels_detail.length
+  }, [program_details])
 
   const newData = useMemo(() => (
     data.reduce((acc, item = {}) => {
@@ -66,13 +87,13 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
       <div className="flex p-t-16 p-r-16 p-l-16">
         <CardIconAndTitle
           title="Заработано баллов:"
-          value={getPoint(data)}
+          value={calculationOfPoints(data)}
           icon="points"
           className="m-r-16"
         />
         <CardIconAndTitle
           title="Пройдено уровней:"
-          value={[2, 3]}
+          value={[numberCompletedLevels, getNumberLevels]}
           icon="levels"
         />
       </div>
