@@ -54,7 +54,7 @@ const FilterForEmployees = ({handleInput}) => {
       <div className="">
         <div className="fs-12 color-light-blue-2 p-b-5">ФИО/Должность</div>
         <Input
-          id="name"
+          id="search"
           placeholder="Введите ФИО или должность"
           value={dataForInput}
           onInput={onInput}
@@ -64,7 +64,7 @@ const FilterForEmployees = ({handleInput}) => {
         <div className="fs-12 color-light-blue-2 p-b-5">Статус</div>
         <Select
           ComponentOption={ChoiceOfStatusOption}
-          id="status"
+          id="statuses"
           placeholder="Выберите статус"
           onInput={handleSelect}
           value={valueSelect}
