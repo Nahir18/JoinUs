@@ -19,6 +19,7 @@ import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
 import DocumentPhoto from "../../../../components/DocumentPhoto"
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import RefSelect from "@Components/Fields/RefSelect/index"
+import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
 
 class Documents extends Component {
 
@@ -116,9 +117,9 @@ class Documents extends Component {
         })
     }
     saveEditDocument = async (closeModal, data) => {
-        const { id, document_name, document_link, tier, create_date, id_employee } = data
-        const newData = { id, document_name, tier, create_date, id_employee }
-        await axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, document_link ? {...newData, document_link} : newData)
+        const { id, document_name, tier, create_date, id_employee, json } = data
+        const newData = { id, document_name, tier, create_date, id_employee, json }
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/${id}/`, newData)
             .then(
                 (response) => {
                     const { data: { documents_detail } } = response
@@ -141,8 +142,8 @@ class Documents extends Component {
         })
     }
     saveSelectedDocuments = async () => {
-       const { modalData, modalData: { create_date } } = this.state
-        await axios.post(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/`, {...modalData, create_date: EditDateForSave(create_date)})
+       const { modalData, modalData: { create_date, json } } = this.state
+        await axios.post(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}/`, {...modalData, create_date: EditDateForSave(create_date), json: json ? json : []})
         this.setState({
             documentSelection: false
         })
@@ -280,18 +281,17 @@ class Documents extends Component {
         }
     }
     addDocumentFile = (value) => {
-        const { modalData } = this.state
-        value.length ?
+        const { modalData, modalData: { json } } = this.state
         this.setState({
-            modalData: {...modalData, document_link: value[0].file}
-        }) : this.setState({modalData: {...modalData, document_link: 0}})
+            modalData: {...modalData, json: json ? [...json, value[0]] : [value[0]]}
+        })
     }
     render() {
         const {
             editModal,
             items,
             documents,
-            modalData: {document_name, document_link, tier, create_date},
+            modalData: {document_name, tier, create_date, json},
             modalData,
             documentSelection,
             selectedDocuments,
@@ -351,10 +351,10 @@ class Documents extends Component {
                                     className="pt-8"
                                 >
                                     <DocumentPhoto
-                                        value={[{
-                                            file: document_link,
-                                        }]}
+                                        value={json}
+                                        multiple
                                         onInput={addDocumentFile}
+                                        // onDelete={(index) => (console.log(index))}
                                     />
                                 </div>
                             </div>
@@ -439,9 +439,7 @@ class Documents extends Component {
                                 className="pt-8"
                             >
                                 <DocumentPhoto
-                                    value={[{
-                                        file: document_link || 0,
-                                    }]}
+                                    value={json === null ? [] : json}
                                     onInput={addDocumentFile}
                                 />
                             </div>

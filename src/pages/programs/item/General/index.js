@@ -10,7 +10,7 @@ import axios from "axios";
 import {ADAPTATION_CUSTOMER, ADAPTATION_PROGRAM, ADAPTATION_EMPLOYEE, DEFAULT_URL} from "../../../../components/APIList";
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import Avatar from "../../../../components/Avatar";
-import {NEW_PROGRAM} from "../../Constants";
+import {NEW_PROGRAM, PAGE_LINK_GENERAL, PAGE_LINK_PROGRAMS} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import {FormContainer, TabContainer} from "@Components/StylesComponent/StylesForm"
 import { customerModalConfig } from "./customerModalConfig";
@@ -165,8 +165,8 @@ class General extends Component {
                         data: data
                     })
                     this.isNewProgram() ?
-                        push("/programs") :
-                        push(`/programs/${program_name}/${id}/general`)
+                        push(`/${PAGE_LINK_PROGRAMS}`) :
+                        push(`/${PAGE_LINK_PROGRAMS}/${program_name}/${id}/${PAGE_LINK_GENERAL}`)
 
                 },
                 (error) => {
@@ -181,7 +181,46 @@ class General extends Component {
         this.setState(({ data }) => ({ data: { ...data, ...value } }))
     }
     saveDataOfProgram = (v) => {
-        console.log(v)
+        console.log("qweqweqeqw")
+        const { history: { push } } = this.props
+        const { data, data: { program_name, description, duration_day, tier, status, create_date, employee, contact, customer, illustration } } = this.state
+        const newData = {
+            create_date: EditDateForSave(create_date, CREATE_DATE_FORMAT),
+            program_name,
+            duration_day,
+            description,
+            tier: tier || 1,
+            status,
+            employee,
+            contact,
+            customer
+        }
+        axios[this.isNewProgram() ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programID()}/`, this.isNewProgram() ?
+            {
+                ...data,
+                status: 1,
+                create_date: EditDateForSave(data.create_date, CREATE_DATE_FORMAT)
+            } : illustration ? {...newData, illustration} : newData
+        )
+            .then(
+                (response) => {
+                    const { data, data: { program_name, id } } = response
+                    this.setState({
+                        isLoaded: true,
+                        data: data
+                    })
+                    this.isNewProgram() ?
+                        push(`/${PAGE_LINK_PROGRAMS}`) :
+                        push(`/${PAGE_LINK_PROGRAMS}/${program_name}/${id}/${PAGE_LINK_GENERAL}`)
+
+                },
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    })
+                }
+            )
     }
     selectedRadioButton = (value) => {
         const { customers, modalState } = this.state
@@ -294,7 +333,7 @@ class General extends Component {
                                               name="save"
                                               type="submit"
                                               className="blue btn width-m"
-                                              onClick={() => this.saveNewProgram()}
+                                              onClick={onSubmit}
                                             >
                                                 Сохранить
                                             </button>

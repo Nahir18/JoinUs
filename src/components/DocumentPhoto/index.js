@@ -26,7 +26,7 @@ const PhotoFiles = (props) => {
                                     src={file}
                                      />
                                 )}
-                            {file.length - 1 > DEFAULT_URL_FOR_FILE.length && progress === undefined && <div className="flex items-center mt-1.5">
+                            {file.replace(DEFAULT_URL_FOR_FILE, "") !== "null" && file.length - 1 > DEFAULT_URL_FOR_FILE.length && progress === undefined && <div className="flex items-center mt-1.5">
                                 <button
                                     className="edit-icon"
                                     dangerouslySetInnerHTML={{__html: EditIcon}}
