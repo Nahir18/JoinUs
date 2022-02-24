@@ -155,32 +155,30 @@ class Goals extends Component {
             description,
             goals:selectedGoals
         }
-        if (selectedGoals.length) {
-            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}/`, newData)
-                .then(
-                    (response) => {
-                        const {data: {goals_detail}, data} = response
-                        this.setState({
-                            isLoaded: true,
-                            programData: data,
-                            items: goals_detail
-                        })
-                        this.setState({
-                            addGoalsModal: false
-                        })
-                    },
-                    (error) => {
-                        console.log(error)
-                        this.setState({
-                            isLoaded: true,
-                            error
-                        })
-                    }
-                )
-            this.setState({
-                selectedGoals: []
-            })
-        }
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}/`, newData)
+            .then(
+                (response) => {
+                    const {data: {goals_detail}, data} = response
+                    this.setState({
+                        isLoaded: true,
+                        programData: data,
+                        items: goals_detail
+                    })
+                    this.setState({
+                        addGoalsModal: false
+                    })
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    })
+                }
+            )
+        this.setState({
+            selectedGoals: []
+        })
     }
     toggleModal = () => {
         const { editModal } = this.state

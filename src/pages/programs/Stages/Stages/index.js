@@ -181,7 +181,7 @@ class levelStages extends Component {
            await this.deleteStage(deleteItems[0][i])
         }
         for (let i = 0; i < selectedStage.length; i++) {
-            const { stage_name, create_date, duration_day, id: levelStageId } = stages.find(({id}) => id === selectedStage[i])
+            const { stage_name, create_date, duration_day } = stages.find(({id}) => id === selectedStage[i])
             if (!items.find(({id}) => id === selectedStage[i])) {
                 console.log(2, stage_name)
                 await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${selectedStage[i]}/`, {

@@ -166,30 +166,28 @@ class Documents extends Component {
             description,
             documents: selectedDocuments
         }
-        if (selectedDocuments.length) {
-            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}/`, newData)
-                .then(
-                    (response) => {
-                        const {data: {documents_detail}, data} = response
-                        this.setState({
-                            isLoaded: true,
-                            programData: data,
-                            items: documents_detail
-                        })
-                        closeModal()
-                    },
-                    (error) => {
-                        console.log(error)
-                        this.setState({
-                            isLoaded: true,
-                            error
-                        })
-                    }
-                )
-            this.setState({
-                selectedDocuments: []
-            })
-        }
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}/`, newData)
+            .then(
+                (response) => {
+                    const {data: {documents_detail}, data} = response
+                    this.setState({
+                        isLoaded: true,
+                        programData: data,
+                        items: documents_detail
+                    })
+                    closeModal()
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    })
+                }
+            )
+        this.setState({
+            selectedDocuments: []
+        })
     }
     addDocument = () => {
         const { addNewDocument, items } = this.state
