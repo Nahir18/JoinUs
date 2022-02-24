@@ -177,8 +177,10 @@ class levelStages extends Component {
         if (!selectedStage.length || items.some(({id}) => !selectedStage.some(item => item === id))) {
             selectedStage.length ? deleteItems.push(items.filter(item => !selectedStage.includes(item.id))) : deleteItems = items
         }
-        for (let i = 0; i < deleteItems[0].length; i++) {
-           await this.deleteStage(deleteItems[0][i])
+        if (deleteItems.length) {
+            for (let i = 0; i < deleteItems[0].length; i++) {
+                await this.deleteStage(deleteItems[0][i])
+            }
         }
         for (let i = 0; i < selectedStage.length; i++) {
             const { stage_name, create_date, duration_day } = stages.find(({id}) => id === selectedStage[i])
@@ -317,29 +319,6 @@ class levelStages extends Component {
                         </div>
                     </div>
                 </Modal>
-                {/*// todo в этой модалке не выводятся данные? почему?*/}
-                <Modal
-                    isOpen={StageSelection}
-                    title="Выбор этапа"
-                    closeModal={openDocumentSelection}
-                    handleSave={() => saveEditStage(selectedStage)}
-                    width="932px"
-                    maxWidth="932px"
-                >
-                    <ModalTableHeader>
-                        <div>№</div>
-                        <div>
-                            Наименование этапа
-                        </div>
-                        <div>
-                            Наименование уровня
-                        </div>
-                        <div>
-                            Наименование программы
-                        </div>
-                    </ModalTableHeader>
-                </Modal>
-
                 <Modal
                     isOpen={addStageModal}
                     title="Выбор этапа"
