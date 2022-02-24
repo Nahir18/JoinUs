@@ -154,7 +154,7 @@ class Documents extends Component {
         const {
             location: { pathname }
         } = this.props
-        const { programData: { documents, program_name, create_date, id, status, tier, employee, duration_day, description }, selectedDocuments } = this.state
+        const { programData: { program_name, create_date, id, status, tier, employee, duration_day, description }, selectedDocuments } = this.state
         const pathnames = pathname.split("/").filter(x => x)
         const newData = {
             program_name,
@@ -165,7 +165,7 @@ class Documents extends Component {
             employee,
             duration_day,
             description,
-            documents: documents.concat(selectedDocuments.filter(item => !documents.some(a => a === item)))
+            documents: selectedDocuments
         }
         if (selectedDocuments.length) {
             await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}/`, newData)
@@ -350,7 +350,7 @@ class Documents extends Component {
                                 <div
                                     className="pt-8"
                                 >
-                                    <DocumentPhoto
+                                    <PhotoFiles
                                         value={json}
                                         multiple
                                         onInput={addDocumentFile}

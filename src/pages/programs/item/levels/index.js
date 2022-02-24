@@ -90,7 +90,7 @@ class Levels extends Component {
         const pathnames = pathname.split("/").filter(x => x)
         const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
         const newData = {
-            levels: levels.concat(selectedLevels.filter(item => !levels.some(a => a === item))),
+            levels: selectedLevels,
             create_date,
             program_name,
             id,

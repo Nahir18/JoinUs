@@ -153,7 +153,7 @@ class Goals extends Component {
             employee,
             duration_day,
             description,
-            goals: goals.concat(selectedGoals.filter(item => !goals.some(a => a === item)))
+            goals:selectedGoals
         }
         if (selectedGoals.length) {
             await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}/`, newData)
