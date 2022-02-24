@@ -76,7 +76,7 @@ class StagesGeneral extends Component {
         event.preventDefault();
     }
 
-    async saveStage () {
+    saveStage = async () => {
         const { data: {id, stage_name, tier, point, status, create_date, id_employee, duration_day, level} } = this.state
         const { isNewStage, pathNames } = this
         const idStage = isNewStage() ? "/" : `/${pathNames()[5]}/`
@@ -125,9 +125,6 @@ class StagesGeneral extends Component {
     inputDataOfStage = (value) => {
         this.setState(({ data }) => ({ data: { ...data, ...value } }))
     }
-    saveDataOfStage = (v) => {
-        console.log(v, 56565)
-    }
 
     tierUp = () => {
         const { data: { tier }, data } = this.state
@@ -152,12 +149,12 @@ class StagesGeneral extends Component {
                 <div className="p-l-24 p-r-24 p-t-24 flex flex-col h-full">
                     <WithValidationHocRenderPropAdapter
                         onInput={this.inputDataOfStage}
-                        onSubmit={this.saveDataOfStage}
+                        onSubmit={this.saveStage}
                         value={data}
                         rules={rules}
                     >
                         {(formProps) => {
-                            const { onInput } = formProps
+                            const { onInput, onSubmit } = formProps
                             return (
                                 <div className="h-full flex flex-col justify-between">
                                     <FormContainer>
@@ -189,7 +186,7 @@ class StagesGeneral extends Component {
                                             name="save"
                                             type="submit"
                                             className="blue btn width-m"
-                                            onClick={() => this.saveStage()}
+                                            onClick={onSubmit}
                                         >
                                             Сохранить
                                         </button>
