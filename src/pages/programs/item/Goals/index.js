@@ -12,6 +12,9 @@ import DatePicker from "@Components/Fields/DatePicker"
 import { addGoalsModalConfig } from "./addGoalsModalConfig";
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import RefSelect from "@Components/Fields/RefSelect/index"
+import { WithValidationHocRenderPropAdapter } from "../../../../Validator";
+import { NewGoalModalConfig, rules } from "./newGoalModalConfig";
+import Form from "@Components/Forms/index"
 
 class Goals extends Component {
 
@@ -109,7 +112,8 @@ class Goals extends Component {
      addNewGoal = () => {
         const { goalSelection } = this.state
          this.setState({
-             goalSelection: !goalSelection
+             goalSelection: !goalSelection,
+             modalData: []
          })
      }
      saveNewGoal = async () => {
@@ -222,6 +226,9 @@ class Goals extends Component {
     }
     pageHeaderTitle = (program_name) => {
         return this.isNewProgram() ? "Новая программа" : program_name
+    }
+    inputDataOfProgram = (value) => {
+        this.setState(({ modalData }) => ({ modalData: { ...modalData, ...value } }))
     }
     actionsDeleteItem = async (deleteItemID) => {
         const { programData: { documents, program_name, goals, create_date, id, status, tier, employee, duration_day, description } } = this.state
@@ -337,96 +344,33 @@ class Goals extends Component {
                         </div>
                     </div>
                 </Modal>
-                <Modal
-                    isOpen={goalSelection}
-                    title="Добавить цель"
-                    closeModal={addNewGoal}
-                    handleSave={saveNewGoal}
+                <WithValidationHocRenderPropAdapter
+                    onInput={this.inputDataOfProgram}
+                    onSubmit={saveNewGoal}
+                    value={modalData}
+                    rules={rules}
                 >
-                    <ScrollBar>
-                        <span
-                            className="font-normal color-light-blue-2"
-                        >
-                                Наименование цели
-                            </span>
-                        <Input
-                            value={goal_name}
-                            key="goal_name"
-                            id="goal_name"
-                            onInput={() => this.handleInputChange(document.getElementById('goal_name').value, "goal_name")}
-                            className="mt-2 font-normal"
-                        />
-                        <div className="pt-4">
-                             <div
-                                 className="font-normal color-light-blue-2 mb-2"
-                             >
-                            Описание цели
-                        </div>
-                            <Input
-                                value={description}
-                                key="description"
-                                id="description"
-                                type="textarea"
-                                onInput={() => this.handleInputChange(document.getElementById('description').value, "description")}
-                            />
-                        </div>
-                        <div className="pt-4">
-                                    <span
-                                        className="font-normal color-light-blue-2"
-                                    >
-                                        Номер п.п.
-                                    </span>
-                            <div className="relative">
-                                <ArrowInput
-                                    className="mt-2 font-normal"
-                                    value={tier}
-                                    top="21px"
-                                    key="tier"
-                                    id="tier"
-                                    onInput={() => this.handleNumericInputChange(Number(document.getElementById('tier').value), "tier")}
-                                    arrowUp={this.tierUp}
-                                    arrowDown={this.tierDown}
-                                />
-                            </div>
-                            <div className="pt-4">
-                                <span
-                                    className="font-normal color-light-blue-2"
-                                >
-                                    Дата создания
-                                </span>
-                                <DatePicker
-                                    className="mt-2 font-normal"
-                                    value={create_date}
-                                    onInput={(value) => (this.setState({modalData: {...modalData, create_date: value}}))}
-                                />
-                            </div>
-                            <div
-                                className="pt-4"
+                    {(formProps) => {
+                        const { formValid, onSubmit, onInput } = formProps
+                        return (
+                            <Modal
+                                isOpen={goalSelection}
+                                title="Добавить цель"
+                                closeModal={addNewGoal}
+                                handleSave={onSubmit}
                             >
-                                 <span
-                                     className="font-normal color-light-blue-2"
-                                 >
-                                    Создатель
-                                </span>
-                                <RefSelect
-                                    className="mt-2"
-                                    labelKey="name"
-                                    valueKey="id"
-                                    value={modalData.id_employee}
-                                    onInput={(value) => (this.setState({modalData: {...modalData, id_employee: value}}))}
-                                    refLoader={async () => {
-                                       const {
-                                            data
-                                        } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
-                                        return data.map(({first_name, last_name, id}) => {
-                                            return { name: `${first_name} ${last_name}`, id }
-                                        })
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    </ScrollBar>
-                </Modal>
+                                <ScrollBar>
+                                    <Form
+                                        {...formProps}
+                                        fields={NewGoalModalConfig(tierUp, tierDown)}
+                                        value={modalData}
+                                        onInput={onInput}
+                                    />
+                                </ScrollBar>
+                            </Modal>
+                        )
+                    }}
+                </WithValidationHocRenderPropAdapter>
                 <Modal
                     isOpen={addGoalsModal}
                     title="Выбор цели"

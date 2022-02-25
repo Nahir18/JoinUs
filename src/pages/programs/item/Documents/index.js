@@ -1,4 +1,4 @@
-import React, {Component, useCallback} from 'react';
+import React, {Component} from 'react';
 import AppList from "../../../../components/AppList";
 import "../levels/style.css"
 import Modal from "../../../../components/ModalWindow";
@@ -13,12 +13,16 @@ import {
 import DatePicker from "@Components/Fields/DatePicker"
 import ArrowInput from "../../../../components/ArrowsInput";
 import { settings } from "./tableConfig";
-import {NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
 import RefSelect from "@Components/Fields/RefSelect/index"
 import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
+import { WithValidationHocRenderPropAdapter } from "../../../../Validator";
+import {NewDocumentModalConfig, rules} from "./newDocumentModalConfig";
+import {FormContainer} from "@Components/StylesComponent/StylesForm"
+import Form from "@Components/Forms/index"
+
 
 class Documents extends Component {
 
@@ -146,6 +150,7 @@ class Documents extends Component {
         this.setState({
             documentSelection: false
         })
+        this.setState({modalData: []})
         this.loadPageData()
         this.loadDocumentList()
     }
@@ -199,7 +204,8 @@ class Documents extends Component {
     openDocumentSelection = () => {
         const { documentSelection } = this.state
         this.setState({
-            documentSelection: !documentSelection
+            documentSelection: !documentSelection,
+            modalData: []
         })
     }
     handleInputChange = (value, id) => {
@@ -297,6 +303,9 @@ class Documents extends Component {
             modalData: data
         })
     }
+    inputDataOfProgram = (value) => {
+        this.setState(({ modalData }) => ({ modalData: { ...modalData, ...value } }))
+    }
     render() {
         const {
             editModal,
@@ -376,100 +385,51 @@ class Documents extends Component {
                             </div>
                         </ScrollBar>
                     </Modal>
-                    <Modal
-                        isOpen={documentSelection}
-                        title="Добавить документ"
-                        closeModal={this.openDocumentSelection}
-                        handleSave={() => this.saveSelectedDocuments()}
-                    >
-                        <ScrollBar>
-                            <span
-                                className="font-normal color-light-blue-2"
+
+                            <WithValidationHocRenderPropAdapter
+                                onInput={this.inputDataOfProgram}
+                                onSubmit={() => this.saveSelectedDocuments()}
+                                value={modalData}
+                                rules={rules}
                             >
-                                Наименование документа
-                            </span>
-                            <Input
-                                value={document_name}
-                                key="document_name"
-                                id="document_name"
-                                onInput={() => this.handleInputChange(document.getElementById('document_name').value, "document_name")}
-                                className="mt-2 font-normal"
-                            />
-                            <div className="pt-4">
-                                    <span
-                                        className="font-normal color-light-blue-2"
-                                    >
-                                        Номер п.п.
-                                    </span>
-                                <div className="relative mt-2">
-                                    <ArrowInput
-                                        className="mt-2 font-normal"
-                                        value={tier}
-                                        top="21px"
-                                        key="tier"
-                                        id="tier"
-                                        onInput={() => this.handleNumericInputChange(Number(document.getElementById('tier').value), "tier")}
-                                        arrowUp={this.tierUp}
-                                        arrowDown={this.tierDown}
-                                    />
-                                </div>
-                            </div>
-                            <div className="pt-4">
-                                <span
-                                    className="font-normal color-light-blue-2"
-                                >
-                                    Дата создания
-                                </span>
-                                <DatePicker
-                                    className="mt-2 font-normal"
-                                    value={create_date}
-                                    onInput={(value) => (this.setState({modalData: {...modalData, create_date: value}}))}
-                                />
-                            </div>
-                            <div
-                                className="pt-4"
-                            >
-                                 <span
-                                     className="font-normal color-light-blue-2"
-                                 >
-                                    Создатель
-                                </span>
-                                <RefSelect
-                                    className="mt-2"
-                                    labelKey="name"
-                                    valueKey="id"
-                                    value={modalData.id_employee}
-                                    onInput={(value) => (this.setState({modalData: {...modalData, id_employee: value}}))}
-                                    options={this.state.employee}
-                                    refLoader={async () => {
-                                        const {
-                                            data
-                                        } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_EMPLOYEE}`)
-                                        return data.map(({first_name, last_name, id}) => {
-                                            return { name: `${first_name} ${last_name}`, id }
-                                        })
-                                    }}
-                                />
-                            </div>
-                            <div
-                                className="pt-8"
-                            >
-                                <PhotoFiles
-                                  titleForFileInput="документ"
-                                  id="entity"
-                                  className="mt-2.5 bg-color-white"
-                                  type="textarea"
-                                  autosize
-                                  minHeight={150}
-                                  value={json}
-                                  onInput={this.handleInput}
-                                  multiple
-                                  width="100px"
-                                  style={{backgroundColor: "var(--color-white)", padding: 0}}
-                                />
-                            </div>
-                        </ScrollBar>
-                    </Modal>
+                                {(formProps) => {
+                                    const { formValid, onSubmit, onInput } = formProps
+                                    return (
+                                        <Modal
+                                            isOpen={documentSelection}
+                                            title="Добавить документ"
+                                            closeModal={this.openDocumentSelection}
+                                            handleSave={onSubmit}
+                                        >
+                                            <ScrollBar>
+                                            <Form
+                                                {...formProps}
+                                                fields={NewDocumentModalConfig(this.tierUp, this.tierDown)}
+                                                value={modalData}
+                                                onInput={onInput}
+                                            />
+                                                <div
+                                                    className="pt-8"
+                                                >
+                                                    <PhotoFiles
+                                                        titleForFileInput="документ"
+                                                        id="entity"
+                                                        className="mt-2.5 bg-color-white"
+                                                        type="textarea"
+                                                        autosize
+                                                        minHeight={150}
+                                                        value={json}
+                                                        onInput={this.handleInput}
+                                                        multiple
+                                                        width="100px"
+                                                        style={{backgroundColor: "var(--color-white)", padding: 0}}
+                                                    />
+                                                </div>
+                                            </ScrollBar>
+                                        </Modal>
+                                    )
+                                }}
+                            </WithValidationHocRenderPropAdapter>
                     <Modal
                         isOpen={addNewDocument}
                         title="Выбор документа"
