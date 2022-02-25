@@ -88,7 +88,7 @@ class Levels extends Component {
             location: { pathname }
         } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        const idLevel = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
+        const idLevel = `/${pathnames[2]}/`
         const newData = {
             levels: selectedLevels,
             create_date,
@@ -104,21 +104,19 @@ class Levels extends Component {
                     editModal: false,
                     selectedLevels: []
                 })
-        if (selectedLevels.length) {
-           await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idLevel}`, newData)
-                .then(
-                    (response) => {
-                        const { data, data: { levels_detail } } = response
-                        this.setState({
-                            programData: data,
-                            items: levels_detail
-                        })
-                    }
-                )
-            this.setState({
-                editModal: false,
-            })
-        }
+       await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idLevel}`, newData)
+            .then(
+                (response) => {
+                    const { data, data: { levels_detail } } = response
+                    this.setState({
+                        programData: data,
+                        items: levels_detail
+                    })
+                }
+            )
+        this.setState({
+            editModal: false,
+        })
     }
     deleteItem = async (value, nestedlevel) => {
         const { id: deleteItemID } = value

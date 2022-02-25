@@ -12,7 +12,7 @@ const NumericInput = props => {
     return (
         <Input
             {...props}
-            onInput={handleInput}
+            onInput={() => handleInput()}
             type="text"
         />
     )

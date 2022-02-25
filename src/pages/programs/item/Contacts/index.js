@@ -22,7 +22,7 @@ class Contacts extends Component {
     loadPageData = () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}` : ""
+        const idProgram = `/${pathnames[2]}`
         axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`)
             .then(
                 (response) => {
@@ -73,7 +73,7 @@ class Contacts extends Component {
         const { location: { pathname } } = this.props
         const { programData: { contact, program_name, create_date, id, status, tier, employee, duration_day, description }, selectedContacts } = this.state
         const pathnames = pathname.split("/").filter(x => x)
-        const idProgram = pathnames[1] !== "new_program" ? `/${pathnames[2]}/` : ""
+        const idProgram = `/${pathnames[2]}/`
         const newData = {
             program_name,
             create_date,
@@ -83,7 +83,7 @@ class Contacts extends Component {
             employee,
             duration_day,
             description,
-            contact: contact.concat(selectedContacts.filter(item => !contact.some(a => a === item)))
+            contact: selectedContacts
         }
         axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`, newData)
             .then(
