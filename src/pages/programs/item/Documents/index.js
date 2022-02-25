@@ -153,7 +153,7 @@ class Documents extends Component {
         const {
             location: { pathname }
         } = this.props
-        const { programData: { documents, program_name, create_date, id, status, tier, employee, duration_day, description }, selectedDocuments } = this.state
+        const { programData: { program_name, create_date, id, status, tier, employee, duration_day, description }, selectedDocuments } = this.state
         const pathnames = pathname.split("/").filter(x => x)
         const newData = {
             program_name,
@@ -164,32 +164,30 @@ class Documents extends Component {
             employee,
             duration_day,
             description,
-            documents: documents.concat(selectedDocuments.filter(item => !documents.some(a => a === item)))
+            documents: selectedDocuments
         }
-        if (selectedDocuments.length) {
-            await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}/`, newData)
-                .then(
-                    (response) => {
-                        const {data: {documents_detail}, data} = response
-                        this.setState({
-                            isLoaded: true,
-                            programData: data,
-                            items: documents_detail
-                        })
-                        closeModal()
-                    },
-                    (error) => {
-                        console.log(error)
-                        this.setState({
-                            isLoaded: true,
-                            error
-                        })
-                    }
-                )
-            this.setState({
-                selectedDocuments: []
-            })
-        }
+        await axios.put(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}/`, newData)
+            .then(
+                (response) => {
+                    const {data: {documents_detail}, data} = response
+                    this.setState({
+                        isLoaded: true,
+                        programData: data,
+                        items: documents_detail
+                    })
+                    closeModal()
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    })
+                }
+            )
+        this.setState({
+            selectedDocuments: []
+        })
     }
     addDocument = () => {
         const { addNewDocument, items } = this.state

@@ -15,14 +15,9 @@ export const fieldMap = (arrowUp, arrowDown, handleInputChange) => [
     {
         label: "Номер п.п",
         id: "tier",
-        component: (props) => (
-            <ArrowInput
-                {...props}
-                arrowUp={arrowUp}
-                arrowDown={arrowDown}
-                onInput={handleInputChange}
-            />
-        ),
+        component: ArrowInput,
+        arrowUp: arrowUp,
+        arrowDown: arrowDown,
         placeholder: "Номер п.п",
         formColumn: 1,
     },
@@ -36,11 +31,7 @@ export const fieldMap = (arrowUp, arrowDown, handleInputChange) => [
     {
         label: "Срок программы",
         id: "duration_day",
-        component: (props) => (
-            <MonthInput
-                {...props}
-                onInput={handleInputChange}
-        />),
+        component: MonthInput,
         placeholder: "Выберите срок программы",
         formColumn: 1,
     },

@@ -117,6 +117,20 @@ class levelStages extends Component {
             modalData: data
         })
     }
+    deleteStage = ({id, stage_name, create_date, duration_day, tier}) => {
+        axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`,{
+            id,
+            stage_name,
+            create_date,
+            duration_day,
+            tier,
+            level: null
+        })
+    }
+    handleDeleteItem = async ({id, stage_name, create_date, duration_day, tier}) => {
+        await this.deleteStage({id, stage_name, create_date, duration_day, tier})
+        this.loadPageData()
+    }
     handleInputChange = (value, id) => {
         const { modalData } = this.state
         this.setState({
@@ -158,22 +172,33 @@ class levelStages extends Component {
         })
     }
     saveAddStages = async () => {
-        const { selectedStage, stages } = this.state
-        const { loadPageData } = this
+        const { selectedStage, stages, items } = this.state
+        let deleteItems = []
+        if (!selectedStage.length || items.some(({id}) => !selectedStage.some(item => item === id))) {
+            selectedStage.length ? deleteItems.push(items.filter(item => !selectedStage.includes(item.id))) : deleteItems = items
+        }
+        if (deleteItems.length) {
+            for (let i = 0; i < deleteItems[0].length; i++) {
+                await this.deleteStage(deleteItems[0][i])
+            }
+        }
         for (let i = 0; i < selectedStage.length; i++) {
             const { stage_name, create_date, duration_day } = stages.find(({id}) => id === selectedStage[i])
-           await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${selectedStage[i]}/`, {
-                stage_name,
-                create_date,
-                duration_day,
-                level: Number(this.idLevel())
-            })
+            if (!items.find(({id}) => id === selectedStage[i])) {
+                console.log(2, stage_name)
+                await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${selectedStage[i]}/`, {
+                    stage_name,
+                    create_date,
+                    duration_day,
+                    level: Number(this.idLevel())
+                })
+            }
         }
         this.setState({
             addStageModal: false,
             selectedStage: []
         })
-        loadPageData()
+        this.loadPageData()
 
     }
      actionTierUp = async ({ id, stage_name, create_date, duration_day, tier }) => {
@@ -195,17 +220,6 @@ class levelStages extends Component {
             })
             this.loadPageData()
         }
-    }
-    handleDeleteItem = async ({id, stage_name, create_date, duration_day, tier}) => {
-        await axios.put(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${id}/`,{
-            id,
-            stage_name,
-            create_date,
-            duration_day,
-            tier,
-            level: null
-        })
-        this.loadPageData()
     }
     openStageSelection = () => {
         const { items } = this.state
@@ -305,29 +319,6 @@ class levelStages extends Component {
                         </div>
                     </div>
                 </Modal>
-                {/*// todo в этой модалке не выводятся данные? почему?*/}
-                <Modal
-                    isOpen={StageSelection}
-                    title="Выбор этапа"
-                    closeModal={openDocumentSelection}
-                    handleSave={() => saveEditStage(selectedStage)}
-                    width="932px"
-                    maxWidth="932px"
-                >
-                    <ModalTableHeader>
-                        <div>№</div>
-                        <div>
-                            Наименование этапа
-                        </div>
-                        <div>
-                            Наименование уровня
-                        </div>
-                        <div>
-                            Наименование программы
-                        </div>
-                    </ModalTableHeader>
-                </Modal>
-
                 <Modal
                     isOpen={addStageModal}
                     title="Выбор этапа"

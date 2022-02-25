@@ -3,10 +3,7 @@ import Input from "@Components/Fields/Input"
 import DatePicker from "@Components/Fields/DatePicker"
 import ModalSelectInput from "../../../../components/ModalSelectInput";
 import ArrowInput from "../../../../components/ArrowsInput";
-import RefSelect from "@Components/Fields/RefSelect/index"
 import Select from "../../../../components/Fields/Select";
-import axios from "axios";
-import {DEFAULT_URL, ADAPTATION_PROGRAM} from "../../../../components/APIList";
 
 export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employees, handleInputChange) => [
     {
@@ -16,33 +13,12 @@ export const fieldMap = (toggleCreatorModal, creator, arrowUp, arrowDown, employ
         placeholder: "Введите наименование уровня",
         formColumn: 0,
     },
-    // {
-    //     label: "Программа",
-    //     id: "program_name",
-    //     component: RefSelect,
-    //     placeholder: "Программа",
-    //     formColumn: 0,
-    //     labelKey: "program_name",
-    //     valueKey: "program_name",
-    //     preload: true,
-    //     async refLoader() {
-    //         const {data } = await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
-    //         return data
-    //     },
-    // },
     {
         label: "Номер п.п",
         id: "tier",
-        component: (props) => (
-            <ArrowInput
-                {...props}
-                id="tier"
-                key="tier"
-                arrowUp={arrowUp}
-                arrowDown={arrowDown}
-                onInput={handleInputChange}
-            />
-        ),
+        component: ArrowInput,
+        arrowUp: arrowUp,
+        arrowDown: arrowDown,
         placeholder: "Номер п.п",
         formColumn: 0,
     },
