@@ -1,18 +1,24 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import Input from "@Components/Fields/Input"
 import {SmallArrowUp} from "../../pages/ConstantsIcons";
 import { Arrows } from "./style";
 import PropTypes from 'prop-types';
-import NumericInput from "../Fields/NumericInput";
+import isNumeric from "antd/lib/_util/isNumeric";
 
 const ArrowInput = props => {
     const { value, onInput, arrowUp, arrowDown, right, top } = props
     const iconColor = value <= 1 ? "0.3" : ""
+    const { id } = props
+    const handleInput = useCallback((nextVal) => {
+        if (isNumeric(nextVal)) {
+            onInput(nextVal, id)
+        }
+    }, [onInput, id])
     return (
         <div className="flex">
-            <NumericInput
+            <Input
                 {...props}
-                onInput={onInput}
+                onInput={handleInput}
             />
             <Arrows
                 right={right}
