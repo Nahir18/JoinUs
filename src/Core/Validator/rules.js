@@ -3,7 +3,7 @@ const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^
 export default {
   password: {
     resolver: ({ value }) => strongRegex.test(value),
-    message: "Значение поля является обязательным."
+    message: "Данные поля являются обязательным."
   },
   required: {
     resolver: ({ value }) => {
@@ -16,6 +16,6 @@ export default {
       return !(value === undefined || value === null)
     },
     nullAble: true,
-    message: "Значение поля является обязательным."
+    message: "Данные поля являются обязательным."
   }
 }
