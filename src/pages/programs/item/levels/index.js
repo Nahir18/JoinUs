@@ -76,9 +76,10 @@ class Levels extends Component {
     }
     editStage = ({id, level_name, stage_name}, nestedlevel) => {
         const { history: { push } } = this.props
+        const re = (path) => path && path.replace("?", "")
         !nestedlevel ?
-        push(`${PAGE_LINK_LEVEL}/${level_name}/${id}/${PAGE_LINK_GENERAL}`) :
-        push(`${PAGE_LINK_STAGE_PAGE}/${stage_name}/${id}/${PAGE_LINK_GENERAL}`)
+        push(`${PAGE_LINK_LEVEL}/${re(level_name)}/${id}/${PAGE_LINK_GENERAL}`) :
+        push(`${PAGE_LINK_STAGE_PAGE}/${re(stage_name)}/${id}/${PAGE_LINK_GENERAL}`)
     }
     checkLevels = (value, id) => {
         this.setState({
