@@ -169,7 +169,7 @@ class LevelsGeneral extends Component {
     tierUp = () => {
       const {data: {tier}, data} = this.state
       this.setState({
-        data: {...data, tier: tier ? tier + 1 : 1}
+        data: {...data, tier: tier ? Number(tier) + 1 : 1}
       })
     }
     tierDown = () => {

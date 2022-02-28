@@ -2,16 +2,14 @@ import React, {Component} from 'react';
 import AppList from "../../../../components/AppList";
 import axios from "axios";
 import Input from "@Components/Fields/Input"
-import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_GOALS, ADAPTATION_EMPLOYEE} from "../../../../components/APIList";
+import {DEFAULT_URL, ADAPTATION_PROGRAM, ADAPTATION_GOALS} from "../../../../components/APIList";
 import Modal from "../../../../components/ModalWindow";
 import { settings } from "./FormConfig";
 import ArrowInput from "../../../../components/ArrowsInput";
 import {NEW_PROGRAM} from "../../Constants";
 import ScrollBar from "@Components/ScrollBar"
-import DatePicker from "@Components/Fields/DatePicker"
 import { addGoalsModalConfig } from "./addGoalsModalConfig";
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
-import RefSelect from "@Components/Fields/RefSelect/index"
 import { WithValidationHocRenderPropAdapter } from "../../../../Validator";
 import { NewGoalModalConfig, rules } from "./newGoalModalConfig";
 import Form from "@Components/Forms/index"
@@ -208,7 +206,7 @@ class Goals extends Component {
     tierUp = () => {
         const {  modalData, modalData: { tier } } = this.state
         this.setState({
-            modalData: { ...modalData, tier: tier ? tier + 1 : 1}
+            modalData: { ...modalData, tier: tier ? Number(tier) + 1 : 1}
         })
     }
     tierDown = () => {
