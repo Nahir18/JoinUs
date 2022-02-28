@@ -79,6 +79,7 @@ class StagesGeneral extends Component {
     }
 
     saveStage = async () => {
+        const { history: { goBack } } = this.props
         const { data: {id, stage_name, tier, point, status, create_date, id_employee, duration_day, level} } = this.state
         const { isNewStage, pathNames } = this
         const idStage = isNewStage() ? "/" : `/${pathNames()[5]}/`
@@ -104,16 +105,17 @@ class StagesGeneral extends Component {
         this.setState({loading: true})
         await axios[isNewStage() ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idStage}`, newData)
             .then(
-                ({data}) => {
+                async ({data}) => {
                     this.setState({
                         isLoaded: true,
                         data: data
                     })
                     if (isNewStage()) {
-                        axios.post(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/`, {
+                        await axios.post(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/`, {
                             adaptationStage: data.id,
                             json: []
                         })
+                        goBack()
                     }
                 },
                 (error) => {
