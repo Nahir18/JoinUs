@@ -10,17 +10,14 @@ import {
     DEFAULT_URL,
     ADAPTATION_EMPLOYEE
 } from "../../../../components/APIList";
-import DatePicker from "@Components/Fields/DatePicker"
 import ArrowInput from "../../../../components/ArrowsInput";
 import { settings } from "./tableConfig";
 import ScrollBar from "@Components/ScrollBar"
 import { selectDocumentModalConfig } from "./selectDocumentModalConfig";
 import EditDateForSave from "../../../../utils/Date/EditDateForSave";
-import RefSelect from "@Components/Fields/RefSelect/index"
 import PhotoFiles from "../../../../components/Fields/Files/PhotoFiles";
 import { WithValidationHocRenderPropAdapter } from "../../../../Validator";
 import {NewDocumentModalConfig, rules} from "./newDocumentModalConfig";
-import {FormContainer} from "@Components/StylesComponent/StylesForm"
 import Form from "@Components/Forms/index"
 
 
@@ -223,7 +220,7 @@ class Documents extends Component {
     tierUp = () => {
         const {  modalData, modalData: { tier } } = this.state
         this.setState({
-            modalData: { ...modalData, tier: tier ? tier + 1 : 1}
+            modalData: { ...modalData, tier: tier ? Number(tier) + 1 : 1}
         })
     }
     tierDown = () => {
