@@ -10,6 +10,7 @@ import axios from "axios";
 import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import Avatar from "../../../../components/Avatar";
 import PureUpdateArrayItems from "../../../../utils/Arrays/PureUpdateArrayItems";
+import Button from "../../../../components/Button";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
 .reduce((acc, c) => {
@@ -27,6 +28,7 @@ const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnl
 
 const General = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
@@ -61,6 +63,7 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
 
   const saveDataOfEmployee = async (payload) => {
     try {
+      setLoading(true)
       const result = await axios[newEmploy ? "post" : "put"](`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`,
         newEmploy
           ?
@@ -76,6 +79,7 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
           }
       )
       setData(result.data)
+      setLoading(false)
       if (newEmploy) {
         push("/employees")
       } else {
@@ -109,7 +113,7 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
           return (
             <>
               <Avatar
-                value={data.illustration ? [{
+                value={data?.illustration ? [{
                   file: data.illustration
                 }] : []}
                 className="mt-6 ml-6"
@@ -140,14 +144,15 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
                     >
                       Отмена
                     </button>
-                    <button
+                    <Button
                       name="save"
                       type="submit"
                       className="blue btn width-m"
                       onClick={onSubmit}
+                      loading={loading}
                     >
                       Сохранить
-                    </button>
+                    </Button>
                   </div>
                 </TabContainer>
               </ScrollBar>

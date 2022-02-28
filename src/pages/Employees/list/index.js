@@ -16,86 +16,48 @@ const Employees = ({}) => {
   const [programList, setProgramList] = useState([])
 
   const filterList = (debounce(useCallback((value, id) => {
-    switch (id) {
-      case ("status"):
-        if(value && value.length > 0) {
-          axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${FILTER}/`, {
-            params: {statuses: value.reduce((acc, {ID}) => {
+    if (id === "statuses") {
+      if(value && value.length > 0) {
+        (async () => {
+          const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${FILTER}/`, {
+            params: {
+              [id]: value.reduce((acc, {ID}) => {
                 acc.push(ID)
                 return acc
-              }, []).join()}
-          })
-          .then((response) => {
-              setData(response.data.results)
-            },
-            (error) => {
-              console.log(error)
+              }, []).join()
             }
-          )
-        } else {
-          getCandidateList()
-        }
-        break;
-      case "name":
-        axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
-          params: {search: value}
-        })
-        .then((response) => {
-            setData(response.data.results)
-          },
-          (error) => {
-            console.log(error)
-          }
-        )
-        break;
-      default:
-        axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
-          params: {[id]: value}
-        })
-        .then((response) => {
-            setData(response.data.results)
-          },
-          (error) => {
-            console.log(error)
-          }
-        )
-    }
-  },[]), 250))
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
-  //     setData(data.results)
-  //     setCountList(data.count)
-  //   })()
-  //   (async () => {
-  //     const {data} = await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/`)
-  //     setProgramList(data)
-  //   })()
-  // }, [])
-
-  const getCandidateList = () => {
-    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
-    .then((response) => {
-        setData(response.data.results)
-        setCountList(response.data.count)
-      },
-      (error) => {
-        console.log(error)
+          })
+          setData(data.results)
+        })()
+      } else {
+        getCandidateList()
       }
-    )
-  }
+    } else {
+        (async () => {
+          const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
+            params:  {[id]: value}
+          })
+          setData(data.results)
+        })()
+    }},[]), 250))
 
   useEffect(() => {
     getCandidateList()
-    axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
-    .then((response) => {
-        setProgramList(response.data)
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
+  }, [])
+
+  const getCandidateList = () => {
+    (async () => {
+      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
+      setData(data.results)
+      setCountList(data.count)
+    })()
+  }
+
+  useEffect(() => {
+    (async () => {
+      const {data} = await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/`)
+      setProgramList(data)
+    })()
   }, [])
 
   const updateData = useCallback((value) => {

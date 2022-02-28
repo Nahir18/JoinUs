@@ -16,6 +16,7 @@ import {FormContainer, TabContainer} from "@Components/StylesComponent/StylesFor
 import { customerModalConfig } from "./customerModalConfig";
 import { employeesModalConfig } from "./employeesModalConfig";
 import AppList from "../../../../components/AppList";
+import Button from "@Components/Button";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
     .reduce((acc, c) => {
@@ -40,7 +41,8 @@ class General extends Component {
             customers: [],
             employees: [],
             data: {},
-            modalState: {}
+            modalState: {},
+            loading: false
         }
         this.handleInputChange = this.handleInputChange.bind(this)
     }
@@ -180,8 +182,7 @@ class General extends Component {
     inputDataOfProgram = (value) => {
         this.setState(({ data }) => ({ data: { ...data, ...value } }))
     }
-    saveDataOfProgram = (v) => {
-        console.log("qweqweqeqw")
+    saveDataOfProgram = async (v) => {
         const { history: { push } } = this.props
         const { data, data: { program_name, description, duration_day, tier, status, create_date, employee, contact, customer, illustration } } = this.state
         const newData = {
@@ -195,7 +196,8 @@ class General extends Component {
             contact,
             customer
         }
-        axios[this.isNewProgram() ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programID()}/`, this.isNewProgram() ?
+        this.setState({loading: true})
+        await axios[this.isNewProgram() ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programID()}/`, this.isNewProgram() ?
             {
                 ...data,
                 status: 1,
@@ -221,6 +223,7 @@ class General extends Component {
                     })
                 }
             )
+        this.setState({loading: false})
     }
     selectedRadioButton = (value) => {
         const { customers, modalState } = this.state
@@ -252,7 +255,7 @@ class General extends Component {
     }
     render() {
         const { history: { goBack } } = this.props
-        const { clientModal, creatorModal, modalState, data, customers, employees, isLoaded, data: { customer = [], employee, illustration } } = this.state
+        const { clientModal, creatorModal, modalState, data, customers, employees, isLoaded, data: { customer = [], employee, illustration }, loading } = this.state
         const { toggleModal, toggleCreatorModal } = this
         const customerValue = isLoaded ? customers.find((a) => a.id === customer[0]) : {}
         const employeeValue = isLoaded ? employee && employees.find((a) => a.id === employee) : {}
@@ -329,14 +332,15 @@ class General extends Component {
                                             >
                                                 Отмена
                                             </button>
-                                            <button
+                                            <Button
                                               name="save"
                                               type="submit"
                                               className="blue btn width-m"
                                               onClick={onSubmit}
+                                              loading={loading}
                                             >
                                                 Сохранить
-                                            </button>
+                                            </Button>
                                         </div>
                                     </TabContainer>
                                 </ScrollBar>

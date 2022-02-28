@@ -14,12 +14,14 @@ import { levelsBreadcrumbs } from "../../configs";
 import PageHeader from "../../../../components/PageHeader";
 import {STAGES_LINKS} from "../../Constants";
 import {useParams} from "react-router-dom";
+import Button from "@Components/Button";
 // http://51.250.15.127:9000/api-active/candidate/api-active/adaptationstage/
 const Blocks = (props) => {
   const {stageID} = useParams()
 
   const [data, setData] = useState({json: []})
   const [stageData, setStageData] = useState({})
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -42,8 +44,10 @@ const Blocks = (props) => {
   }, [stageID])
 
   const saveBlocks = useCallback(async () => {
+    setLoading(true)
     const {data:nextData} = await axios.put(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/${stageID}/`, data)
     setData(nextData)
+    setLoading(false)
   }, [data, stageID])
 
   const handleInput = useCallback((fieldValue, index) => {
@@ -121,14 +125,15 @@ const Blocks = (props) => {
         >
           Отмена
         </button>
-        <button
+        <Button
           name="save"
           type="submit"
           className="blue btn width-m"
           onClick={saveBlocks}
+          loading={loading}
         >
           Сохранить
-        </button>
+        </Button>
       </div>
       </div>
     </>
