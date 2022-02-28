@@ -15,6 +15,8 @@ import PageHeader from "../../../../components/PageHeader";
 import {STAGES_LINKS} from "../../Constants";
 import {useParams} from "react-router-dom";
 import Button from "@Components/Button";
+import Preloader from "../../../../components/Preloader/index";
+import {ContainerReport} from "../../../../components/AppList/style";
 // http://51.250.15.127:9000/api-active/candidate/api-active/adaptationstage/
 const Blocks = (props) => {
   const {stageID} = useParams()
@@ -22,9 +24,11 @@ const Blocks = (props) => {
   const [data, setData] = useState({json: []})
   const [stageData, setStageData] = useState({})
   const [loading, setLoading] = useState(false)
+  const [loadingData, setLoadingData] = useState(false)
 
   useEffect(() => {
     (async () => {
+      setLoadingData(true)
       await axios.get(`${DEFAULT_URL}/${ADAPTATION_BLOCK}/${stageID}`)
           .then(({data, data: { json }}) => {
             if (!json) {
@@ -40,6 +44,7 @@ const Blocks = (props) => {
           .then(({data}) => {
             setStageData(data)
           })
+      setLoadingData(false)
     })()
   }, [stageID])
 
@@ -94,21 +99,31 @@ const Blocks = (props) => {
       <div className="flex-container hidden">
         <ScrollBar className="p-l-24 p-r-24 p-b-24 p-t-24 bg-white">
           {
-            data.json.map((value, index) => {
-              const Component = componentTypeList[value.type]
-              return (
-                <Component
-                  key={index}
-                  value={value}
-                  position={index + 1}
-                  onInput={handleInput}
-                  className={index === 0 ? "" : "mt-10"}
-                  onMove={handleMoveItem}
-                  onDelete={() => handleDelete(value, index)}
-                  environmentState={data.json}
-                />
+            loadingData
+              ? (<Preloader/>)
+              : (
+                data && data.json.length > 0
+                  ? (data.json.map((value, index) => {
+                    const Component = componentTypeList[value.type]
+                    return (
+                      <Component
+                        key={index}
+                        value={value}
+                        position={index + 1}
+                        onInput={handleInput}
+                        className={index === 0 ? "" : "mt-10"}
+                        onMove={handleMoveItem}
+                        onDelete={() => handleDelete(value, index)}
+                        environmentState={data.json}
+                      />
+                    )
+                  }))
+                  : (
+                    <ContainerReport>
+                      Данные не найдены или их нет
+                    </ContainerReport>
+                  )
               )
-            })
           }
           <NewBlock
             className={data.json.length > 0 ? "mt-10" : ""}

@@ -132,7 +132,6 @@ const Employees = ({}) => {
           data={getNewData}
           nestedKey="data"
         />
-      }
       </div>
       {getNewData && getNewData.length > 0 && (
         <Pagination
