@@ -28,7 +28,8 @@ class levelStages extends Component {
             stages: [],
             levels: [],
             programs: [],
-            items: []
+            items: [],
+            loading: false
         }
     }
 
@@ -65,8 +66,9 @@ class levelStages extends Component {
         return pathNames[5]
     }
 
-    loadPageData = () => {
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}/${this.idLevel()}/`)
+    loadPageData = async () => {
+        this.setState({loading: true})
+     await  axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}/${this.idLevel()}/`)
             .then(
                 (response) => {
                     const { data, data: { stages } } = response
@@ -84,6 +86,7 @@ class levelStages extends Component {
                     })
                 }
             )
+        this.setState({loading: false})
 
     }
     componentDidMount() {
@@ -253,6 +256,7 @@ class levelStages extends Component {
             modalData: { stage_name, tier },
             selectedStage,
             addStageModal,
+          loading
         } = this.state
 
         const { location: { pathname } } = this.props
@@ -347,6 +351,7 @@ class levelStages extends Component {
                     </button>
                 </div>
                 <AppList
+                  loading={loading}
                     settings={settings(handleEdit, actionTierUp, actionTierDown, handleDeleteItem)}
                     data={items}
                 />

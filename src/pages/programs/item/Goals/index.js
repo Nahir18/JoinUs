@@ -30,7 +30,8 @@ class Goals extends Component {
             addGoalsModal: false,
             selectedGoals: [],
             modalData: {},
-            items: []
+            items: [],
+            loading: false
         }
     }
 
@@ -46,8 +47,9 @@ class Goals extends Component {
         return pathnames[1] === NEW_PROGRAM
     }
 
-    loadPageData = () => {
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}`)
+    loadPageData = async () => {
+        this.setState({loading: true})
+       await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${this.programId()}`)
             .then(
                 (response) => {
                     const { data: { goals_detail }, data } = response
@@ -65,6 +67,7 @@ class Goals extends Component {
                     })
                 }
             )
+        this.setState({loading: false})
     }
     loadGoalsList = () => {
         axios.get(`${DEFAULT_URL}/${ADAPTATION_GOALS}`)
@@ -276,7 +279,8 @@ class Goals extends Component {
             modalData: { goal_name, tier, create_date, description },
             selectedGoals,
             addGoalsModal,
-            goals
+            goals,
+            loading
         } = this.state
 
         const {
@@ -401,6 +405,7 @@ class Goals extends Component {
                 <AppList
                     settings={settings(editModal, toggleModal, handleEdit, actionButtonTierUp, actionButtonTierDown, actionsDeleteItem)}
                     data={items}
+                    loading={loading}
                 />
             </>
         );

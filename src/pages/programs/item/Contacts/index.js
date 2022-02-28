@@ -19,11 +19,12 @@ class Contacts extends Component {
             items: []
         }
     }
-    loadPageData = () => {
+    loadPageData = async () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
         const idProgram = `/${pathnames[2]}`
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`)
+        this.setState({loading: true})
+       await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}${idProgram}`)
             .then(
                 (response) => {
                     const { data, data: { contacts_detail }} = response
@@ -40,6 +41,7 @@ class Contacts extends Component {
                     })
                 }
             )
+        this.setState({loading: false})
     }
     componentDidMount() {
        this.loadPageData()
@@ -109,7 +111,7 @@ class Contacts extends Component {
         })
     }
     render() {
-        const { items = [], contactsModal, selectedContacts, contacts } = this.state
+        const { items = [], contactsModal, selectedContacts, contacts, loading } = this.state
         const { toggleAddContactModal, checkContact, addContacts } = this
         const newData = items.map(({ last_name, first_name, post, role, email, mobile_phone, illustration_link }) =>
             ({
@@ -150,6 +152,7 @@ class Contacts extends Component {
                     </button>
                 </div>
                 <AppList
+                  loading={loading}
                     settings={settings}
                     data={newData}
                 />

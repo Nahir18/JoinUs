@@ -7,21 +7,19 @@ import { CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 
 const Contacts = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
 
   useEffect(() => {
-    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-    .then(
-      ({data}) => {
-        setData(data.program_details.map(({contacts_detail}) => contacts_detail).flat())
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
+    (async () => {
+      setLoading(true)
+      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
+      setData(data.program_details.map(({contacts_detail}) => contacts_detail).flat())
+      setLoading(false)
+    })()
   }, [])
 
   const newData = useMemo(() => (
@@ -49,6 +47,7 @@ const Contacts = ({location: { pathname }, history: { push, goBack }}) => {
         + Добавить контакт
       </button>
       <AppList
+        loading={loading}
         settings={settings}
         data={newData}
       />

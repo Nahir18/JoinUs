@@ -13,27 +13,35 @@ class LevelsList extends Component {
             error: false,
             isLoaded: false,
             stageData: {},
-            items: []
+            items: [],
+            loading: false
         }
     }
+
+    loadData = async () => {
+        this.setState({loading: true})
+        await axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}`)
+        .then(
+          (response) => {
+              this.setState({
+                  isLoaded: true,
+                  items: response.data
+              })
+          },
+          (error) => {
+              this.setState({
+                  isLoaded: true,
+                  error
+              })
+          }
+        )
+        this.setState({loading: false})
+    }
+
     componentDidMount() {
         const { location: { pathname } } = this.props
         const pathNames = pathname.split("/").filter(x => x)
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_LEVELS}`)
-            .then(
-                (response) => {
-                    this.setState({
-                        isLoaded: true,
-                        items: response.data
-                    })
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    })
-                }
-            )
+          this.loadData()
         axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}/${pathNames[5]}/`)
             .then(({data}) => {
                 this.setState({
@@ -47,7 +55,7 @@ class LevelsList extends Component {
     }
 
     render() {
-        const { items } = this.state
+        const { items, loading } = this.state
         const { location: { pathname } } = this.props
         const pathNames = pathname.split("/").filter(x => x)
         const subPage = pathNames.length > 1
@@ -80,6 +88,7 @@ class LevelsList extends Component {
                 <AppList
                     settings={settings(pathname)}
                     data={items}
+                    loading={loading}
                 />
             </div>
         );

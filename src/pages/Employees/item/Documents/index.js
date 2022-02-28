@@ -3,28 +3,26 @@ import CardIconAndTitle from "../../../../components/CardIconAndTitle";
 import {settings} from "./tableConfig";
 import AppList from "../../../../components/AppList";
 import axios from "axios";
-import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
+import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import {calculationOfPoints} from "../../../../utils/calculationOfPoints";
 
 const Documents = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState([])
   const [levels_detail, setLevels_detail] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
 
   useEffect(() => {
-    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-    .then(
-      ({data}) => {
-        setData(data.program_details.map(({documents_detail}) => documents_detail).flat())
-        setLevels_detail(data.program_details.map(({levels_detail}) => levels_detail).flat())
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
+    (async () => {
+      setLoading(true)
+      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
+      setData(data.program_details.map(({documents_detail}) => documents_detail).flat())
+      setLevels_detail(data.program_details.map(({levels_detail}) => levels_detail).flat())
+      setLoading(false)
+    })()
   }, [])
 
   return (
@@ -45,6 +43,7 @@ const Documents = ({location: { pathname }, history: { push, goBack }}) => {
       <AppList
         settings={settings}
         data={data}
+        loading={loading}
       />
     </div>
   );

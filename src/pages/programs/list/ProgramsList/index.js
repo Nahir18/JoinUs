@@ -11,11 +11,14 @@ class ProgramsList extends Component {
         this.state = {
             error: false,
             isLoaded: false,
-            items: []
+            items: [],
+          loading: false
         }
     }
     componentDidMount() {
-         axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
+      (async () => {
+        this.setState({loading: true})
+        await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
             .then(
                 (response) => {
                     this.setState({
@@ -30,9 +33,11 @@ class ProgramsList extends Component {
                     })
                 }
             )
+      this.setState({loading: false})
+      })()
     }
     render() {
-        const { items } = this.state
+        const { items, loading } = this.state
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
         const subPage = pathnames.length > 1
@@ -64,6 +69,7 @@ class ProgramsList extends Component {
                 }
               <AppList
                 settings={settings}
+                loading={loading}
                 data={items}
                 className="m-b-16"
               />

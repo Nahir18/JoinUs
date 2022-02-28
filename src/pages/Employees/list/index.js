@@ -126,17 +126,12 @@ const Employees = ({}) => {
         handleInput={filterList}
       />
       <div className="flex-container relative">
-        {loading
-          ? (
-            <Preloader/>
-          )
-          : (
-            <AppList
-              settings={settings}
-              data={getNewData}
-              nestedKey="data"
-            />
-          )
+        <AppList
+          loading={loading}
+          settings={settings}
+          data={getNewData}
+          nestedKey="data"
+        />
       }
       </div>
       {getNewData && getNewData.length > 0 && (

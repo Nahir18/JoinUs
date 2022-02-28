@@ -40,14 +40,16 @@ class Documents extends Component {
             selectedDocuments: [],
             programData: {},
             documents: [],
-            items: []
+            items: [],
+            loading: false
         }
     }
 
-    loadPageData = () => {
+    loadPageData = async () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}`)
+        this.setState({loading: true})
+      await  axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/${pathnames[2]}`)
             .then(
                 (response) => {
                     const { data: { documents_detail }, data } = response
@@ -65,6 +67,7 @@ class Documents extends Component {
                     })
                 }
             )
+        this.setState({loading: false})
     }
     loadDocumentList = () => {
         axios.get(`${DEFAULT_URL}/${ADAPTATION_DOCUMENT}`)
@@ -316,6 +319,7 @@ class Documents extends Component {
             documentSelection,
             selectedDocuments,
             addNewDocument,
+          loading
         } = this.state
 
 
@@ -461,6 +465,7 @@ class Documents extends Component {
                         </button>
                     </div>
                     <AppList
+                      loading={loading}
                         settings={settings(editModal, this.closeModal, this.handleEdit, this.deleteItem, actionButtonTierUp, actionButtonTierDown)}
                         data={items}
                     />

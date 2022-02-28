@@ -20,6 +20,7 @@ class Levels extends Component {
             programData: {},
             levels: [],
             items: [],
+            loading: false
         }
     }
 
@@ -28,13 +29,14 @@ class Levels extends Component {
         const pathnames = pathname.split("/").filter(x => x)
         return  pathnames[1] === NEW_PROGRAM
     }
-    
-    loadPageData = () => {
+
+    loadPageData = async () => {
         const { location: { pathname } } = this.props
         const pathnames = pathname.split("/").filter(x => x)
         const newProgram = pathnames[1] === "new_program"
         const url = this.isNewProgram() ? `${ADAPTATION_LEVELS}` : `${ADAPTATION_PROGRAM}/${pathnames[2]}`
-        axios.get(`${DEFAULT_URL}/${url}`)
+        this.setState({loading: true})
+      await  axios.get(`${DEFAULT_URL}/${url}`)
             .then(
                 (response) => {
                     this.setState({
@@ -50,6 +52,7 @@ class Levels extends Component {
                     })
                 }
             )
+        this.setState({loading: false})
     }
 
     componentDidMount() {
@@ -194,7 +197,7 @@ class Levels extends Component {
         }
     }
 render() {
-    const { items, editModal, selectedLevels, levels } = this.state
+    const { items, editModal, selectedLevels, levels, loading } = this.state
         const {
             editStage,
             checkLevels,
@@ -235,6 +238,7 @@ render() {
                 settings={settings(editStage, deleteItem, actionButtonTierUp, actionButtonTierDown)}
                 nestedData={true}
                 data={items}
+                loading={loading}
                 nestedKey="stages"
               />
           </div>

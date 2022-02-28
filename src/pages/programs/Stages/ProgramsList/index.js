@@ -11,28 +11,33 @@ class ProgramsList extends Component {
         this.state = {
             error: false,
             isLoaded: false,
-            items: []
+            items: [],
+          loading: false
         }
     }
     componentDidMount() {
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
-            .then(
-                ({data}) => {
-                    this.setState({
-                        isLoaded: true,
-                        items: data
-                    })
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    })
-                }
-            )
+      (async () => {
+        this.setState({loading: true})
+       await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
+        .then(
+          ({data}) => {
+            this.setState({
+              isLoaded: true,
+              items: data
+            })
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error
+            })
+          }
+        )
+        this.setState({loading: false})
+      })()
     }
     render() {
-        const { items } = this.state
+        const { items, loading } = this.state
         return (
             <>
                     <NavLink
@@ -43,6 +48,7 @@ class ProgramsList extends Component {
                     </NavLink>
                 <AppList
                     settings={settings}
+                    loading={loading}
                     data={items}
                 />
             </>

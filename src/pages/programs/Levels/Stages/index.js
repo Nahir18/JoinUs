@@ -18,31 +18,36 @@ class levelStages extends Component {
             isLoaded: false,
             selectedStage: [],
             modalData: {},
-            items: []
+            items: [],
+            loading: false
         }
     }
 
     componentDidMount() {
-        axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}`)
+        (async () => {
+            this.setState({loading: true})
+           await axios.get(`${DEFAULT_URL}/${ADAPTATION_STAGE}`)
             .then(
-                (response) => {
-                    this.setState({
-                        isLoaded: true,
-                        items: response.data
-                    })
-                },
-                (error) => {
-                    console.log(error)
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    })
-                }
+              (response) => {
+                  this.setState({
+                      isLoaded: true,
+                      items: response.data
+                  })
+              },
+              (error) => {
+                  console.log(error)
+                  this.setState({
+                      isLoaded: true,
+                      error
+                  })
+              }
             )
+            this.setState({loading: false})
+        })()
     }
 
     render() {
-        const { items, editModal, modalData, documentSelection, modalData: { stage_name }, selectedStage } = this.state
+        const { items, editModal, modalData, documentSelection, modalData: { stage_name }, selectedStage, loading } = this.state
 
         const handleEdit = (data) => {
             this.setState({
@@ -173,6 +178,7 @@ class levelStages extends Component {
                 <AppList
                     settings={settings(editModal, toggleModal, handleEdit)}
                     data={items}
+                    loading={loading}
                 />
             </div>
         );

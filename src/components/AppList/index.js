@@ -3,11 +3,12 @@ import Header from "./header";
 import Row from "./row"
 import PropTypes from "prop-types"
 import ScrollBar from "@Components/ScrollBar"
-import {TableContainer} from "./style";
+import {ContainerReport, TableContainer} from "./style";
+import Preloader from "../Preloader/index";
 
 class AppList extends Component {
     render() {
-        const { data, settings, nestedKey, nestedData, className } = this.props
+        const { data, settings, nestedKey, nestedData, className, loading } = this.props
 
         const gridRowsSize = `${settings.map(a => a.size ? `${a.size}` : "auto")}`.replace(/,/gi, " ")
         const gridStyle = {"gridTemplateColumns": gridRowsSize}
@@ -63,8 +64,20 @@ class AppList extends Component {
                     gridStyle={gridStyle}
                 />
               <ScrollBar>
-                <TableContainer>
-                  { TableRows(nestedKey) }
+                <TableContainer className="flex-container relative">
+                  {
+                    loading
+                      ? (<Preloader/>)
+                      : (
+                        data && data.length > 0
+                          ? (TableRows(nestedKey))
+                          : (
+                            <ContainerReport>
+                              Данные не найдены или их нет
+                            </ContainerReport>
+                          )
+                      )
+                  }
                 </TableContainer>
               </ScrollBar>
             </div>
@@ -77,13 +90,15 @@ AppList.propTypes = {
   settings: PropTypes.array,
   nestedKey: PropTypes.string,
   className: PropTypes.string,
+  loading: PropTypes.bool,
 };
 
 AppList.defaultProps = {
   data: [],
   settings: [],
   nestedKey: "",
-  className: ""
+  className: "",
+  loading: false
 }
 
 export default AppList;

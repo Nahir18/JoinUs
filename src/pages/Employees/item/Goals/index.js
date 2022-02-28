@@ -9,22 +9,20 @@ import memoizeOne from "memoize-one";
 const Goals = ({location: { pathname }, history: { push, goBack }}) => {
   const [goalsDetail, setGoalsDetail] = useState([])
   const [adaptationStatus, setAdaptationStatus] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
 
   useEffect(() => {
-    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-    .then(
-      ({data}) => {
-        setGoalsDetail(data.program_details.map(({goals_detail}) => goals_detail).flat())
-        setAdaptationStatus(data.adaptation_status)
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
+    (async () => {
+      setLoading(true)
+      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
+      setGoalsDetail(data.program_details.map(({goals_detail}) => goals_detail).flat())
+      setAdaptationStatus(data.adaptation_status)
+      setLoading(false)
+    })()
   }, [])
 
   const getPoint = memoizeOne((data = []) => {
@@ -65,6 +63,7 @@ const Goals = ({location: { pathname }, history: { push, goBack }}) => {
         />
       </div>
       <AppList
+        loading={loading}
         settings={settings}
         data={newData}
       />

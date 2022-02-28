@@ -12,24 +12,22 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
   const [adaptation_status, setAdaptation_status] = useState([])
   const [program_details, SetProgram_details] = useState([])
   const [comment, setComment] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
 
   useEffect(() => {
-    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-    .then(
-      ({data})=> {
-        setData(data.program_details.map(({levels_detail}) => levels_detail).flat())
-        SetProgram_details(data.program_details)
-        setAdaptation_status(data.adaptation_status)
-        setComment(data.comment)
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
+    (async () => {
+      setLoading(true)
+      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
+      setData(data.program_details.map(({levels_detail}) => levels_detail).flat())
+      SetProgram_details(data.program_details)
+      setAdaptation_status(data.adaptation_status)
+      setComment(data.comment)
+      setLoading(false)
+    })()
   }, [])
 
   // todo расчет количества пройденных уровней
@@ -98,6 +96,7 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
         />
       </div>
       <AppList
+        loading={loading}
         settings={settings}
         data={newData}
         nestedData={true}
