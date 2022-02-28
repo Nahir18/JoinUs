@@ -16,7 +16,7 @@ const PreloaderIcon = () => (
       <div className="item" />
     </Preloader>
     <Text className="color-greyDarken j-c-center">
-      Loading...
+      Загрузка...
     </Text>
   </PreloaderContainer>
 )

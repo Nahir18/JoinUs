@@ -233,7 +233,7 @@ export const Preloader = styled.div`
       bottom: 0;
       width: 10%;
       height: 10%;
-      background-color: var(--color-white);
+      background-color: var(--color-blue);
       border-radius: 50%;
     }
   }

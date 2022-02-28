@@ -7,6 +7,7 @@ import {NavLink} from "react-router-dom";
 import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL, FILTER} from "../../../components/APIList";
 import debounce from "@Utils/debounce"
 import Pagination from "@Components/Pagination"
+import Preloader from "../../../components/Preloader";
 
 const Employees = ({}) => {
   const [data, setData] = useState([])
@@ -14,6 +15,7 @@ const Employees = ({}) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(11)
   const [programList, setProgramList] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const filterList = (debounce(useCallback((value, id) => {
     if (id === "statuses") {
@@ -47,9 +49,11 @@ const Employees = ({}) => {
 
   const getCandidateList = () => {
     (async () => {
+      setLoading(true)
       const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
       setData(data.results)
       setCountList(data.count)
+      setLoading(false)
     })()
   }
 
@@ -121,15 +125,26 @@ const Employees = ({}) => {
       <FilterForEmployees
         handleInput={filterList}
       />
-      <AppList
-        settings={settings}
-        data={getNewData}
-        nestedKey="data"
-      />
-      <Pagination
-        paginationState={getPaginationState}
-        emitPage={updateData}
-      />
+      <div className="flex-container relative">
+        {loading
+          ? (
+            <Preloader/>
+          )
+          : (
+            <AppList
+              settings={settings}
+              data={getNewData}
+              nestedKey="data"
+            />
+          )
+      }
+      </div>
+      {getNewData && getNewData.length > 0 && (
+        <Pagination
+          paginationState={getPaginationState}
+          emitPage={updateData}
+        />
+      )}
     </div>
   )
 }
