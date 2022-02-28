@@ -8,6 +8,7 @@ import { FormContainer } from "../../item/General/style"
 import axios from "axios";
 import { ADAPTATION_STAGE, ADAPTATION_BLOCK, DEFAULT_URL } from "../../../../components/APIList";
 import {NEW_STAGE} from "../../Constants";
+import Button from "@Components/Button";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
     .reduce((acc, c) => {
@@ -28,6 +29,7 @@ class StagesGeneral extends Component {
         super(props);
         this.state = {
             data: {},
+            loading: false
         }
         this.handleInputChange = this.handleInputChange.bind(this)
     }
@@ -99,6 +101,7 @@ class StagesGeneral extends Component {
             duration_day,
             level
         }
+        this.setState({loading: true})
         await axios[isNewStage() ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_STAGE}${idStage}`, newData)
             .then(
                 ({data}) => {
@@ -120,6 +123,7 @@ class StagesGeneral extends Component {
                     })
                 }
             )
+        this.setState({loading: false})
     }
 
     inputDataOfStage = (value) => {
@@ -141,7 +145,7 @@ class StagesGeneral extends Component {
 
     render() {
         const { history: { goBack } } = this.props
-        const { data } = this.state
+        const { data, loading } = this.state
         const { tierUp, tierDown } = this
         const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap(tierUp, tierDown, this.handleInputChange))
         return (
@@ -182,14 +186,15 @@ class StagesGeneral extends Component {
                                         >
                                             Отмена
                                         </button>
-                                        <button
+                                        <Button
                                             name="save"
                                             type="submit"
                                             className="blue btn width-m"
                                             onClick={onSubmit}
+                                            loading={loading}
                                         >
                                             Сохранить
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             )}}

@@ -34,7 +34,7 @@ const Employees = ({}) => {
       }
     } else {
         (async () => {
-          const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${FILTER}/`, {
+          const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
             params:  {[id]: value}
           })
           setData(data.results)

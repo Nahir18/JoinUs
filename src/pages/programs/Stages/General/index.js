@@ -13,6 +13,7 @@ import {PAGE_LINK_LEVELS} from "../../Constants";
 import AppList from "../../../../components/AppList";
 import { employeesModalConfig } from "../../item/General/employeesModalConfig";
 import { NEW_LEVEL } from "../../Constants";
+import Button from "../../../../components/Button";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
   .reduce((acc, c) => {
@@ -38,7 +39,8 @@ class LevelsGeneral extends Component {
       employees: [],
       pageTitle: "",
       data: {},
-      modalState: {}
+      modalState: {},
+      loading: false
     }
     this.handleInputChange = this.handleInputChange.bind(this)
   }
@@ -128,7 +130,7 @@ class LevelsGeneral extends Component {
         })
     }
 
-    saveNewLevel = () => {
+    saveNewLevel = async () => {
     const { props: {history: { push }}, state: {data: { level_name, tier, status, create_date, id_employee, duration_day, illustration }}, pathNames, idLevel } = this
 
         const newLevel = pathNames()[4] === NEW_LEVEL
@@ -140,7 +142,8 @@ class LevelsGeneral extends Component {
             id_employee,
             duration_day
         }
-        axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}/${newLevel ? '' : `${idLevel()}/`}`, illustration ? {...newData, illustration} : newData)
+      this.setState({loading: true})
+      await axios[newLevel ? "post" : "put"](`${DEFAULT_URL}/${ADAPTATION_LEVELS}/${newLevel ? '' : `${idLevel()}/`}`, illustration ? {...newData, illustration} : newData)
           .then(
             ({data}) => {
               this.setState({
@@ -156,6 +159,7 @@ class LevelsGeneral extends Component {
               })
             }
         )
+      this.setState({loading: false})
     }
 
     inputDataOfProgram = (value) => {
@@ -193,7 +197,7 @@ class LevelsGeneral extends Component {
     }
   render() {
     const {history: {goBack}} = this.props
-    const {creatorModal, modalState, employees, data, data: {id_employee, illustration}} = this.state
+    const {creatorModal, modalState, employees, data, data: {id_employee, illustration}, loading} = this.state
     const {tierUp, tierDown} = this
     const toggleCreatorModal = () => {
       this.setState({creatorModal: !creatorModal})
@@ -259,14 +263,15 @@ class LevelsGeneral extends Component {
                   >
                     Отмена
                   </div>
-                  <button
+                  <Button
                     onClick={onSubmit}
                     name="save"
                     type="submit"
                     className="blue btn width-m"
+                    loading={loading}
                   >
                     Сохранить
-                  </button>
+                  </Button>
                 </div>
               </div>
             )
