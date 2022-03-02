@@ -1,4 +1,4 @@
-import React, {Component, useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {fieldMap, rules} from "./formConfig";
 import Form from "@Components/Forms/index"
@@ -9,7 +9,6 @@ import memoizeOne from "memoize-one";
 import axios from "axios";
 import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import Avatar from "../../../../components/Avatar";
-import PureUpdateArrayItems from "../../../../utils/Arrays/PureUpdateArrayItems";
 import Button from "../../../../components/Button";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
@@ -36,15 +35,10 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
 
   useEffect(() => {
     if (!newEmploy) {
-      axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-      .then(
-        ({data}) => {
-          setData(data)
-        },
-        (error) => {
-         console.log(error)
-        }
-      )
+      (async () => {
+       await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
+        setData(data)
+      })()
     }
   }, [idEmploy])
 
@@ -100,6 +94,7 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
   }, [])
 
   const [firstForm, SecondForm] = withSetDisabledFieldsConfigAndSplitByColumns(fieldMap)
+
   return (
     <div className="flex-container hidden">
       <WithValidationHocRenderPropAdapter

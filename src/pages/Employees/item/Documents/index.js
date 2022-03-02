@@ -3,7 +3,7 @@ import CardIconAndTitle from "../../../../components/CardIconAndTitle";
 import {settings} from "./tableConfig";
 import AppList from "../../../../components/AppList";
 import axios from "axios";
-import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
+import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import {calculationOfPoints} from "../../../../utils/calculationOfPoints";
 
 const Documents = ({location: { pathname }, history: { push, goBack }}) => {

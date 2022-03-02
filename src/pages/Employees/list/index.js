@@ -1,4 +1,4 @@
-import React, {Component, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import FilterForEmployees from "./FilterForEmployees";
 import axios from 'axios';
 import AppList from "../../../components/AppList";
@@ -7,7 +7,6 @@ import {NavLink} from "react-router-dom";
 import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL, FILTER} from "../../../components/APIList";
 import debounce from "@Utils/debounce"
 import Pagination from "@Components/Pagination"
-import Preloader from "../../../components/Preloader";
 
 const Employees = ({}) => {
   const [data, setData] = useState([])
@@ -65,16 +64,12 @@ const Employees = ({}) => {
   }, [])
 
   const updateData = useCallback((value) => {
-    axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
-      params: {page_size: value}
-    })
-    .then((response) => {
-        setData(response.data.results)
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
+    (async () => {
+      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`, {
+        params: {page_size: value}
+      })
+      setData(data.results)
+    })()
     setPage(value)
   }, [page, data])
 

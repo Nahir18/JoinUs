@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef, useEffect } from "react"
+import React, { useCallback, useState } from "react"
 import Input from "@Components/Fields/Input"
 import Select from "../../../../components/Fields/Select";
 import {FilterContainer, StyleDate} from "./style"
@@ -32,22 +32,22 @@ const FilterForEmployees = ({handleInput}) => {
   const onInput = useCallback((value, id) => {
     setDataForInput(value)
     handleInput(value, id)
-  }, [setDataForInput])
+  }, [dataForInput])
 
   const handleSelect = useCallback((value, id) => {
     setValueSelect(value)
     handleInput(value, id)
-  }, [setValueSelect])
+  }, [valueSelect])
 
   const onInputDateFrom = useCallback((value, id) => {
       setDateFrom(value)
       handleInput(value, id)
-    }, [setDateFrom])
+    }, [dateFrom])
 
   const onInputDateTo = useCallback((value, id) => {
     setDateTo(value)
     handleInput(value, id)
-  }, [setDateTo])
+  }, [dateTo])
 
   return (
     <FilterContainer className="m-b-16">
@@ -96,7 +96,6 @@ const FilterForEmployees = ({handleInput}) => {
           />
         </div>
       </div>
-
     </FilterContainer>
   );
 };

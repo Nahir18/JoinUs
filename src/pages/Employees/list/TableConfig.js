@@ -16,7 +16,6 @@ export const settings = [
     id: 11,
     key: "number",
     name: "№",
-    // component: numberComponent,
     size: "50px"
   },
   {
