@@ -2,27 +2,26 @@ import React, {useEffect, useState, useMemo} from 'react';
 import CardIconAndTitle from "../../../../components/CardIconAndTitle";
 import AppList from "../../../../components/AppList";
 import {settings} from "./tableConfig";
-import axios from "axios";
-import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import memoizeOne from "memoize-one";
+import ListService from "../../service";
+import {useFetching} from "../../../../utils/hooks/useFetching";
 
 const Goals = ({location: { pathname }, history: { push, goBack }}) => {
   const [goalsDetail, setGoalsDetail] = useState([])
   const [adaptationStatus, setAdaptationStatus] = useState([])
-  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
 
+  const [getEmploy, isLoading, isError] = useFetching(async () => {
+    const data = await ListService.getEmploy(idEmploy)
+    setGoalsDetail(data.program_details.map(({goals_detail}) => goals_detail).flat())
+    setAdaptationStatus(data.adaptation_status)
+  })
+
   useEffect(() => {
-    (async () => {
-      setLoading(true)
-      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-      setGoalsDetail(data.program_details.map(({goals_detail}) => goals_detail).flat())
-      setAdaptationStatus(data.adaptation_status)
-      setLoading(false)
-    })()
+    getEmploy()
   }, [])
 
   const getPoint = memoizeOne((data = []) => {
@@ -63,7 +62,7 @@ const Goals = ({location: { pathname }, history: { push, goBack }}) => {
         />
       </div>
       <AppList
-        loading={loading}
+        loading={isLoading}
         settings={settings}
         data={newData}
       />

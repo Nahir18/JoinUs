@@ -10,6 +10,8 @@ import axios from "axios";
 import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import Avatar from "../../../../components/Avatar";
 import Button from "../../../../components/Button";
+import ListService from "../../service";
+import {useFetching} from "../../../../utils/hooks/useFetching";
 
 const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnlyFields = []) => readOnlyFields
 .reduce((acc, c) => {
@@ -25,6 +27,8 @@ const withSetDisabledFieldsConfigAndSplitByColumns = memoizeOne((config, readOnl
   return acc
 }, [[], []]))
 
+// не используется isLoading в useFetching, потому что повешано только на запрос загрузки
+
 const General = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
@@ -33,12 +37,14 @@ const General = ({location: { pathname }, history: { push, goBack }}) => {
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "" : `${pathnames[1]}/`
 
+  const [getEmploy, isLoading, isError] = useFetching(async () => {
+    const data = await ListService.getEmploy(idEmploy)
+    setData(data)
+  })
+
   useEffect(() => {
     if (!newEmploy) {
-      (async () => {
-       await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-        setData(data)
-      })()
+      getEmploy()
     }
   }, [idEmploy])
 

@@ -6,6 +6,7 @@ import Appeal from "../pages/Аppeal"
 import Reference from "../pages/Reference"
 import Settings from "../pages/Settings"
 import RouterEmployees from "../pages/Employees";
+import Error from "../pages/Error";
 
 const Router = () => (
     <Switch>
@@ -14,7 +15,8 @@ const Router = () => (
         <Route path="/appeal" component={Appeal} />
         <Route path="/reference" component={Reference} />
         <Route path="/settings" component={Settings} />
-        <Route path="/" component={EmptyPage} />
+        {/*<Route path="/" component={EmptyPage} />*/}
+        <Route path="/error" component={Error} />
     </Switch>
 )
 

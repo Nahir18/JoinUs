@@ -2,32 +2,31 @@ import React, {useEffect, useMemo, useState} from 'react';
 import CardIconAndTitle from "../../../../components/CardIconAndTitle";
 import AppList from "../../../../components/AppList";
 import {settings} from "./tableConfig";
-import axios from "axios";
-import {CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
 import {calculationOfPoints} from "../../../../utils/calculationOfPoints";
 import {calculationOfStages} from "../../../../utils/calculationOfStages";
+import ListService from "../../service";
+import {useFetching} from "../../../../utils/hooks/useFetching";
 
 const AdaptationProgress = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState([])
   const [adaptation_status, setAdaptation_status] = useState([])
   const [program_details, SetProgram_details] = useState([])
   const [comment, setComment] = useState([])
-  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
 
+  const [getEmploy, isLoading, isError] = useFetching(async () => {
+    const data = await ListService.getEmploy(idEmploy)
+    setData(data.program_details.map(({levels_detail}) => levels_detail).flat())
+    SetProgram_details(data.program_details)
+    setAdaptation_status(data.adaptation_status)
+    setComment(data.comment)
+  })
+
   useEffect(() => {
-    (async () => {
-      setLoading(true)
-      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-      setData(data.program_details.map(({levels_detail}) => levels_detail).flat())
-      SetProgram_details(data.program_details)
-      setAdaptation_status(data.adaptation_status)
-      setComment(data.comment)
-      setLoading(false)
-    })()
+    getEmploy()
   }, [])
 
   // todo расчет количества пройденных уровней
@@ -96,7 +95,7 @@ const AdaptationProgress = ({location: { pathname }, history: { push, goBack }})
         />
       </div>
       <AppList
-        loading={loading}
+        loading={isLoading}
         settings={settings}
         data={newData}
         nestedData={true}

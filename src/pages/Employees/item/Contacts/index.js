@@ -2,24 +2,23 @@ import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import AppList from "../../../../components/AppList";
 import {settings} from "./tableConfig";
-import axios from "axios";
-import { CANDIDATE_LIST, DEFAULT_URL} from "../../../../components/APIList";
+import {useFetching} from "../../../../utils/hooks/useFetching";
+import ListService from "../../service";
 
 const Contacts = ({location: { pathname }, history: { push, goBack }}) => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false)
 
   const pathnames = pathname.split("/").filter(x => x)
   const newEmploy = pathnames[1] === "new_employ"
   const idEmploy = newEmploy ? "/" : `${pathnames[1]}/`
 
+  const [getEmploy, isLoading, isError] = useFetching(async () => {
+    const data = await ListService.getEmploy(idEmploy)
+    setData(data.program_details.map(({contacts_detail}) => contacts_detail).flat())
+  })
+
   useEffect(() => {
-    (async () => {
-      setLoading(true)
-      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/${idEmploy}`)
-      setData(data.program_details.map(({contacts_detail}) => contacts_detail).flat())
-      setLoading(false)
-    })()
+    getEmploy()
   }, [])
 
   const newData = useMemo(() => (
@@ -47,7 +46,7 @@ const Contacts = ({location: { pathname }, history: { push, goBack }}) => {
         + Добавить контакт
       </button>
       <AppList
-        loading={loading}
+        loading={isLoading}
         settings={settings}
         data={newData}
       />

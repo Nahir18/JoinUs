@@ -7,6 +7,8 @@ import {NavLink} from "react-router-dom";
 import {ADAPTATION_PROGRAM, CANDIDATE_LIST, DEFAULT_URL, FILTER} from "../../../components/APIList";
 import debounce from "@Utils/debounce"
 import Pagination from "@Components/Pagination"
+import {useFetching} from "../../../utils/hooks/useFetching";
+import ListService from "../service";
 
 const Employees = ({}) => {
   const [data, setData] = useState([])
@@ -14,7 +16,12 @@ const Employees = ({}) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(11)
   const [programList, setProgramList] = useState([])
-  const [loading, setLoading] = useState(false)
+
+  const [getCandidateList, isListLoading, listError] = useFetching(async () => {
+    const data = await ListService.getAll()
+    setData(data.results)
+    setCountList(data.count)
+  })
 
   const filterList = (debounce(useCallback((value, id) => {
     if (id === "statuses") {
@@ -45,16 +52,6 @@ const Employees = ({}) => {
   useEffect(() => {
     getCandidateList()
   }, [])
-
-  const getCandidateList = () => {
-    (async () => {
-      setLoading(true)
-      const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
-      setData(data.results)
-      setCountList(data.count)
-      setLoading(false)
-    })()
-  }
 
   useEffect(() => {
     (async () => {
@@ -122,7 +119,7 @@ const Employees = ({}) => {
       />
       <div className="flex-container relative">
         <AppList
-          loading={loading}
+          loading={isListLoading}
           settings={settings}
           data={getNewData}
           nestedKey="data"

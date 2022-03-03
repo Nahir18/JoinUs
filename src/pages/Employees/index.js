@@ -42,6 +42,10 @@ class RouterEmployees extends Component {
                 {/*<Route path="/employees/new_employ/documents" component={Documents}/>*/}
                 {/*<Route path="/employees/new_employ/goals" component={Goals}/>*/}
 
+                {/*<Route path="/employees/:employID/:employName/general">*/}
+                {/*  <General idEmployee={idEmploy} />*/}
+                {/*</Route>*/}
+
                 <Route path="/employees/:employID/:employName/general" component={General} />
                 <Route path="/employees/:employID/:employName/contacts" component={Contacts}/>
                 <Route path="/employees/:employID/:employName/adaptation_progress" component={AdaptationProgress}/>
