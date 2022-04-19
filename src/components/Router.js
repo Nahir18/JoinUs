@@ -11,7 +11,7 @@ import Login from "../pages/LoginPage";
 const Router = () => (
     <Switch>
         <Route path="/programs" component={Programs}/>
-        {/*<Route path="/login" component={Login}/>*/}
+        <Route path="/login" component={Login}/>
         <Route path="/employees" component={RouterEmployees} />
         <Route path="/appeal" component={Appeal} />
         <Route path="/reference" component={Reference} />
