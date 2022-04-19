@@ -3,8 +3,7 @@ import {NavLink} from "react-router-dom";
 import { NawContentBtn, NawContentItem } from "./style"
 
 export default function NavContentBtn(props) {
-    const { links } = props
-    const { location: { pathname } } = props
+    const { location: { pathname }, links } = props
     const pathnames = pathname.split("/").filter(x => x)
     const path = pathnames.slice(0, pathnames.length - 1).join("/")
     return  (
