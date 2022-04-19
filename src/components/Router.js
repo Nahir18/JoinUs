@@ -6,12 +6,10 @@ import Appeal from "../pages/Аppeal"
 import Reference from "../pages/Reference"
 import Settings from "../pages/Settings"
 import RouterEmployees from "../pages/Employees";
-import Login from "../pages/LoginPage";
 
 const Router = () => (
     <Switch>
         <Route path="/programs" component={Programs}/>
-        <Route path="/login" component={Login}/>
         <Route path="/employees" component={RouterEmployees} />
         <Route path="/appeal" component={Appeal} />
         <Route path="/reference" component={Reference} />

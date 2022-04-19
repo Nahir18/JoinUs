@@ -15,8 +15,16 @@ const Login = props => {
 
     const inputLoginFields = (value) => setData(value)
 
-    const authorize = () => {
-        axios.post(`${DEFAULT_URL_FOR_FILE}/auth/employee/`,  data, {headers: {'Content-type': 'application/json'}})
+    const authorize = async () => {
+        try {
+            setLoading(true)
+            await axios.post(`${DEFAULT_URL_FOR_FILE}/auth/employee/`,  data,
+              {headers: {'Content-type': 'application/json'}})
+        } catch (e) {
+            console.log("login error", e)
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <PageContainer className="w-full bg-color-light-blue-2">
