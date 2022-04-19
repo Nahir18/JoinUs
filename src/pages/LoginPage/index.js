@@ -23,9 +23,11 @@ const Login = ({ history: { push }}) => {
             setLoading(true)
             await axios.post(`${DEFAULT_URL_FOR_FILE}/auth/employee/`,  data,
               {headers: {'Content-type': 'application/json'}})
-                .then((response) => {
-                    setStoreCredentials(Boolean(response))
-                    localStorage.setItem(LOCAL_STORAGE_REMEMBER_ME, String(response))
+                .then(({data}) => {
+                    console.log(data)
+                    setStoreCredentials(Boolean(data))
+                    localStorage.setItem(LOCAL_STORAGE_REMEMBER_ME, String(data))
+                    localStorage.setItem("user-token", String(data))
                 })
         } catch (e) {
             console.log("login error", e)
