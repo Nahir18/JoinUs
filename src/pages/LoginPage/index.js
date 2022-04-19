@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Form from "@Components/Forms/index"
 import Button from "@Components/Button";
@@ -9,8 +9,11 @@ import {loginFields, rules} from "./formConfig"
 import {PageContainer, ContentContainer, ImgLogo, FormContainer} from "./styles"
 import {Logo} from '@Components/NavigationDrawer/icons/constantsIcons'
 
-const Login = props => {
-    const [data, setData] = useState({})
+const LOCAL_STORAGE_REMEMBER_ME = "LOCAL_STORAGE_REMEMBER_ME"
+
+const Login = ({ history: { push }}) => {
+    const [data, setData] = useState({email: "test@test", password: "test"})
+    const [storeCredentials, setStoreCredentials] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const inputLoginFields = (value) => setData(value)
@@ -20,12 +23,23 @@ const Login = props => {
             setLoading(true)
             await axios.post(`${DEFAULT_URL_FOR_FILE}/auth/employee/`,  data,
               {headers: {'Content-type': 'application/json'}})
+                .then((response) => {
+                    setStoreCredentials(Boolean(response))
+                    localStorage.setItem(LOCAL_STORAGE_REMEMBER_ME, String(response))
+                })
         } catch (e) {
             console.log("login error", e)
         } finally {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        if (storeCredentials) {
+            push("./")
+        }
+    }, [storeCredentials])
+
     return (
         <PageContainer className="w-full bg-color-light-blue-2">
             <ContentContainer>
