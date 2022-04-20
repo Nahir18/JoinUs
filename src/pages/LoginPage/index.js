@@ -1,16 +1,16 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Form from "@Components/Forms/index"
 import Button from "@Components/Button";
-import axios from "axios";
 import { WithValidationHocRenderPropAdapter} from "../../Validator";
-import {DEFAULT_URL_FOR_FILE} from "../../components/APIList";
 import {loginFields, rules} from "./formConfig"
 import {PageContainer, ContentContainer, ImgLogo, FormContainer} from "./styles"
 import {Logo} from '@Components/NavigationDrawer/icons/constantsIcons'
+import {LOCAL_STORAGE_REMEMBER_ME} from "@constants"
+import {AuthRequest} from "@Store/UserObject"
 
-const Login = props => {
-    const [data, setData] = useState({})
+const Login = ({ history: { push }}) => {
+    const [data, setData] = useState({email: "test@test", password: "test"})
     const [loading, setLoading] = useState(false)
 
     const inputLoginFields = (value) => setData(value)
@@ -18,14 +18,16 @@ const Login = props => {
     const authorize = async () => {
         try {
             setLoading(true)
-            await axios.post(`${DEFAULT_URL_FOR_FILE}/auth/employee/`,  data,
-              {headers: {'Content-type': 'application/json'}})
+            localStorage.setItem(LOCAL_STORAGE_REMEMBER_ME, String(data))
+            await AuthRequest(data)
+            push("./")
         } catch (e) {
             console.log("login error", e)
         } finally {
             setLoading(false)
         }
     }
+
     return (
         <PageContainer className="w-full bg-color-light-blue-2">
             <ContentContainer>

@@ -15,7 +15,8 @@ import "@Styles/markupHelpers.scss"
 import "@Styles/colors.css"
 import {useCallback, useState} from "react";
 import Login from "./pages/LoginPage";
-
+import {TOKEN_KEY} from "./constants"
+import {setHeader, authHeader} from "./api"
 
 function App() {
   const [widthPage, setWidthPage] = useState()
@@ -25,6 +26,10 @@ function App() {
       setWidthPage(node.clientWidth)
     }
   }, [widthPage, setWidthPage]);
+
+  const initToken = localStorage.getItem(TOKEN_KEY)
+  setHeader(authHeader(initToken))
+
   return (
       <BrowserRouter>
         <div className="flex-row flex h-full w-full" ref={measuredRef}>
