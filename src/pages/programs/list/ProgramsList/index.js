@@ -18,7 +18,8 @@ class ProgramsList extends Component {
     componentDidMount() {
       (async () => {
         this.setState({loading: true})
-        await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`)
+        const token =  localStorage.getItem("user-token")
+        await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}`, { headers: { Authorization: `${token}`}})
             .then(
                 (response) => {
                     this.setState({
