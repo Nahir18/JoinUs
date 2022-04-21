@@ -46,21 +46,25 @@ const Employees = ({}) => {
     getCandidateList()
   }, [])
 
-  const getCandidateList = () => {
-    (async () => {
+  const getCandidateList = async () => {
+    try {
       setLoading(true)
       const {data} = await axios.get(`${DEFAULT_URL}/${CANDIDATE_LIST}/`)
       setData(data.results)
       setCountList(data.count)
       setLoading(false)
-    })()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
-  useEffect(() => {
-    (async () => {
+  useEffect(async () => {
+    try {
       const {data} = await axios.get(`${DEFAULT_URL}/${ADAPTATION_PROGRAM}/`)
       setProgramList(data)
-    })()
+    } catch (e) {
+      console.log(e)
+    }
   }, [])
 
   const updateData = useCallback((value) => {
@@ -77,12 +81,12 @@ const Employees = ({}) => {
     return {
       currentPage: page,
       totalPages:  Math.ceil(countList / limit),
-      cupReached: data.length !== limit
+      cupReached: data?.length !== limit
     }
   },[page, countList, limit, data])
 
   const getNewData = useMemo(() => {
-    return data.map((item) => {
+    return data?.map((item) => {
         const { last_name, first_name, post, adaptation_status, program_details, program, illustration } = item
         return {
           EMPLOYEES: {

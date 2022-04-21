@@ -6,10 +6,9 @@ import { WithValidationHocRenderPropAdapter} from "../../Validator";
 import {loginFields, rules} from "./formConfig"
 import {PageContainer, ContentContainer, ImgLogo, FormContainer} from "./styles"
 import {Logo} from '@Components/NavigationDrawer/icons/constantsIcons'
-import {LOCAL_STORAGE_REMEMBER_ME} from "@constants"
 import {AuthRequest} from "@Store/UserObject"
 
-const Login = ({ history: { push }}) => {
+const Login = ({ setToken }) => {
     const [data, setData] = useState({email: "test@test", password: "test"})
     const [loading, setLoading] = useState(false)
 
@@ -18,9 +17,7 @@ const Login = ({ history: { push }}) => {
     const authorize = async () => {
         try {
             setLoading(true)
-            localStorage.setItem(LOCAL_STORAGE_REMEMBER_ME, String(data))
-            await AuthRequest(data)
-            push("./")
+            setToken(await AuthRequest(data))
         } catch (e) {
             console.log("login error", e)
         } finally {

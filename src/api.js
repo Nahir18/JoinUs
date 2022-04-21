@@ -6,7 +6,7 @@ export function setHeader(header) {
 
 export function authHeader(token) {
   if (token) {
-    return { Authorization: `${token}` }
+    return { Authorization: token }
   }
   return {}
 }
