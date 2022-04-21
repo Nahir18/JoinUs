@@ -13,3 +13,5 @@ export const CREATE_DATE_FORMAT = "YYYY-MM-DDThh:mm"
 export const DIRECTION_UP = "UP"
 export const DIRECTION_DOWN = "DOWN"
 
+export const TOKEN_KEY = "user-token"
+

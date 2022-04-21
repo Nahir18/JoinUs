@@ -13,7 +13,7 @@ import {programsBreadcrumbs} from "./config";
 
 class RouterEmployees extends Component {
   render() {
-  const { props: { location: { pathname } } } = this
+    const {props: {location: {pathname}}} = this
     const pathnames = pathname.split("/").filter(x => x)
     const newEmploy = pathnames[1] === "new_employ"
     const nameEmploy = newEmploy ? "Новый сотрудник" : pathnames[2]
@@ -25,7 +25,7 @@ class RouterEmployees extends Component {
           pathname === "/employees"
             ?
             (
-              <Route path="/employees" component={Employees} />
+              <Route path="/employees" component={Employees}/>
             )
             :
             (
@@ -36,13 +36,13 @@ class RouterEmployees extends Component {
                 url="employees"
                 links={newEmploy ? TAB_FOR_NEW_EMPLOY : EMPLOYEES_TAB}
               >
-                <Route path="/employees/new_employ/general" component={General} />
+                <Route path="/employees/new_employ/general" component={General}/>
                 {/*<Route path="/employees/new_employ/contacts" component={Contacts}/>*/}
                 {/*<Route path="/employees/new_employ/adaptation_progress" component={AdaptationProgress}/>*/}
                 {/*<Route path="/employees/new_employ/documents" component={Documents}/>*/}
                 {/*<Route path="/employees/new_employ/goals" component={Goals}/>*/}
 
-                <Route path="/employees/:employID/:employName/general" component={General} />
+                <Route path="/employees/:employID/:employName/general" component={General}/>
                 <Route path="/employees/:employID/:employName/contacts" component={Contacts}/>
                 <Route path="/employees/:employID/:employName/adaptation_progress" component={AdaptationProgress}/>
                 <Route path="/employees/:employID/:employName/documents" component={Documents}/>

@@ -20,6 +20,8 @@ module.exports = {
             '@constants': resolvePath( 'src/constants'),
             '@Core': resolvePath( 'src/Core'),
             '@Pages': resolvePath( 'src/pages'),
+            '@Store': resolvePath( 'src/Store'),
+            '@api': resolvePath( 'src/api'),
         }
     },
     style: {
